@@ -14,6 +14,17 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - 8888:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@ejemplo.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
 
   backend:
     build: ./backend
@@ -33,17 +44,20 @@ services:
         condition: service_healthy
     restart: always
 
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: always
-    ports:
-      - 8888:80
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@ejemplo.com
-      PGADMIN_DEFAULT_PASSWORD: admin
+  frontend:
+    build: ./frontend
+    command: npm run dev
     volumes:
-      - pgadmin-data:/var/lib/pgadmin
+      - ./frontend:/usr/src/app
+      - exclude:/usr/src/app/node_modules/
+    ports:
+      - 5173:5173
+    environment:
+      - API_BASE_URL=backend
+    restart: always
+
 
 volumes:
   local_pgdata:
   pgadmin-data:
+  exclude:
