@@ -9,6 +9,9 @@ class UserProfile(models.Model):
     email = models.EmailField(max_length=254)
     birthdate = models.DateField()
 
+    def __str__(self) -> str:
+        return f"{self.fullname} - {self.email}"
+
 
 class Bar(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
