@@ -1,33 +1,25 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
+import NavBar from './components/NavBar.vue';
+import Footer from './components/Footer.vue';
 </script>
 
 <template>
-  <header>
-    Barli
-    <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
-    </nav>
-  </header>
+  <NavBar />
 
   <div id="content">
     <RouterView />
   </div>
 
-  <footer>Pie de pagina</footer>
+  <Footer />
 </template>
 
 <style scoped>
-header {
-  background-color: beige;
-}
-
 #content {
   flex: 1;
-}
-
-footer {
-  background-color: beige;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 </style>

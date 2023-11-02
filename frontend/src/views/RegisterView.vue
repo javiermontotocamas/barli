@@ -3,6 +3,6 @@
 
 <template>
   <main>
-    <p>Esto es el acerca de</p>
+    <p>Esto es el register</p>
   </main>
 </template>
