@@ -10,6 +10,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "boostrap": "^2.0.0",
     "bootstrap": "^5.3.2",
     "bootstrap-vue": "^2.23.1",
     "vue": "^3.3.7",
