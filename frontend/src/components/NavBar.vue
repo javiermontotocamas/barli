@@ -1,12 +1,23 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
+<script>
+import { RouterLink } from 'vue-router'
+
+export default {
+    methods: {
+        showSignInModal() {
+            this.$emit('show-signin-modal', true);
+        },
+        showRegisterModal() {
+            this.$emit('show-register-modal', true);
+        }
+    }
+}
 </script>
 
 <template>
     <header>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/">Barly</a>
+                <a class="navbar-brand" href="/">Barli</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                     aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -23,13 +34,8 @@ import { RouterLink, RouterView } from 'vue-router'
                         </li>
                     </ul>
                     <div class="d-flex gap-2">
-                        <router-link :to="{ name: 'signin' }" class="nav-link"
-                                router-link-active="active">
-                            <button class="btn btn-success">SignIn</button>
-                        </router-link>
-                        <router-link :to="{ name: 'register' }" tag="button">
-                            <button class="btn btn-info">Register</button>
-                        </router-link>
+                        <button class="btn btn-success" @click="showSignInModal()">SignIn</button>
+                        <button class="btn btn-info" @click="showRegisterModal()">Register</button>
                     </div>
                 </div>
             </div>
@@ -43,6 +49,7 @@ header {
     display: flex;
     flex-direction: row;
     align-items: center;
+    
 }
 
 nav {
@@ -50,12 +57,10 @@ nav {
     flex-direction: row;
     flex: 1;
     justify-content: space-evenly;
+    filter: drop-shadow(0 15px 10px rgba(0,0,0,.4));
 }
 
 #content {
     flex: 1;
 }
-
-footer {
-    background-color: beige;
-}</style>
+</style>

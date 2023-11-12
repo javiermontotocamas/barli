@@ -12,4 +12,5 @@ app.use(router)
 
 app.mount('#app')
 
-import "bootstrap/dist/js/bootstrap.min";
+import 'popper.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
