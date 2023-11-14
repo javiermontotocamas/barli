@@ -1,6 +1,8 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-
 import './assets/main.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+
+// Import all of Bootstrap's JS
+import * as bootstrap from 'bootstrap'
 
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -12,5 +14,4 @@ app.use(router)
 
 app.mount('#app')
 
-import 'popper.js';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+

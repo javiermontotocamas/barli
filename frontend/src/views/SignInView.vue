@@ -1,4 +1,6 @@
 <script>
+import { login } from '../api/apiClient'
+
 export default {
   data() {
     return {
@@ -10,16 +12,10 @@ export default {
   },
   methods: {
     submitForm() {
-      fetch('http://localhost:8000/api/token', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(this.formData),
-      })
-      .then((resp) => resp.json())
-      .then((datos) => console.log(datos))
-      .catch((error) => console.log(error));
+      login(formData.username, formData.password)
+        .then((resp) => resp.json())
+        .then((datos) => console.log(datos))
+        .catch((error) => console.log(error))
     }
   }
 };

@@ -9,19 +9,18 @@ export default {
 </script>
 
 <template>
-    <!--div class="modal fade show" tabindex="-1" role="dialog">-->
-    <div>
+    <div class="modal d-block" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title">
+            <div class="modal-content w-100">
+                <div id="modalhead" class="modal-header bg-secondary">
+                    <div class="modal-title ">
                         <slot name="titulo"></slot>
                     </div>
-                    <button type="button" class="close" @click="closeModal" aria-label="Close">
+                    <button type="button" class="close bg-danger " @click="closeModal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" >
                     <slot name="cuerpo"></slot>
                 </div>
                 <div class="modal-footer">
@@ -33,4 +32,9 @@ export default {
 </template>
 
 <style scoped>
+#modalhead{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: aliceblue;
+    font-size: larger;
+}
 </style>
