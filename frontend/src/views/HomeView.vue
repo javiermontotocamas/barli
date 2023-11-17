@@ -5,7 +5,7 @@ import { RouterLink } from 'vue-router';
 
 
 <template>
-  <main>
+  <main class="container-fluid">
     <div id="carouselExampleCaptions" data-bs-ride="carousel" class="carousel slide">
       <div class="carousel-indicators">
         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
@@ -18,26 +18,26 @@ import { RouterLink } from 'vue-router';
       <div class="carousel-inner">
         <div class="carousel-item active">
           <div class="carousel-caption">
-            <h5 class="animated fadeInDown" style="animation-delay:1s;">Encuentra <span>Mesa</span></h5>
-            <p class="animated fadeInUp" style="animation-delay:2s;">Lorem ipsum dolor sit amet consectetur adipisicing
+            <h5 class="animate__animated animate__fadeInDown" style="animation-delay:1s;">Encuentra <span>Mesa</span></h5>
+            <p class="animate__animated animate__fadeInUp" style="animation-delay:2s;">Lorem ipsum dolor sit amet consectetur adipisicing
               elit. Molestias inventore beatae doloribus vel, nisi totam.</p>
-            <p class="animated fadeInUp" style="animation-delay:3s;"><a href="#">Learn More</a></p>
+            <p class="animate__animated animate__fadeInUp" style="animation-delay:3s;"><a href="#">Learn More</a></p>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carousel-caption">
-            <h5 class="animated fadeInDown" style="animation-delay:1s;">Haz <span>Reserva</span></h5>
-            <p class="animated fadeInUp" style="animation-delay:2s;">Lorem ipsum dolor sit amet consectetur adipisicing
+            <h5 class="animate__animated animate__fadeInDown" style="animation-delay:1s;">Haz <span>Reserva</span></h5>
+            <p class="animate__animated animate__fadeInUp" style="animation-delay:2s;">Lorem ipsum dolor sit amet consectetur adipisicing
               elit. Molestias inventore beatae doloribus vel, nisi totam.</p>
-            <p class="animated fadeInUp" style="animation-delay:3s;"><a href="#">Learn More</a></p>
+            <p class="animate__animated animate__fadeInUp" style="animation-delay:3s;"><a href="#">Learn More</a></p>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carousel-caption">
-            <h5 class="animated fadeInDown" style="animation-delay:1s;">No <span>Esperes</span></h5>
-            <p class="animated fadeInUp" style="animation-delay:2s;">Lorem ipsum dolor sit amet consectetur adipisicing
+            <h5 class="animate__animated animate__fadeInDown" style="animation-delay:1s;">No <span>Esperes</span></h5>
+            <p class="animate__animated animate__fadeInUp" style="animation-delay:2s;">Lorem ipsum dolor sit amet consectetur adipisicing
               elit. Molestias inventore beatae doloribus vel, nisi totam.</p>
-            <p class="animated fadeInUp" style="animation-delay:3s;"><a href="#">Learn More</a></p>
+            <p class="animate__animated animate__fadeInUp" style="animation-delay:3s;"><a href="#">Learn More</a></p>
           </div>
         </div>
       </div>

@@ -6,16 +6,20 @@ export default {
     return {
       type: 'customer',
       userData: {
-        username: '',
-        password: '',
-        fullName: '',
+        user: {
+          username: '',
+          password: '',
+        },
+        fullname: '',
         phone: '',
         email: '',
         birthdate: ''
       },
       barData: {
-        username: '',
-        password: '',
+        user: {
+          username: '',
+          password: '',
+        },
         name: '',
         description: '',
         phone: '',
@@ -58,18 +62,24 @@ export default {
       </div>
     </div>
     <hr>
-    <div v-if="type === 'customer'" class="form-inline">
+    <div v-if="type === 'customer'">
+      <div class="row mb-3">
+        <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+        <div class="col-sm-10">
+          <input type="email" class="form-control" id="inputEmail3">
+        </div>
+      </div>
       <div class="form-group">
         <label for="username" class="mr-2">Username:</label>
-        <input type="username" id="username" class="form-control" v-model="userData.username" required />
+        <input type="text" id="username" class="form-control" v-model="userData.user.username" required />
       </div>
       <div class="form-group">
         <label for="password" class="mr-2">Password:</label>
-        <input type="password" id="password" class="form-control" v-model="userData.password" required />
+        <input type="password" id="password" class="form-control" v-model="userData.user.password" required />
       </div>
       <div class="form-group">
         <label for="fullname" class="mr-2">Nombre Completo:</label>
-        <input type="fullname" id="fullname" class="form-control" v-model="userData.fullName" required />
+        <input type="text" id="fullname" class="form-control" v-model="userData.fullname" required />
       </div>
       <div class="form-group">
         <label for="phone" class="mr-2">Teléfono:</label>
@@ -88,15 +98,15 @@ export default {
     <div v-else-if="type === 'bar'">
       <div class="form-group">
         <label for="username" class="mr-2">Username:</label>
-        <input type="username" id="username" class="form-control" v-model="barData.username" required />
+        <input type="text" id="username" class="form-control" v-model="barData.user.username" required />
       </div>
       <div class="form-group">
         <label for="password" class="mr-2">Password:</label>
-        <input type="password" id="password" class="form-control" v-model="barData.password" required />
+        <input type="password" id="password" class="form-control" v-model="barData.user.password" required />
       </div>
       <div class="form-group">
         <label for="name" class="mr-2">Nombre Comercio:</label>
-        <input type="name" id="name" class="form-control" v-model="barData.name" required />
+        <input type="text" id="name" class="form-control" v-model="barData.name" required />
       </div>
       <div class="form-group">
         <label for="description" class="mr-2">Descripción</label>

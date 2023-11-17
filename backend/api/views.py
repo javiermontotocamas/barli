@@ -1,11 +1,63 @@
 from django.shortcuts import HttpResponse
 from django.http import JsonResponse
+
+from .serializers import UserProfileSerializer
 from .models import *
 
 
-def index(request):
-    return HttpResponse('Bienvenido a la api')
 
+
+
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+
+class RegisterView(APIView):
+    def post(self, request, format=None):
+        """
+        user_type = request.data["type"]
+        serializer = None
+        if user_type == "customer":
+            serializer = UserProfileSerializer(data=request.data)
+        elif user_type == "bar":
+            serializer = BarSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        """
+        serializer = UserProfileSerializer(data=request.data)
+        print("misdatos:")
+        print(request.data)
+
+        if serializer.is_valid():
+            print("Valido")
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print("No valido")
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def index(request):
+    return HttpResponse('Bienvenido a la api')   
 
 #Obtener todos los usuarios
 def get_users(request):

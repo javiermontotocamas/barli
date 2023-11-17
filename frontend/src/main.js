@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from './plugins/fontawesome';
 import './assets/main.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
+// import 'animate.css';
 // import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 // Import all of Bootstrap's JS
 import * as bootstrap from 'bootstrap'

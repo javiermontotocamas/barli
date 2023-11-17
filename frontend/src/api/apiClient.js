@@ -9,7 +9,7 @@ export async function login(username, password) {
 }
 
 export async function registerNewCustomerOrBar(data) {
-  return fetch('https://barli.free.beeceptor.com', {
+  return fetch('http://localhost:8000/api/register', {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
