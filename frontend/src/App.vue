@@ -5,7 +5,6 @@ import Footer from './components/Footer.vue';
 import ModalLayer from './views/ModalLayer.vue';
 import SignInView from './views/SignInView.vue';
 import RegisterView from './views/RegisterView.vue';
-import { toHandlers } from 'vue';
 
 
 export default {
@@ -19,6 +18,8 @@ export default {
   },
   data() {
     return {
+      username: "",
+      role: "",
       showModalSiginOrRegister: false,
       modalMode: "",
       modalTitle: ""
@@ -39,13 +40,24 @@ export default {
       this.showModalSiginOrRegister = false;
       this.modalMode = "";
       this.modalTitle = "";
+    },
+    userLogged(userLoggedObject) {
+      this.username = userLoggedObject.username;
+      this.role = userLoggedObject.role;
+    },
+    userLoggedOut() {
+      this.username = '';
     }
   }
 }
 </script>
 
 <template>
-  <NavBar @show-signin-modal="showSignIn" @show-register-modal="showRegister" />
+  <NavBar :username="username" :role="role"
+    @show-signin-modal="showSignIn"
+    @show-register-modal="showRegister"
+    @user-logout="userLoggedOut"
+  />
 
   <div id="content">
     <RouterView />
@@ -56,7 +68,7 @@ export default {
       {{ modalTitle }}
     </template>
     <template v-slot:cuerpo v-if="modalMode == 'signin'">
-      <SignInView />
+      <SignInView @user-logged="userLogged" @close-modal="closeModal" />
     </template>
     <template v-slot:cuerpo v-if="modalMode == 'register'">
       <RegisterView />

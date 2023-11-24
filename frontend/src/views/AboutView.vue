@@ -1,8 +1,34 @@
 <script>
+import { getNumbers } from '../api/apiClient'
+export default {
+  data() {
+    return {
+      numeros: []
+    }
+  },
+  methods: {
+    async getNums() {
+      const resp = await getNumbers()
+      const respOk = resp.ok
+      const json = await resp.json()
+      if (respOk) {
+        this.numeros = json.numbers;
+      }
+      else {
+        console.log("Se ha producido un error", json);
+      }
+    }
+  }
+}
 </script>
 
 <template>
   <main class="d-flex justify-content-between flex-column flex-md-row p-4 gap-2">
+    <div class="col">
+      <p>{{ numeros }}</p>
+      <button @click="getNums">Pedir a la api numeros</button>
+    </div>
+
     <div class="col">
       <div class="column" id="empresa">
         <div class="content">

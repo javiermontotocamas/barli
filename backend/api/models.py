@@ -6,11 +6,10 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     fullname = models.CharField(max_length=255)
     phone = models.CharField(max_length=30)
-    email = models.EmailField(max_length=254)
     birthdate = models.DateField()
 
     def __str__(self) -> str:
-        return f"{self.fullname} - {self.email}"
+        return f"{self.fullname}"
 
 
 class Bar(models.Model):
@@ -18,7 +17,6 @@ class Bar(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     phone = models.CharField(max_length=30)
-    email = models.EmailField(max_length=254)
     address = models.CharField(max_length=255)
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
@@ -61,3 +59,32 @@ class Booking(models.Model):
                 name="end_datetime_check"
             )
         ]
+
+
+
+def find_userprofile_by_django_user_id(user_id):
+    try:
+        profile = UserProfile.objects.get(user__id=user_id)
+    except UserProfile.DoesNotExist:
+        profile = None
+
+    return profile
+
+
+def find_bar_by_django_user_id(user_id):
+    try:
+        bar = Bar.objects.get(user__id=user_id)
+    except Bar.DoesNotExist:
+        bar = None
+
+    return bar
+
+
+def find_role_by_django_user_id(user_id):
+    if find_userprofile_by_django_user_id(user_id):
+        return "user"
+    
+    if find_bar_by_django_user_id(user_id):
+        return "bar"
+    
+    return None

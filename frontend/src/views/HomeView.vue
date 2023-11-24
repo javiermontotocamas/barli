@@ -19,24 +19,25 @@ import { RouterLink } from 'vue-router';
         <div class="carousel-item active">
           <div class="carousel-caption">
             <h5 class="animate__animated animate__fadeInDown" style="animation-delay:1s;">Encuentra <span>Mesa</span></h5>
-            <p class="animate__animated animate__fadeInUp" style="animation-delay:2s;">Lorem ipsum dolor sit amet consectetur adipisicing
-              elit. Molestias inventore beatae doloribus vel, nisi totam.</p>
-            <p class="animate__animated animate__fadeInUp" style="animation-delay:3s;"><a href="#">Learn More</a></p>
+            <p class="animate__animated animate__fadeInUp" style="animation-delay:2s;">Nuestra aplicación simplifica este
+              proceso, permitiéndote buscar mesas en bares cercanos de manera fácil y rápida.</p>
+            <p class="animate__animated animate__fadeInUp" style="animation-delay:3s;"><a href="#">Saber más</a></p>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carousel-caption">
             <h5 class="animate__animated animate__fadeInDown" style="animation-delay:1s;">Haz <span>Reserva</span></h5>
-            <p class="animate__animated animate__fadeInUp" style="animation-delay:2s;">Lorem ipsum dolor sit amet consectetur adipisicing
-              elit. Molestias inventore beatae doloribus vel, nisi totam.</p>
-            <p class="animate__animated animate__fadeInUp" style="animation-delay:3s;"><a href="#">Learn More</a></p>
+            <p class="animate__animated animate__fadeInUp" style="animation-delay:2s;">Podrás reservar mesa y elegir la
+              cantidad
+              de comensales que te acompañaran en tu flamante cita.</p>
+            <p class="animate__animated animate__fadeInUp" style="animation-delay:3s;"><a href="#">Saber más</a></p>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carousel-caption">
             <h5 class="animate__animated animate__fadeInDown" style="animation-delay:1s;">No <span>Esperes</span></h5>
-            <p class="animate__animated animate__fadeInUp" style="animation-delay:2s;">Lorem ipsum dolor sit amet consectetur adipisicing
-              elit. Molestias inventore beatae doloribus vel, nisi totam.</p>
+            <p class="animate__animated animate__fadeInUp" style="animation-delay:2s;">Descarga nuestra aplicación y
+              redescubre la forma de disfrutar de tu tiempo en bares y restaurantes.</p>
             <p class="animate__animated animate__fadeInUp" style="animation-delay:3s;"><a href="#">Learn More</a></p>
           </div>
         </div>
@@ -51,7 +52,7 @@ import { RouterLink } from 'vue-router';
       </button>
     </div>
     <!--About zone-->
-    <div class="about-area section-padding" id="about">
+    <div class="about-area section-padding mt-3" id="about">
       <div class="container">
         <div class="row">
           <div class="col-lg-6 col-sm-12">
@@ -61,12 +62,14 @@ import { RouterLink } from 'vue-router';
           </div>
           <div class="col-lg-6 col-mg-12">
             <div class="about-text">
-              <h2>We Are <span>Innovative</span> People</h2>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae quod nulla aliquid ab iure
-                aspernatur quasi facilis debitis, possimus, error dolore culpa, accusamus consectetur minus deserunt
-                temporibus minima suscipit. Explicabo veniam maxime aut cum mollitia tempora nulla aliquam quos est error
-                laudantium pariatur repellendus obcaecati, repudiandae inventore iste cumque ab?</p>
-              <router-link :to="{ name: 'about' }" class="nav-link" router-link-active="active">Contact Us</router-link>
+              <h2>Somos <span>Personas</span> Innovadoras</h2>
+              <p>¿Eres dueño de un bar? ¡No te pierdas la oportunidad de impulsar tu popularidad! Al darte de alta en
+                nuestra aplicación, abres las puertas a una mayor visibilidad y atraes a nuevos clientes. Nuestra
+                plataforma te conecta con usuarios locales que buscan lugares para salir. Con información detallada y la
+                opción de gestionar las reservas, tu bar se destacará entre la competencia.
+                Aprovecha la tecnología para aumentar tu clientela y ofrecer experiencias memorables. Registra tu bar
+                ahora y sé parte de la revolución digital en la industria de la hostelería.</p>
+              <router-link :to="{ name: 'about' }" class="nav-link" router-link-active="active">Contáctanos</router-link>
             </div>
           </div>
         </div>
@@ -78,8 +81,8 @@ import { RouterLink } from 'vue-router';
         <div class="row">
           <div class="col-lg-12">
             <div class="section-header text-center">
-              <h2>Our <span>Services</span></h2>
-              <p>Lorem ipsum dolor sit amet</p>
+              <h2>Nuestros <span>Servicios</span></h2>
+              <p>Lo que ofrecemos actualmente</p>
             </div>
           </div>
         </div>
@@ -87,46 +90,45 @@ import { RouterLink } from 'vue-router';
           <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="single-services text-center">
               <font-awesome-icon icon="martini-glass-citrus" class="icon-services"></font-awesome-icon>
-              <h2>Promote Your Bar</h2>
-              <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestiae, quia repudiandae. Aut omnis fuga
-                inventore.</p>
+              <h2>Promociona Tu Bar</h2>
+              <p>Beneficiate de la ventaja del turísmo en nuestro país, saca ventaja de la accesibilidad de nuestra
+                aplicación.</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="single-services text-center">
               <font-awesome-icon icon="champagne-glasses" class="icon-services"></font-awesome-icon>
-              <h2>More Customers</h2>
-              <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestiae, quia repudiandae. Aut omnis fuga
-                inventore.</p>
+              <h2>Mas Clientes</h2>
+              <p>La aplicacion esta pensada con especialidad para esos bares que no son capaces de aprovechar sus mesas.
+              </p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="single-services text-center">
               <font-awesome-icon icon="calendar-plus" class="icon-services"></font-awesome-icon>
-              <h2>Your Schedule</h2>
-              <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestiae, quia repudiandae. Aut omnis fuga
-                inventore.</p>
+              <h2>Tu Gestión</h2>
+              <p>Podrás decidir cuantas mesas dar de altas, ademas de aceptar las reservas personalmente...</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="single-services text-center">
               <font-awesome-icon icon="wrench" class="icon-services"></font-awesome-icon>
-              <h2>Reliable</h2>
-              <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestiae, quia repudiandae. Aut omnis fuga
-                inventore.</p>
+              <h2>Confiable</h2>
+              <p>Estamos comprometidos a mejorar nuestra oferta actual, asi como revisar cualquier fallo en nuestra
+                aplicación.</p>
             </div>
           </div>
         </div>
       </div>
     </div>
     <!--Why us zone-->
-    <div class="choose section-padding" id="choose">
+    <div class="choose section-padding mt-3" id="choose">
       <div class="container">
         <div class="row">
           <div class="col-lg-12">
             <div class="section-header text-center">
-              <h2>Why <span>Choose Us?</span></h2>
-              <p>Lorem ipsum dolor sit amet</p>
+              <h2>¿Porqué <span>Escogernos?</span></h2>
+              <p>Te damos cuatro opciones</p>
             </div>
           </div>
         </div>
@@ -174,7 +176,7 @@ import { RouterLink } from 'vue-router';
       </div>
     </div>
     <!--Testimonial zone-->
-    <div class="testimonial-section padding" id="testi">
+    <div class="testimonial-section padding mt-3 mb-3" id="testi">
       <div class="container">
         <div class="row">
           <div class="col-lg-12">
@@ -193,7 +195,7 @@ import { RouterLink } from 'vue-router';
               <h2>John Doe</h2>
               <p><i>"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id tenetur obcaecati eius corrupti sit
                   a!"</i></p>
-              <h5>HR Manager <br><span>ABC Company</span></h5>
+              <h5>GERENTE <br><span>Bar los álamos</span></h5>
             </div>
           </div>
           <div class="col-lg-4 col-sm-12">
@@ -204,7 +206,7 @@ import { RouterLink } from 'vue-router';
               <h2>John Doe</h2>
               <p><i>"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id tenetur obcaecati eius corrupti sit
                   a!"</i></p>
-              <h5>HR Manager <br><span>ABC Company</span></h5>
+              <h5>CONSUMIDOR <br><span>Local</span></h5>
             </div>
           </div>
           <div class="col-lg-4 col-sm-12">
@@ -215,7 +217,7 @@ import { RouterLink } from 'vue-router';
               <h2>John Doe</h2>
               <p><i>"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id tenetur obcaecati eius corrupti sit
                   a!"</i></p>
-              <h5>HR Manager <br><span>ABC Company</span></h5>
+              <h5>CONSUMIDOR <br><span>Extranjero</span></h5>
             </div>
           </div>
         </div>

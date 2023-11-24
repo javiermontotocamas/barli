@@ -1,5 +1,6 @@
 <script>
 export default {
+    emits: ['close-modal'],
     methods: {
         closeModal() {
             this.$emit('close-modal', true);

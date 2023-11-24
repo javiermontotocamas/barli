@@ -1,49 +1,47 @@
 from django.shortcuts import HttpResponse
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from .serializers import UserProfileSerializer
+from .serializers import UserProfileSerializer, BarSerializer
 from .models import *
 
 
 
 
-
-from django.http import Http404
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-
-
 class RegisterView(APIView):
     def post(self, request, format=None):
-        """
         user_type = request.data["type"]
+        record_data = request.data["recordData"]
         serializer = None
         if user_type == "customer":
-            serializer = UserProfileSerializer(data=request.data)
+            serializer = UserProfileSerializer(data=record_data)
         elif user_type == "bar":
-            serializer = BarSerializer(data=request.data)
+            serializer = BarSerializer(data=record_data)
 
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        """
-        serializer = UserProfileSerializer(data=request.data)
-        print("misdatos:")
-        print(request.data)
-
-        if serializer.is_valid():
-            print("Valido")
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            print("No valido")
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
-
+# Vista protegida
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def get_number_list(request):
+    """
+    A simple private view that requires JWT authentication.
+    """
+    numbers = [1, 2, 3, 4, 5]
+    response_data = {'numbers': numbers}
+    return Response(response_data, status=status.HTTP_200_OK)
 
 
 

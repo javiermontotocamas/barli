@@ -1,13 +1,27 @@
 <script>
 import { RouterLink } from 'vue-router'
+import { logout } from '../api/apiClient'
 
 export default {
+    emits: ['show-signin-modal', 'show-register-modal', 'user-logout'],
+    props: {
+        username: String,
+        role: {
+            validator(value) {
+                return ['user', 'bar'].includes(value)
+            }
+        }
+    },
     methods: {
         showSignInModal() {
             this.$emit('show-signin-modal', true);
         },
         showRegisterModal() {
             this.$emit('show-register-modal', true);
+        },
+        doLogout() {
+            logout();
+            this.$emit('user-logout');
         }
     }
 }
@@ -33,9 +47,13 @@ export default {
                                 router-link-active="active">About</router-link>
                         </li>
                     </ul>
-                    <div class="d-flex gap-2">
+                    <div class="d-flex gap-2" v-if="!username">
                         <button class="btn btn-success" @click="showSignInModal()">SignIn</button>
                         <button class="btn btn-info" @click="showRegisterModal()">Register</button>
+                    </div>
+                    <div class="d-flex gap-2" v-else>
+                        <button class="btn btn-outline-primary">{{ username }} - {{ role }}</button>
+                        <button class="btn btn-outline-danger" @click="doLogout()">Logout</button>
                     </div>
                 </div>
             </div>
