@@ -1,4 +1,4 @@
-import { FontAwesomeIcon } from './plugins/fontawesome';
+import { FontAwesomeIcon } from './plugins/fontawesome'
 import './assets/main.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 // import 'animate.css';
@@ -10,8 +10,6 @@ import App from './App.vue'
 import router from './router'
 
 const app = createApp(App)
-app.component('font-awesome-icon', FontAwesomeIcon);  // Registra el componente globalmente
+app.component('font-awesome-icon', FontAwesomeIcon) // Registra el componente globalmente
 app.use(router)
 app.mount('#app')
-
-

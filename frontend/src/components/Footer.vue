@@ -9,7 +9,7 @@ export default {
 </script>
 
 <template>
-  <footer>CopyRight - Javier Montoto - {{getActualYear()}}</footer>
+  <footer>CopyRight - Javier Montoto - {{ getActualYear() }}</footer>
 </template>
 
 <style scoped>
@@ -25,7 +25,6 @@ footer {
 }
 
 footer:hover {
-  background-color:cadetblue /* Cambia el color de fondo al pasar el mouse sobre el footer */
+  background-color: cadetblue; /* Cambia el color de fondo al pasar el mouse sobre el footer */
 }
-
 </style>

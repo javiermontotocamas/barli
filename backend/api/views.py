@@ -7,12 +7,12 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from .serializers import UserProfileSerializer, BarSerializer
+from .serializers import TableSerializer, UserProfileSerializer, BarSerializer, AdvertisementSerializer
 from .models import *
 
 
 
-
+#ZONA REGISTRO
 class RegisterView(APIView):
     def post(self, request, format=None):
         user_type = request.data["type"]
@@ -44,7 +44,56 @@ def get_number_list(request):
     return Response(response_data, status=status.HTTP_200_OK)
 
 
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated]) # TODO: Ver como hacer una validacion para que sea el bar sea el mismo que me esta pidiendo los datos
+def get_tables_of_bar(request, id):
+    tables = Bar.objects.get(pk=id).table_set.all()
+    serializer = TableSerializer(data=tables, many=True)
+    serializer.is_valid()
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+@api_view(['GET', 'POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated]) # TODO: Ver como hacer una validacion para que sea el bar sea el mismo que me esta pidiendo los datos
+def process_ads_of_bar(request, id):
+    if request.method == "GET":
+        ads = Bar.objects.get(pk=id).advertisement_set.all()
+        serializer = AdvertisementSerializer(data=ads, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "POST":
+        bar = Bar.objects.get(pk=id)
+        serializer = AdvertisementSerializer(data={'bar': bar.id, 'product_name': request.data["product_name"], 'reduction': request.data['reduction']})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(None, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+@api_view(['DELETE'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated]) # TODO: Ver como hacer una validacion para que sea el bar sea el mismo dueño que quiere borrar el anuncio
+def delete_ad_of_bar(request, bar_id, ad_id):
+    # bar_id de momento no lo utilizo, lo utlilizaria mas adelante para verificar la validacion de que sea el bar correspondiente...
+    # primero deberia verificar que el ad_id es dichero bar_id
+    # que el bar_id es el mismo que tengo en el token
+    ad = Advertisement.objects.get(pk=ad_id)
+    ad.delete()
+    return Response(None, status=status.HTTP_204_NO_CONTENT)
+
+
+#ZONA INFO CUENTA BAR
+@api_view(['GET', 'PATCH'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated]) # TODO: Ver como hacer una validacion url
+def process_data_of_bar(request, id):
+    if request.method == "GET":
+        bar_info = Bar.objects.get(pk=id)
+        serializer = BarSerializer(bar_info)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 

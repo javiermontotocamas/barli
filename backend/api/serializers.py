@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import UserProfile, Bar, find_role_by_django_user_id
+from .models import UserProfile, Bar, Table, find_user_or_bar_and_role_by_django_user_id , Advertisement
 
 # Clase para meter claims personalizados en el token jwt, agregamos username y rol
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -9,7 +9,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
         token['username'] = user.username
-        token['role'] = find_role_by_django_user_id(user.id)
+        entity, role = find_user_or_bar_and_role_by_django_user_id(user.id)
+        token['role'] = role
+        token['entity_id'] = entity.id
         return token
 
 
@@ -45,3 +47,15 @@ class BarSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(user_auth_data['username'], email=user_auth_data['email'], password=user_auth_data['password'])
         bar_profile = Bar.objects.create(user=user, **validated_data)
         return bar_profile
+    
+
+class TableSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Table
+        fields = ['id', 'number', 'status', 'seats', 'outdoor']
+
+
+class AdvertisementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Advertisement
+        fields = ['id', 'bar', 'product_name', 'reduction']

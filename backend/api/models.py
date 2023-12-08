@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class UserProfile(models.Model):
@@ -21,14 +22,26 @@ class Bar(models.Model):
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
 
+    def __str__(self) -> str:
+        return f"{self.name}"
+
 
 class Advertisement(models.Model):
+    class Meta:
+        unique_together = ('bar', 'product_name',)
+
     bar = models.ForeignKey(Bar, on_delete=models.CASCADE)
     product_name = models.CharField(max_length=255)
-    reduction = models.DecimalField(max_digits=5, decimal_places=2)
+    reduction = models.DecimalField(max_digits=5, decimal_places=2, validators=[MinValueValidator(5), MaxValueValidator(95)])
+
+    def __str__(self) -> str:
+        return f"{self.bar} - {self.product_name}"
 
 
 class Table(models.Model):
+    class Meta:
+        unique_together = ('number', 'bar',)
+
     class TableStatus(models.TextChoices):
         FREE = ("FREE", "Free")
         PENDING_OF_CONFIRMATION = ("PENDING_OF_CONFIRMATION", "Pending of confirmation")
@@ -40,8 +53,9 @@ class Table(models.Model):
     number = models.SmallIntegerField()
     bar = models.ForeignKey(Bar, on_delete=models.CASCADE)
 
-    class Meta:
-        unique_together = ('number', 'bar',)
+    def __str__(self) -> str:
+        return f"Num: {self.number} - Bar: {self.bar.name} - Seats: {self.seats}"
+
 
 
 class Booking(models.Model):
@@ -80,11 +94,13 @@ def find_bar_by_django_user_id(user_id):
     return bar
 
 
-def find_role_by_django_user_id(user_id):
-    if find_userprofile_by_django_user_id(user_id):
-        return "user"
+def find_user_or_bar_and_role_by_django_user_id(user_id):
+    result = find_userprofile_by_django_user_id(user_id)
+    if result:
+        return (result, "user")
     
-    if find_bar_by_django_user_id(user_id):
-        return "bar"
+    result = find_bar_by_django_user_id(user_id)
+    if result:
+        return (result, "bar")
     
     return None

@@ -1,43 +1,17 @@
-<script>
-import { getNumbers } from '../api/apiClient'
-export default {
-  data() {
-    return {
-      numeros: []
-    }
-  },
-  methods: {
-    async getNums() {
-      const resp = await getNumbers()
-      const respOk = resp.ok
-      const json = await resp.json()
-      if (respOk) {
-        this.numeros = json.numbers;
-      }
-      else {
-        console.log("Se ha producido un error", json);
-      }
-    }
-  }
-}
-</script>
+<script></script>
 
 <template>
   <main class="d-flex justify-content-between flex-column flex-md-row p-4 gap-2">
     <div class="col">
-      <p>{{ numeros }}</p>
-      <button @click="getNums">Pedir a la api numeros</button>
-    </div>
-
-    <div class="col">
       <div class="column" id="empresa">
         <div class="content">
           <p class="titulo">Sobre Barli</p>
-          <p>Bienvenido a Barli, tu compañero perfecto para encontrar el bar ideal. En Barli, entendemos que la
-            experiencia
-            de salir a disfrutar de un buen momento con amigos o seres queridos debe ser sencilla y agradable. Es por eso
-            que hemos creado esta aplicación única, diseñada para hacer que la búsqueda de bares sea más fácil y eficiente
-            que nunca.</p>
+          <p>
+            Bienvenido a Barli, tu compañero perfecto para encontrar el bar ideal. En Barli,
+            entendemos que la experiencia de salir a disfrutar de un buen momento con amigos o seres
+            queridos debe ser sencilla y agradable. Es por eso que hemos creado esta aplicación
+            única, diseñada para hacer que la búsqueda de bares sea más fácil y eficiente que nunca.
+          </p>
         </div>
       </div>
     </div>
@@ -45,12 +19,13 @@ export default {
       <div class="column" id="autor">
         <div class="content">
           <p class="titulo">Sobre Javier Montoto</p>
-          <p>Hola, soy Javier Montoto, un apasionado programador de 28 años con un toque de creatividad. Vivo en la
-            hermosa
-            ciudad de Sevilla, donde encuentro inspiración en cada rincón de esta tierra rica en cultura y tradición.
-            Desde
-            joven, me he sentido atraído por el mundo de la programación, y he invertido tiempo y energía en cultivar mis
-            habilidades en este campo en constante evolución.</p>
+          <p>
+            Hola, soy Javier Montoto, un apasionado programador de 28 años con un toque de
+            creatividad. Vivo en la hermosa ciudad de Sevilla, donde encuentro inspiración en cada
+            rincón de esta tierra rica en cultura y tradición. Desde joven, me he sentido atraído
+            por el mundo de la programación, y he invertido tiempo y energía en cultivar mis
+            habilidades en este campo en constante evolución.
+          </p>
         </div>
       </div>
     </div>
@@ -137,4 +112,5 @@ main {
 
 .content .titulo:hover::before {
   transform: scaleX(1);
-}</style>
+}
+</style>

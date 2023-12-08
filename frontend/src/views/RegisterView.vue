@@ -30,34 +30,32 @@ export default {
         latitude: '',
         longitude: ''
       }
-    };
+    }
   },
   methods: {
     async submitForm() {
-      this.errorMessage = '';
+      this.errorMessage = ''
 
-      let record;
+      let record
       if (this.type === 'customer') {
-        record = this.userData;
-      }
-      else if (this.type === 'bar') {
-        record = this.barData;
+        record = this.userData
+      } else if (this.type === 'bar') {
+        record = this.barData
       }
 
       const resp = await registerNewCustomerOrBar({ type: this.type, recordData: record })
       const respOk = resp.ok
       const json = await resp.json()
       if (respOk) {
-        console.log("Dado de alta con exito", json);
-        this.registered = true;
-      }
-      else {
-        console.log("Hubo un error");
-        this.errorMessage = json.detail;
+        console.log('Dado de alta con exito', json)
+        this.registered = true
+      } else {
+        console.log('Hubo un error')
+        this.errorMessage = json
       }
     }
   }
-};
+}
 </script>
 
 <template>
@@ -70,15 +68,15 @@ export default {
     </div>
     <div class="d-flex flex-row w-100">
       <div class="form-check form-check-inline border border-success w-100">
-        <input class="form-check-input" type="radio" v-model="type" id="customer" value="customer">
+        <input class="form-check-input" type="radio" v-model="type" id="customer" value="customer" />
         <label class="form-check-label" for="customer">Customer</label>
       </div>
       <div class="form-check form-check-inline border border-success w-100">
-        <input class="form-check-input" type="radio" v-model="type" id="bar" value="bar">
+        <input class="form-check-input" type="radio" v-model="type" id="bar" value="bar" />
         <label class="form-check-label" for="bar">Bar</label>
       </div>
     </div>
-    <hr>
+    <hr />
     <div v-if="type === 'customer'">
       <div class="row mb-2">
         <label for="username" class="col-sm-4 col-form-label">Nickname:</label>
@@ -125,6 +123,9 @@ export default {
           <input type="text" id="username" class="form-control" v-model="barData.user.username" required />
         </div>
       </div>
+      <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.user && errorMessage.user.username">
+        {{ errorMessage.user.username.join(", ") }}
+      </div>
       <div class="row mb-2">
         <label for="password" class="col-sm-4 col-form-label">Password:</label>
         <div class="col-sm-8">
@@ -164,6 +165,9 @@ export default {
         <div class="col-sm-8">
           <input type="text" id="latitude" class="form-control" v-model="barData.latitude" required />
         </div>
+      </div>
+      <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.latitude">
+        {{ errorMessage.latitude.join(", ") }}
       </div>
       <div class="row mb-2">
         <label for="longitude" class="col-sm-4 col-form-label">Lonitude:</label>

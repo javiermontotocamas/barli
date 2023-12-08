@@ -1,11 +1,11 @@
 <script>
 import { RouterView } from 'vue-router'
-import NavBar from './components/NavBar.vue';
-import Footer from './components/Footer.vue';
-import ModalLayer from './views/ModalLayer.vue';
-import SignInView from './views/SignInView.vue';
-import RegisterView from './views/RegisterView.vue';
-
+import NavBar from './components/NavBar.vue'
+import Footer from './components/Footer.vue'
+import ModalLayer from './views/ModalLayer.vue'
+import SignInView from './views/SignInView.vue'
+import RegisterView from './views/RegisterView.vue'
+import { getClaimsFromToken, isTokenExpired, getRefreshToken } from './api/apiClient'
 
 export default {
   components: {
@@ -18,47 +18,53 @@ export default {
   },
   data() {
     return {
-      username: "",
-      role: "",
+      username: '',
+      role: '',
       showModalSiginOrRegister: false,
-      modalMode: "",
-      modalTitle: ""
+      modalMode: '',
+      modalTitle: ''
+    }
+  },
+  mounted() {
+    const refreshToken = getRefreshToken()
+    if (refreshToken && !isTokenExpired(refreshToken)) {
+      const { username, role } = getClaimsFromToken(refreshToken)
+      this.username = username
+      this.role = role
     }
   },
   methods: {
     showSignIn() {
-      this.showModalSiginOrRegister = true;
-      this.modalMode = "signin";
-      this.modalTitle = "INICIO DE SESION";
+      this.showModalSiginOrRegister = true
+      this.modalMode = 'signin'
+      this.modalTitle = 'INICIO DE SESION'
     },
     showRegister() {
-      this.showModalSiginOrRegister = true;
-      this.modalMode = "register";
-      this.modalTitle = "FORMULARIO DE REGISTRO";
+      this.showModalSiginOrRegister = true
+      this.modalMode = 'register'
+      this.modalTitle = 'FORMULARIO DE REGISTRO'
     },
     closeModal() {
-      this.showModalSiginOrRegister = false;
-      this.modalMode = "";
-      this.modalTitle = "";
+      this.showModalSiginOrRegister = false
+      this.modalMode = ''
+      this.modalTitle = ''
     },
     userLogged(userLoggedObject) {
-      this.username = userLoggedObject.username;
-      this.role = userLoggedObject.role;
+      this.username = userLoggedObject.username
+      this.role = userLoggedObject.role
     },
     userLoggedOut() {
-      this.username = '';
+      this.username = ''
     }
   }
 }
 </script>
 
 <template>
-  <NavBar :username="username" :role="role"
-    @show-signin-modal="showSignIn"
-    @show-register-modal="showRegister"
-    @user-logout="userLoggedOut"
-  />
-
+  <div class="nabvar">
+    <NavBar :username="username" :role="role" @show-signin-modal="showSignIn" @show-register-modal="showRegister"
+      @user-logout="userLoggedOut" />
+  </div>
   <div id="content">
     <RouterView />
   </div>
@@ -90,10 +96,10 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
 Footer {
   position: sticky;
   bottom: 0;
   width: 100%;
 }
-
 </style>

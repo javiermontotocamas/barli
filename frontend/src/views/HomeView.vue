@@ -1,52 +1,92 @@
 <script>
-import { FontAwesomeIcon } from '@/plugins/fontawesome';
-import { RouterLink } from 'vue-router';
+import { FontAwesomeIcon } from '@/plugins/fontawesome'
+import { RouterLink } from 'vue-router'
 </script>
-
 
 <template>
   <main class="container-fluid">
     <div id="carouselExampleCaptions" data-bs-ride="carousel" class="carousel slide">
       <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
-          aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-          aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-          aria-label="Slide 3"></button>
+        <button
+          type="button"
+          data-bs-target="#carouselExampleCaptions"
+          data-bs-slide-to="0"
+          class="active"
+          aria-current="true"
+          aria-label="Slide 1"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#carouselExampleCaptions"
+          data-bs-slide-to="1"
+          aria-label="Slide 2"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#carouselExampleCaptions"
+          data-bs-slide-to="2"
+          aria-label="Slide 3"
+        ></button>
       </div>
       <div class="carousel-inner">
         <div class="carousel-item active">
           <div class="carousel-caption">
-            <h5 class="animate__animated animate__fadeInDown" style="animation-delay:1s;">Encuentra <span>Mesa</span></h5>
-            <p class="animate__animated animate__fadeInUp" style="animation-delay:2s;">Nuestra aplicación simplifica este
-              proceso, permitiéndote buscar mesas en bares cercanos de manera fácil y rápida.</p>
-            <p class="animate__animated animate__fadeInUp" style="animation-delay:3s;"><a href="#">Saber más</a></p>
+            <h5 class="animate__animated animate__fadeInDown" style="animation-delay: 1s">
+              Encuentra <span>Mesa</span>
+            </h5>
+            <p class="animate__animated animate__fadeInUp" style="animation-delay: 2s">
+              Nuestra aplicación simplifica este proceso, permitiéndote buscar mesas en bares
+              cercanos de manera fácil y rápida.
+            </p>
+            <p class="animate__animated animate__fadeInUp" style="animation-delay: 3s">
+              <a href="#">Saber más</a>
+            </p>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carousel-caption">
-            <h5 class="animate__animated animate__fadeInDown" style="animation-delay:1s;">Haz <span>Reserva</span></h5>
-            <p class="animate__animated animate__fadeInUp" style="animation-delay:2s;">Podrás reservar mesa y elegir la
-              cantidad
-              de comensales que te acompañaran en tu flamante cita.</p>
-            <p class="animate__animated animate__fadeInUp" style="animation-delay:3s;"><a href="#">Saber más</a></p>
+            <h5 class="animate__animated animate__fadeInDown" style="animation-delay: 1s">
+              Haz <span>Reserva</span>
+            </h5>
+            <p class="animate__animated animate__fadeInUp" style="animation-delay: 2s">
+              Podrás reservar mesa y elegir la cantidad de comensales que te acompañaran en tu
+              flamante cita.
+            </p>
+            <p class="animate__animated animate__fadeInUp" style="animation-delay: 3s">
+              <a href="#">Saber más</a>
+            </p>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carousel-caption">
-            <h5 class="animate__animated animate__fadeInDown" style="animation-delay:1s;">No <span>Esperes</span></h5>
-            <p class="animate__animated animate__fadeInUp" style="animation-delay:2s;">Descarga nuestra aplicación y
-              redescubre la forma de disfrutar de tu tiempo en bares y restaurantes.</p>
-            <p class="animate__animated animate__fadeInUp" style="animation-delay:3s;"><a href="#">Learn More</a></p>
+            <h5 class="animate__animated animate__fadeInDown" style="animation-delay: 1s">
+              No <span>Esperes</span>
+            </h5>
+            <p class="animate__animated animate__fadeInUp" style="animation-delay: 2s">
+              Descarga nuestra aplicación y redescubre la forma de disfrutar de tu tiempo en bares y
+              restaurantes.
+            </p>
+            <p class="animate__animated animate__fadeInUp" style="animation-delay: 3s">
+              <a href="#">Learn More</a>
+            </p>
           </div>
         </div>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#carouselExampleCaptions"
+        data-bs-slide="prev"
+      >
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
       </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#carouselExampleCaptions"
+        data-bs-slide="next"
+      >
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
@@ -57,19 +97,24 @@ import { RouterLink } from 'vue-router';
         <div class="row">
           <div class="col-lg-6 col-sm-12">
             <div class="img-area">
-              <img src="../assets/about.jpg" alt="joven conversando">
+              <img src="../assets/about.jpg" alt="joven conversando" />
             </div>
           </div>
           <div class="col-lg-6 col-mg-12">
             <div class="about-text">
               <h2>Somos <span>Personas</span> Innovadoras</h2>
-              <p>¿Eres dueño de un bar? ¡No te pierdas la oportunidad de impulsar tu popularidad! Al darte de alta en
-                nuestra aplicación, abres las puertas a una mayor visibilidad y atraes a nuevos clientes. Nuestra
-                plataforma te conecta con usuarios locales que buscan lugares para salir. Con información detallada y la
-                opción de gestionar las reservas, tu bar se destacará entre la competencia.
-                Aprovecha la tecnología para aumentar tu clientela y ofrecer experiencias memorables. Registra tu bar
-                ahora y sé parte de la revolución digital en la industria de la hostelería.</p>
-              <router-link :to="{ name: 'about' }" class="nav-link" router-link-active="active">Contáctanos</router-link>
+              <p>
+                ¿Eres dueño de un bar? ¡No te pierdas la oportunidad de impulsar tu popularidad! Al
+                darte de alta en nuestra aplicación, abres las puertas a una mayor visibilidad y
+                atraes a nuevos clientes. Nuestra plataforma te conecta con usuarios locales que
+                buscan lugares para salir. Con información detallada y la opción de gestionar las
+                reservas, tu bar se destacará entre la competencia. Aprovecha la tecnología para
+                aumentar tu clientela y ofrecer experiencias memorables. Registra tu bar ahora y sé
+                parte de la revolución digital en la industria de la hostelería.
+              </p>
+              <router-link :to="{ name: 'about' }" class="nav-link" router-link-active="active"
+                >Contáctanos</router-link
+              >
             </div>
           </div>
         </div>
@@ -89,17 +134,24 @@ import { RouterLink } from 'vue-router';
         <div class="row">
           <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="single-services text-center">
-              <font-awesome-icon icon="martini-glass-citrus" class="icon-services"></font-awesome-icon>
+              <font-awesome-icon
+                icon="martini-glass-citrus"
+                class="icon-services"
+              ></font-awesome-icon>
               <h2>Promociona Tu Bar</h2>
-              <p>Beneficiate de la ventaja del turísmo en nuestro país, saca ventaja de la accesibilidad de nuestra
-                aplicación.</p>
+              <p>
+                Beneficiate de la ventaja del turísmo en nuestro país, saca ventaja de la
+                accesibilidad de nuestra aplicación.
+              </p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="single-services text-center">
               <font-awesome-icon icon="champagne-glasses" class="icon-services"></font-awesome-icon>
               <h2>Mas Clientes</h2>
-              <p>La aplicacion esta pensada con especialidad para esos bares que no son capaces de aprovechar sus mesas.
+              <p>
+                La aplicacion esta pensada con especialidad para esos bares que no son capaces de
+                aprovechar sus mesas.
               </p>
             </div>
           </div>
@@ -107,15 +159,20 @@ import { RouterLink } from 'vue-router';
             <div class="single-services text-center">
               <font-awesome-icon icon="calendar-plus" class="icon-services"></font-awesome-icon>
               <h2>Tu Gestión</h2>
-              <p>Podrás decidir cuantas mesas dar de altas, ademas de aceptar las reservas personalmente...</p>
+              <p>
+                Podrás decidir cuantas mesas dar de altas, ademas de aceptar las reservas
+                personalmente...
+              </p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="single-services text-center">
               <font-awesome-icon icon="wrench" class="icon-services"></font-awesome-icon>
               <h2>Confiable</h2>
-              <p>Estamos comprometidos a mejorar nuestra oferta actual, asi como revisar cualquier fallo en nuestra
-                aplicación.</p>
+              <p>
+                Estamos comprometidos a mejorar nuestra oferta actual, asi como revisar cualquier
+                fallo en nuestra aplicación.
+              </p>
             </div>
           </div>
         </div>
@@ -169,7 +226,7 @@ import { RouterLink } from 'vue-router';
           </div>
           <div class="col-lg-5 col-sm-12">
             <div class="choose-img">
-              <img src="../assets/choose.jpg" alt="imagen sevilla">
+              <img src="../assets/choose.jpg" alt="imagen sevilla" />
             </div>
           </div>
         </div>
@@ -190,34 +247,46 @@ import { RouterLink } from 'vue-router';
           <div class="col-lg-4 col-sm-12">
             <div class="single-client text-center">
               <div class="imgBox">
-                <img src="../assets/cara1.jpg" alt="">
+                <img src="../assets/cara1.jpg" alt="" />
               </div>
               <h2>John Doe</h2>
-              <p><i>"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id tenetur obcaecati eius corrupti sit
-                  a!"</i></p>
-              <h5>GERENTE <br><span>Bar los álamos</span></h5>
+              <p>
+                <i
+                  >"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id tenetur obcaecati
+                  eius corrupti sit a!"</i
+                >
+              </p>
+              <h5>GERENTE <br /><span>Bar los álamos</span></h5>
             </div>
           </div>
           <div class="col-lg-4 col-sm-12">
             <div class="single-client text-center">
               <div class="imgBox">
-                <img src="../assets/cara2.jpg" alt="">
+                <img src="../assets/cara2.jpg" alt="" />
               </div>
               <h2>John Doe</h2>
-              <p><i>"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id tenetur obcaecati eius corrupti sit
-                  a!"</i></p>
-              <h5>CONSUMIDOR <br><span>Local</span></h5>
+              <p>
+                <i
+                  >"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id tenetur obcaecati
+                  eius corrupti sit a!"</i
+                >
+              </p>
+              <h5>CONSUMIDOR <br /><span>Local</span></h5>
             </div>
           </div>
           <div class="col-lg-4 col-sm-12">
             <div class="single-client text-center">
               <div class="imgBox">
-                <img src="../assets/cara3.jpg" alt="">
+                <img src="../assets/cara3.jpg" alt="" />
               </div>
               <h2>John Doe</h2>
-              <p><i>"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id tenetur obcaecati eius corrupti sit
-                  a!"</i></p>
-              <h5>CONSUMIDOR <br><span>Extranjero</span></h5>
+              <p>
+                <i
+                  >"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id tenetur obcaecati
+                  eius corrupti sit a!"</i
+                >
+              </p>
+              <h5>CONSUMIDOR <br /><span>Extranjero</span></h5>
             </div>
           </div>
         </div>
@@ -258,7 +327,7 @@ import { RouterLink } from 'vue-router';
 
 .carousel-caption span {
   color: #e53f29;
-  font-weight: 900
+  font-weight: 900;
 }
 
 .carousel-caption p {
@@ -390,4 +459,3 @@ import { RouterLink } from 'vue-router';
   text-transform: uppercase;
 }
 </style>
-
