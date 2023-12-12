@@ -61,6 +61,7 @@ def process_ads_of_bar(request, id):
     if request.method == "GET":
         ads = Bar.objects.get(pk=id).advertisement_set.all()
         serializer = AdvertisementSerializer(data=ads, many=True)
+        serializer.is_valid()
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == "POST":
         bar = Bar.objects.get(pk=id)
@@ -86,7 +87,7 @@ def delete_ad_of_bar(request, bar_id, ad_id):
 
 
 #ZONA INFO CUENTA BAR
-@api_view(['GET', 'PATCH'])
+@api_view(['GET','PUT'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated]) # TODO: Ver como hacer una validacion url
 def process_data_of_bar(request, id):
@@ -94,11 +95,15 @@ def process_data_of_bar(request, id):
         bar_info = Bar.objects.get(pk=id)
         serializer = BarSerializer(bar_info)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-
-
-
+    elif request.method == "PUT":
+        bar_info = Bar.objects.get(pk=id)
+        serializer = BarSerializer(data={'id': request.user.id, 'user': request.data['username'], 'name': request.data['recordData']['name'], 'description': request.data['recordData']["description"], 'phone': request.data['recordData']['phone'], 'address': request.data['recordData']['address'], 'latitude': request.data['recordData']['latitude'], 'longitude': request.data['recordData']['longitude']})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(None, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 

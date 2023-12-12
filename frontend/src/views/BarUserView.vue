@@ -1,8 +1,6 @@
 <script>
-import { getClaimsFromToken, getAuthToken, getDataOfBar } from '../api/apiClient'
+import { getClaimsFromToken, getAuthToken, getDataOfBar, modDataOfBar } from '../api/apiClient'
 import { RouterLink } from 'vue-router'
-import CustomInputSection from '../components/CustomInputSection.vue'
-
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { LMarker, LMap, LTooltip, LTileLayer } from "@vue-leaflet/vue-leaflet";
@@ -10,13 +8,9 @@ import { LMarker, LMap, LTooltip, LTileLayer } from "@vue-leaflet/vue-leaflet";
 export default {
   data() {
     return {
-      nombreBar: "",
-      descripcion: "",
-      telefono: "",
-      direccion: "",
-      componenteActivo: null,
       barData: null,
-      zoom: 50
+      disableInputs: true,
+      zoom: 50,
     }
   },
   async mounted() {
@@ -28,29 +22,30 @@ export default {
       const response = await getDataOfBar(entity_id)
       this.barData = await response.json()
     },
-    cambiarNombre(nuevoNombre) {
-      this.nombreBar = nuevoNombre;
+    toggleDisableInputs() {
+      this.disableInputs = !this.disableInputs;
     },
-    cambiarDescripcion(nuevaDescripcion) {
-      this.descripcion = nuevaDescripcion;
-    },
-    cambiarTelefono(nuevoTelefono) {
-      this.telefono = nuevoTelefono;
-    },
-    cambiarDireccion(nuevaDireccion) {
-      this.direccion = nuevaDireccion;
-    },
-    activarComponente(componente) {
-      // Desactivar todos los componentes y activar el componente seleccionado
-      if (this.componenteActivo === componente) {
-        this.componenteActivo = null;
+    async modBar() {
+      
+      this.errorMessage = ''
+      const { entity_id } = getClaimsFromToken(getAuthToken())
+      console.log('esto viene',this.barData)
+      const username = this.barData.user.username
+      console.log(username)
+      const resp = await modDataOfBar({ recordData: this.barData, barId: entity_id,username: username })
+      const respOk = resp.ok
+      const json = await resp.json()
+      if (respOk) {
+        console.log('Modificados los datos del bar', json)
+        this.getBarData()
       } else {
-        this.componenteActivo = componente;
+        console.log('Hubo un error')
+        console.log(json);
+        this.errorMessage = json
       }
     }
   },
   components: {
-    CustomInputSection,
     LMarker,
     LMap,
     LTooltip,
@@ -60,70 +55,62 @@ export default {
 </script>
 <template>
   <main class="container-fluid mt-5" v-if="barData">
-    <h1 class="text-center mt-2" id="titulo">{{ barData.user.username }}</h1>
-    <div class="row">
+    <h1 class="text-center mt-2" id="titulo">
+      <p>{{ barData.user.username }}</p>
+      <button @click="toggleDisableInputs" class="btn btn-secondary">Habilitar Edición</button>
+    </h1>
+    <div class="row" style="height: 100vh; margin-bottom: 13%;">
       <!-- Columna izquierda -->
-      <div class="col-md-7">
+      <div class="col-md-6">
         <ol id="listadata">
-          <li><span>Nombre usuario:</span>{{ barData.user.username }}</li>
+          <li><span>Nombre usuario:</span>{{ barData.user.username }}<input hidden :disabled="disableInputs" type="text" class="form-control"
+              v-model="barData.user.username" required /></li>
           <li><span>Email:</span>{{ barData.user.email }}</li>
-          <li><span>Nombre del bar:</span><input type="text" class="form-control" v-model="barData.name" /></li>
-          <li><span>Descripción del bar:</span> {{ barData.description }}</li>
-          <li><span>Teléfono móvil:</span> {{ barData.phone }}</li>
-          <li><span>Dirección del establecimiento:</span> {{ barData.address }}</li>
-          <li><span>Latitud:</span> {{ barData.latitude }}</li>
-          <li><span>Longitud:</span> {{ barData.longitude }}</li>
+          <li><span>Nombre del bar:</span><input :disabled="disableInputs" type="text" class="form-control"
+              v-model="barData.name" required /></li>
+          <li><span>Descripción del bar:</span> <textarea :disabled="disableInputs" style="width: 100%;" maxlength="150"
+              rows="4" v-model="barData.description"></textarea></li>
+          <li><span>Teléfono móvil:</span><input :disabled="disableInputs" type="phone" class="form-control"
+              v-model="barData.phone" required />
+          </li>
+          <li><span>Dirección del establecimiento:</span> <input :disabled="disableInputs" type="text"
+              class="form-control" v-model="barData.address" required /></li>
+          <li><span>Latitud:</span> <input :disabled="disableInputs" type="text" class="form-control"
+              v-model="barData.latitude" required /></li>
+          <li><span>Longitud:</span> <input :disabled="disableInputs" type="text" class="form-control"
+              v-model="barData.longitude" required /></li>
         </ol>
       </div>
-
+      <!-- Div adicional para el botón -->
+      <div class="col-md-1 d-flex flex-column align-items-center justify-content-center">
+        <button @click="modBar()" class="btn btn-primary" style="width: 100%; height: 100%;">
+          <span id="botonActBar"
+            style="display:inline-block; font-size: xx-large; writing-mode: vertical-rl;white-space: nowrap;">ACTUALIZAR
+            DATOS BAR</span>
+        </button>
+      </div>
       <!-- Columna derecha -->
-      <div class="col-md-5 bg-secondary">
-        <div style="height:100%; width:100%">
-          <l-map ref="map" v-model:zoom="zoom" :center="[ barData.latitude, barData.longitude ]">
+      <div class="col-md-5">
+        <div id="mapContainer">
+          <l-map ref="map" v-model:zoom="zoom" :center="[barData.latitude, barData.longitude]">
             <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" layer-type="base"
               name="OpenStreetMap"></l-tile-layer>
-            <l-marker :lat-lng="[ barData.latitude, barData.longitude ]">
+            <l-marker :lat-lng="[barData.latitude, barData.longitude]">
               <l-tooltip>
-              {{ barData.name }} en {{ barData.address }}
+                {{ barData.name }} en {{ barData.address }}
               </l-tooltip>
             </l-marker>
           </l-map>
         </div>
-        <!--
-        <div class="row">
-          <div class="col-12 border border-dark">
-            <CustomInputSection title="Cambiar nombre del bar" :value="nombreBar" @change="cambiarNombre"
-              :active="componenteActivo === 'nombreBar'" @activate="activarComponente('nombreBar')" type="text" />
-          </div>
-        </div>
-
-
-        <div class="row">
-          <div class="col-12 bg-success">
-            <CustomInputSection title="Cambiar descripción" :value="descripcion" @change="cambiarDescripcion"
-              :active="componenteActivo === 'descripcion'" @activate="activarComponente('descripcion')" type="textarea" />
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-12 bg-danger">
-            <CustomInputSection title="Cambiar teléfono" :value="telefono" @change="cambiarTelefono"
-              :active="componenteActivo === 'telefono'" @activate="activarComponente('telefono')" type="tel" />
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-12 border border-dark">
-            <CustomInputSection title="Cambiar dirección" :value="direccion" @change="cambiarDireccion"
-              :active="componenteActivo === 'direccion'" @activate="activarComponente('direccion')" type="text" />
-          </div>
-        </div>
-        -->
       </div>
     </div>
-    <div class="row mt-3">
+    <div class="row">
       <p id="enlaceMesas"><router-link :to="{ name: 'manageBooks' }" class="nav-link" router-link-active="active">Acceder
           a MIS MESAS</router-link></p>
+    </div>
+    <div class="row">
+      <p id="enlaceAds"><router-link :to="{ name: 'ads' }" class="nav-link" router-link-active="active">Acceder
+          a MIS PROMOCIONES</router-link></p>
     </div>
   </main>
 </template>
@@ -132,6 +119,20 @@ export default {
   padding-top: 5%;
   background-image: url(../assets/cuentaBarimg.jpg);
   height: 100%;
+}
+
+#titulo p {
+  color: black;
+  text-transform: uppercase;
+  font-weight: bolder;
+  letter-spacing: 1dvi;
+  background-color: wheat;
+  text-align: center;
+  width: 50%;
+  margin-left: 25%;
+  border: #464646 2px solid;
+  border-radius: 10%;
+  font-size: xx-large;
 }
 
 #listadata {
@@ -194,14 +195,29 @@ export default {
   border-radius: 50%;
 }
 
+#mapContainer {
+  width: 90%;
+  height: 90%;
+}
+
 #enlaceMesas {
+  margin-top: 7%;
   text-align: center;
   border: 1px solid black;
   padding: 1%;
-  background-color: ;
 }
 
 #enlaceMesas a {
+  font-size: 2rem !important;
+}
+
+#enlaceAds {
+  text-align: center;
+  border: 1px solid black;
+  padding: 1%;
+}
+
+#enlaceAds a {
   font-size: 2rem !important;
 }
 </style>
