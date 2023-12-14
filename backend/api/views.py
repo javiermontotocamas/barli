@@ -97,7 +97,7 @@ def process_data_of_bar(request, id):
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == "PUT":
         bar_info = Bar.objects.get(pk=id)
-        serializer = BarSerializer(data={'id': request.user.id, 'user': request.data['username'], 'name': request.data['recordData']['name'], 'description': request.data['recordData']["description"], 'phone': request.data['recordData']['phone'], 'address': request.data['recordData']['address'], 'latitude': request.data['recordData']['latitude'], 'longitude': request.data['recordData']['longitude']})
+        serializer = BarSerializer(data={'id': bar_info.id, 'user': request.data['recordData']['id'], 'name': request.data['recordData']['name'], 'description': request.data['recordData']["description"], 'phone': request.data['recordData']['phone'], 'address': request.data['recordData']['address'], 'latitude': request.data['recordData']['latitude'], 'longitude': request.data['recordData']['longitude']})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
