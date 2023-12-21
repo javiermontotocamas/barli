@@ -1,5 +1,5 @@
 <script>
-import { getTablesOfBar, getClaimsFromToken, getAuthToken, getDataOfBar, createTableOfBar, deleteTableOfBar } from '../api/apiClient'
+import { getTablesOfBar, getClaimsFromToken, getAuthToken, getDataOfBar, createTableOfBar, deleteTableOfBar, updateTableStatus } from '../api/apiClient'
 import { FontAwesomeIcon } from '@/plugins/fontawesome'
 
 export default {
@@ -86,7 +86,26 @@ export default {
       } else {
         this.errorDelMessage = 'Hubo un error al eliminar la mesa.';
       }
-    }
+    },
+    async changeTableStatus(tableNumber, newStatus) {
+
+      const { entity_id } = getClaimsFromToken(getAuthToken());
+      const table = this.tables.find(table => table.number === tableNumber);
+      console.log(table)
+      if (table.status === newStatus) {
+        // No hace falta cambiar el estado si ya está en el estado deseado
+        return;
+      }
+      // Realiza la actualización del estado en el backend
+      const resp = await updateTableStatus({ tableId: table.id, barId: entity_id, newStatus });
+      const respOk = resp.ok;
+      if (respOk) {
+        // Actualiza el estado en la interfaz
+        this.$set(this.tables, index, { ...table, status: newStatus });
+      } else {
+        console.error('Hubo un error al cambiar el estado de la mesa.');
+      }
+    },
   }
 }
 </script>
@@ -109,7 +128,10 @@ export default {
         <h2 class="mt-1">MESAS INTERIOR</h2>
         <ul>
           <li v-for="(table, index) in indoorTables" :key="index">
-            {{ table.number }} - Seats: {{ table.seats }} - Status: {{ table.status }} - Outdoor: {{ table.outdoor }}
+            Mesa número: {{ table.number }}- Plazas: {{ table.seats }} - Estado: {{ table.status }} - Exterior: {{
+              table.outdoor }}
+            <button @click="changeTableStatus(table.number, 'BUSY')" v-if="table.status !== 'BUSY'">OCUPAR MESA</button>
+            <button @click="changeTableStatus(table.number, 'FREE')" v-if="table.status !== 'FREE'">LIBERAR MESA</button>
           </li>
         </ul>
       </div>
@@ -117,7 +139,10 @@ export default {
         <h2 class="mt-1">MESAS EXTERIOR</h2>
         <ul>
           <li v-for="(table, index) in outdoorTables" :key="index">
-            {{ table.number }} - Seats: {{ table.seats }} - Status: {{ table.status }} - Outdoor: {{ table.outdoor }}
+            Mesa número: {{ table.number }}- Plazas: {{ table.seats }} - Estado: {{ table.status }} - Exterior: {{
+              table.outdoor }}
+            <button @click="changeTableStatus(table.number, 'BUSY')" v-if="table.status !== 'BUSY'">OCUPAR MESA</button>
+            <button @click="changeTableStatus(table.number, 'FREE')" v-if="table.status !== 'FREE'">LIBERAR MESA</button>
           </li>
         </ul>
       </div>

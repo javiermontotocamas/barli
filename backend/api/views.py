@@ -64,13 +64,22 @@ def process_tables_of_bar(request, id):
     return Response(None, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
-@api_view(['DELETE'])
+@api_view(['DELETE','PATCH'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated]) # TODO: Ver como hacer una validacion para que sea el bar sea el mismo dueño que quiere borrar el anuncio
-def delete_table_of_bar(request, bar_id,table_id):
-    table = Table.objects.get(pk=table_id)
-    table.delete()
-    return Response(None, status=status.HTTP_204_NO_CONTENT)
+def delete_or_changue_table_of_bar(request, bar_id,table_id):
+    if request.method == "DELETE":
+        table = Table.objects.get(pk=table_id)
+        table.delete()
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+    elif request.method == "PATCH":
+        table = Table.objects.get(pk=table_id)
+        new_status = request.data.get('newStatus') 
+        if new_status not in ['FREE', 'BUSY']:
+            return Response({"error": "Estado no válido"}, status=status.HTTP_400_BAD_REQUEST)
+        table.status = new_status
+        table.save()
+        return Response({"message": "Estado de la mesa actualizado correctamente"}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET', 'POST'])

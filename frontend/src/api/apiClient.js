@@ -114,6 +114,16 @@ export const deleteTableOfBar = async(data) => {
   });
 }
 
+export const updateTableStatus = (data) => {
+  return fetchWithInterceptor(`/bar/${data.barId}/tables/${data.tableId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ newStatus: data.newStatus }), // Puedes ajustar los datos según tus necesidades
+  });
+}
+
 
 
 

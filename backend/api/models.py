@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.validators import MinValueValidator, MaxValueValidator,RegexValidator
+from django.core.validators import MinValueValidator, MaxValueValidator,RegexValidator,MaxLengthValidator
 from django.core.exceptions import ValidationError
 
 
@@ -20,17 +20,34 @@ class UserProfile(models.Model):
 
 
 class Bar(models.Model):
+    def validate_name(value):
+        max_length_validator = MaxLengthValidator(limit_value=20)
+        max_length_validator(value)
+    def validate_description(value):
+        max_length_validator = MaxLengthValidator(limit_value=255)
+        max_length_validator(value)
     def validate_phone(value):
         phone_regex = r'^\+?1?\d{9,15}$'
         validator = RegexValidator(regex=phone_regex, message="Formato de teléfono no válido,permite números de teléfono con un formato que empiece con un signo más opcional (+), seguido opcionalmente por el código de país 1, y luego de 9 a 15 dígitos adicionales.")
         validator(value)
+    def validate_address(value):
+        max_length_validator = MaxLengthValidator(limit_value=100)
+        max_length_validator(value)
+    def validate_latitude(value):
+        regex = r'^[+-]?(?:3[6-9]|4[0-3])\.\d{1,6}$'
+        validator = RegexValidator(regex=regex, message="Formato de latitud no válido, esta aplicación está pensada para bares en territorio español, cuyas latitudes peninsulares comprenden de la 36 al 43.")
+        validator(value)
+    def validate_longitude(value):
+        regex = r'^[+-]?(?:-[0-9]|0|1|2|3|4)\.\d{1,6}$'
+        validator = RegexValidator(regex=regex, message="Formato de longitud no válido, esta aplicación está pensada para bares en territorio español, cuyas longitudes peninsulares comprenden de la -9 al 4.")
+        validator(value)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=30)
-    description = models.TextField(null=True, blank=True,max_length=255)
+    name = models.CharField(max_length=20,validators=[validate_name])
+    description = models.TextField(null=True, blank=True,max_length=255,validators=[validate_description])
     phone = models.CharField(max_length=30, validators=[validate_phone])
-    address = models.CharField(max_length=255)
-    latitude = models.DecimalField(max_digits=9, decimal_places=6)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    address = models.CharField(max_length=100, validators=[validate_address])
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, validators=[validate_latitude])
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, validators=[validate_longitude])
 
     def __str__(self) -> str:
         return f"{self.name}"

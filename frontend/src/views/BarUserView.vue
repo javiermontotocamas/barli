@@ -66,12 +66,17 @@ export default {
               class="form-control" v-model="barData.user.username" required /></li>
           <li><span>Email:</span>{{ barData.user.email }}</li>
           <li><span>Nombre del bar:</span><input :disabled="disableInputs" type="text" class="form-control"
-              v-model="barData.name" required /></li>
-          <div class="row mb-2 text-danger" v-if="errorMessage.name">
-            {{ errorMessage.name.join(", ") }}
-          </div>
+              v-model="barData.name" required />
+            <div class="row mb-2 text-danger" v-if="errorMessage.name">
+              {{ errorMessage.name.join(", ") }}
+            </div>
+          </li>
           <li><span>Descripción del bar:</span> <textarea :disabled="disableInputs" style="width: 100%;" maxlength="150"
-              rows="4" v-model="barData.description"></textarea></li>
+              rows="4" v-model="barData.description"></textarea>
+            <div class="row mb-2 text-danger" v-if="errorMessage.description">
+              {{ errorMessage.description.join(", ") }}
+            </div>
+          </li>
           <li><span>Teléfono móvil:</span><input :disabled="disableInputs" type="phone" class="form-control"
               v-model="barData.phone" required />
             <div class="row mb-2 text-danger" v-if="errorMessage.phone">
@@ -79,11 +84,23 @@ export default {
             </div>
           </li>
           <li><span>Dirección del establecimiento:</span> <input :disabled="disableInputs" type="text"
-              class="form-control" v-model="barData.address" required /></li>
+              class="form-control" v-model="barData.address" required />
+            <div class="row mb-2 text-danger" v-if="errorMessage.address">
+              {{ errorMessage.address.join(", ") }}
+            </div>
+          </li>
           <li><span>Latitud:</span> <input :disabled="disableInputs" type="text" class="form-control"
-              v-model="barData.latitude" required /></li>
+              v-model="barData.latitude" required />
+            <div class="row mb-2 text-danger" v-if="errorMessage.latitude">
+              {{ errorMessage.latitude.join(", ") }}
+            </div>
+          </li>
           <li><span>Longitud:</span> <input :disabled="disableInputs" type="text" class="form-control"
-              v-model="barData.longitude" required /></li>
+              v-model="barData.longitude" required />
+            <div class="row mb-2 text-danger" v-if="errorMessage.longitude">
+              {{ errorMessage.longitude.join(", ") }}
+            </div>
+          </li>
         </ol>
       </div>
       <!-- Div adicional para el botón -->
@@ -224,5 +241,4 @@ export default {
 
 #enlaceAds a {
   font-size: 2rem !important;
-}
-</style>
+}</style>
