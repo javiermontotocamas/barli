@@ -1,11 +1,22 @@
 <script>
-import { getTablesOfBar, getClaimsFromToken, getAuthToken, getDataOfBar } from '../api/apiClient'
+import { getTablesOfBar, getClaimsFromToken, getAuthToken, getDataOfBar, createTableOfBar, deleteTableOfBar } from '../api/apiClient'
+import { FontAwesomeIcon } from '@/plugins/fontawesome'
 
 export default {
   data() {
     return {
       barData: [],
-      tables: []
+      tables: [],
+      errorMessage: '',
+      errorDelMessage: '',
+      numerosMesas: [],
+      selectedTableId: null,
+      newTable: {
+        number: '',
+        status: 'FREE',
+        seats: '',
+        outdoor: false,
+      }
     }
   },
   computed: {
@@ -13,6 +24,8 @@ export default {
       return this.tables.filter(table => table.outdoor);
     }, indoorTables() {
       return this.tables.filter(table => !table.outdoor);
+    }, freeTables() {
+      return this.tables.filter(table => table.status === 'FREE');
     },
     totalMesas() {
       // Suma de las mesas interiores y exteriores
@@ -28,6 +41,7 @@ export default {
     const { entity_id } = getClaimsFromToken(getAuthToken())
     const response = await getTablesOfBar(entity_id)
     this.tables = await response.json()
+    this.numerosMesas = this.tables.map(table => table.number);
     this.getBarData()
   },
   methods: {
@@ -35,6 +49,43 @@ export default {
       const { entity_id } = getClaimsFromToken(getAuthToken())
       const response = await getDataOfBar(entity_id)
       this.barData = await response.json()
+    },
+    async addTable() {
+      this.errorMessage = ''
+      const { entity_id } = getClaimsFromToken(getAuthToken())
+      // Encontrar el número más bajo disponible
+      let nuevoNumeroMesa = 1;
+      while (this.numerosMesas.includes(nuevoNumeroMesa)) {
+        nuevoNumeroMesa++;
+      }
+      this.newTable.number = nuevoNumeroMesa;
+      const resp = await createTableOfBar({ recordData: this.newTable, barId: entity_id })
+      const respOk = resp.ok
+      const json = await resp.json()
+      if (respOk) {
+        console.log('Nueva mesa incuida,comprobar en admin', json)
+        this.numerosMesas.push(nuevoNumeroMesa);
+        location.reload()
+      } else {
+        console.log('Hubo un error')
+        console.log(json);
+        this.errorMessage = json
+      }
+    },
+    async delTable() {
+      if (this.selectedTableId === null) {
+        // Si no se ha seleccionado ninguna mesa, manejar la lógica apropiada
+        alert('Selecciona una mesa antes de eliminarla.');
+      }
+      const { entity_id } = getClaimsFromToken(getAuthToken());
+      // Utiliza this.selectedTableId para obtener el ID de la mesa seleccionada
+      const resp = await deleteTableOfBar({ tableId: this.selectedTableId, barId: entity_id });
+      const respOk = resp.ok;
+      if (respOk) {
+        location.reload();
+      } else {
+        this.errorDelMessage = 'Hubo un error al eliminar la mesa.';
+      }
     }
   }
 }
@@ -49,7 +100,8 @@ export default {
       <h1>Numero de Mesas: {{ totalMesas }}</h1>
       <h2>Grado de Ocupación</h2>
       <div class="progress">
-        <div class="progress-bar" :style="{ width: `${busyPercentage}%` }" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" :style="{ width: `${busyPercentage}%` }" role="progressbar" aria-valuenow="25"
+          aria-valuemin="0" aria-valuemax="100">
           {{ busyPercentage }}%
         </div>
       </div>
@@ -69,7 +121,62 @@ export default {
           </li>
         </ul>
       </div>
-
+    </div>
+    <div class="row text-center">
+      <h1>CRUD MESAS</h1>
+      <div id="plusblock" class="col-md-6">
+        <h2>AÑADIR MESA</h2>
+        <table class="table table-hover border-dark">
+          <thead class="table-dark">
+            <tr>
+              <th>Numero de asientos</th>
+              <th>REDUCCIÓN DE PRECIO</th>
+              <th>ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input class="w-100" type="number" placeholder="Numero de asientos" v-model="newTable.seats" /></td>
+              <td><select v-model="newTable.outdoor">
+                  <option :value="false">Interior</option>
+                  <option :value="true">Exterior</option>
+                </select>
+              </td>
+              <td class="text-center align-middle">
+                <button class="round-button" @click="addTable()"><font-awesome-icon
+                    icon="plus"></font-awesome-icon></button>
+                <p class="w-50" id="showError">{{ errorMessage }}</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="minusblock" class="col-md-6">
+        <h2>ELIMINAR MESA</h2>
+        <table class="table table-hover border-dark">
+          <thead class="table-dark">
+            <tr>
+              <th>Numero de mesa</th>
+              <th>ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><select v-model="selectedTableId">
+                  <option :value="null" disabled>Selecciona una mesa</option>
+                  <option v-for="table in freeTables" :key="table.id" :value="table.id">
+                    {{ table.number }} - Seats: {{ table.seats }} - Outdoor: {{ table.outdoor }}
+                  </option>
+                </select></td>
+              <td class="text-center align-middle">
+                <button class="round-button" @click="delTable()"><font-awesome-icon
+                    icon="minus"></font-awesome-icon></button>
+                <p class="w-50" id="showDelError">{{ errorDelMessage }}</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </main>
 </template>
@@ -108,4 +215,65 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+/* BOTON DE AÑADIR MESA */
+.round-button {
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #3498db;
+  /* Color de fondo del botón */
+  color: white;
+  /* Color del icono */
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  outline: none;
+}
+
+.round-button:hover {
+  background-color: #2980b9;
+  /* Cambia el color al pasar el ratón sobre el botón */
+}
+
+/* ZONA AÑADIR MESA */
+#plusblock {
+  background: #D5E4E8 none repeat scroll 0 0;
+  border: 3px solid #B5CAD0;
+  margin: 20px 0px;
+  padding: 20px;
+}
+
+#plusblock h2 {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-weight: normal;
+  text-shadow: 0 0 1px #000;
+  color: #444444;
+  font-size: 2em;
+  padding: 2px 0 0;
+  line-height: 1.2em;
+  margin: 0 0 10px;
+}
+
+#minusblock {
+  background: #D5E4E8 none repeat scroll 0 0;
+  border: 3px solid #B5CAD0;
+  margin: 20px 0px;
+  padding: 20px;
+}
+
+#minusblock h2 {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-weight: normal;
+  text-shadow: 0 0 1px #000;
+  color: #444444;
+  font-size: 2em;
+  padding: 2px 0 0;
+  line-height: 1.2em;
+  margin: 0 0 10px;
+}
+
+/* ZONA ELIMINAR MESA */
 </style>

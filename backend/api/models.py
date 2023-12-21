@@ -1,12 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator,RegexValidator
+from django.core.exceptions import ValidationError
+
 
 
 class UserProfile(models.Model):
+    def validate_phone(value):
+        phone_regex = r'^\+?1?\d{9,15}$'
+        validator = RegexValidator(regex=phone_regex, message="Formato de teléfono no válido,permite números de teléfono con un formato que empiece con un signo más opcional (+), seguido opcionalmente por el código de país 1, y luego de 9 a 15 dígitos adicionales.")
+        validator(value)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     fullname = models.CharField(max_length=255)
-    phone = models.CharField(max_length=30)
+    phone = models.CharField(max_length=30,validators=[validate_phone])
     birthdate = models.DateField()
 
     def __str__(self) -> str:
@@ -14,10 +20,14 @@ class UserProfile(models.Model):
 
 
 class Bar(models.Model):
+    def validate_phone(value):
+        phone_regex = r'^\+?1?\d{9,15}$'
+        validator = RegexValidator(regex=phone_regex, message="Formato de teléfono no válido,permite números de teléfono con un formato que empiece con un signo más opcional (+), seguido opcionalmente por el código de país 1, y luego de 9 a 15 dígitos adicionales.")
+        validator(value)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-    description = models.TextField(null=True, blank=True)
-    phone = models.CharField(max_length=30)
+    name = models.CharField(max_length=30)
+    description = models.TextField(null=True, blank=True,max_length=255)
+    phone = models.CharField(max_length=30, validators=[validate_phone])
     address = models.CharField(max_length=255)
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
@@ -47,7 +57,7 @@ class Table(models.Model):
         PENDING_OF_CONFIRMATION = ("PENDING_OF_CONFIRMATION", "Pending of confirmation")
         BUSY = ("BUSY", "Busy")
 
-    seats = models.SmallIntegerField()
+    seats = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(20)])
     outdoor = models.BooleanField()
     status = models.CharField(max_length=255, choices=TableStatus.choices, default=TableStatus.FREE)
     number = models.SmallIntegerField()
@@ -73,6 +83,7 @@ class Booking(models.Model):
                 name="end_datetime_check"
             )
         ]
+
 
 
 

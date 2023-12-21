@@ -44,14 +44,33 @@ def get_number_list(request):
     return Response(response_data, status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
+@api_view(['GET','POST'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated]) # TODO: Ver como hacer una validacion para que sea el bar sea el mismo que me esta pidiendo los datos
-def get_tables_of_bar(request, id):
-    tables = Bar.objects.get(pk=id).table_set.all()
-    serializer = TableSerializer(data=tables, many=True)
-    serializer.is_valid()
-    return Response(serializer.data, status=status.HTTP_200_OK)
+def process_tables_of_bar(request, id):
+    if request.method == "GET":
+        tables = Bar.objects.get(pk=id).table_set.all()
+        serializer = TableSerializer(data=tables, many=True)
+        serializer.is_valid()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "POST":
+        bar = Bar.objects.get(pk=id)
+        serializer = TableSerializer(data={'bar': bar.id, 'number': request.data["number"], 'status': 'FREE', 'seats': request.data['seats'], 'outdoor': request.data['outdoor']})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(None, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+@api_view(['DELETE'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated]) # TODO: Ver como hacer una validacion para que sea el bar sea el mismo dueño que quiere borrar el anuncio
+def delete_table_of_bar(request, bar_id,table_id):
+    table = Table.objects.get(pk=table_id)
+    table.delete()
+    return Response(None, status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['GET', 'POST'])
@@ -97,7 +116,16 @@ def process_data_of_bar(request, id):
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == "PUT":
         bar_info = Bar.objects.get(pk=id)
-        serializer = BarSerializer(data={'id': bar_info.id, 'user': request.data['recordData']['id'], 'name': request.data['recordData']['name'], 'description': request.data['recordData']["description"], 'phone': request.data['recordData']['phone'], 'address': request.data['recordData']['address'], 'latitude': request.data['recordData']['latitude'], 'longitude': request.data['recordData']['longitude']})
+        serializer = BarSerializer(bar_info, data={
+            'id': bar_info.id,
+            'name': request.data['recordData']['name'], 
+            'description': request.data['recordData']["description"],
+            'phone': request.data['recordData']['phone'], 
+            'address': request.data['recordData']['address'], 
+            'latitude': request.data['recordData']['latitude'], 
+            'longitude': request.data['recordData']['longitude']
+        }, partial=True)
+
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)

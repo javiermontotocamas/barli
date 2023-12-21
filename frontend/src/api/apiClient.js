@@ -86,7 +86,6 @@ export const getDataOfBar = async(barId) => {
   return fetchWithInterceptor(`/bar/${barId}/data`);
 }
 export const modDataOfBar = async(data) => {
-  console.log('altura-apiClient',data)
   return fetchWithInterceptor(`/bar/${data.barId}/data`,{
     method: 'PUT',
     body: JSON.stringify({
@@ -98,6 +97,23 @@ export const modDataOfBar = async(data) => {
     }
   });
 }
+
+//ZONA MESAS DE BAR
+export const createTableOfBar = async(data) => {
+  return fetchWithInterceptor(`/bar/${data.barId}/tables`,{
+    method: 'POST',
+    body: JSON.stringify(data.recordData),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+}
+export const deleteTableOfBar = async(data) => {
+  return fetchWithInterceptor(`/bar/${data.barId}/tables/${data.tableId}`, {
+    method: 'DELETE'
+  });
+}
+
 
 
 

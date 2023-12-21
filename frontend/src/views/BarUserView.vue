@@ -11,6 +11,7 @@ export default {
       barData: null,
       disableInputs: true,
       zoom: 50,
+      errorMessage: ''
     }
   },
   async mounted() {
@@ -26,18 +27,16 @@ export default {
       this.disableInputs = !this.disableInputs;
     },
     async modBar() {
-      
       this.errorMessage = ''
       const { entity_id } = getClaimsFromToken(getAuthToken())
-      console.log('esto viene',this.barData)
       const username = this.barData.user.username
-      console.log(username)
-      const resp = await modDataOfBar({ recordData: this.barData, barId: entity_id,username: username })
+      const resp = await modDataOfBar({ recordData: this.barData, barId: entity_id, username: username })
       const respOk = resp.ok
       const json = await resp.json()
       if (respOk) {
         console.log('Modificados los datos del bar', json)
-        this.getBarData()
+        this.barData = json
+        this.toggleDisableInputs()
       } else {
         console.log('Hubo un error')
         console.log(json);
@@ -63,15 +62,21 @@ export default {
       <!-- Columna izquierda -->
       <div class="col-md-6">
         <ol id="listadata">
-          <li><span>Nombre usuario:</span>{{ barData.user.username }}<input hidden :disabled="disableInputs" type="text" class="form-control"
-              v-model="barData.user.username" required /></li>
+          <li><span>Nombre usuario:</span>{{ barData.user.username }}<input hidden :disabled="disableInputs" type="text"
+              class="form-control" v-model="barData.user.username" required /></li>
           <li><span>Email:</span>{{ barData.user.email }}</li>
           <li><span>Nombre del bar:</span><input :disabled="disableInputs" type="text" class="form-control"
               v-model="barData.name" required /></li>
+          <div class="row mb-2 text-danger" v-if="errorMessage.name">
+            {{ errorMessage.name.join(", ") }}
+          </div>
           <li><span>Descripción del bar:</span> <textarea :disabled="disableInputs" style="width: 100%;" maxlength="150"
               rows="4" v-model="barData.description"></textarea></li>
           <li><span>Teléfono móvil:</span><input :disabled="disableInputs" type="phone" class="form-control"
               v-model="barData.phone" required />
+            <div class="row mb-2 text-danger" v-if="errorMessage.phone">
+              {{ errorMessage.phone.join(", ") }}
+            </div>
           </li>
           <li><span>Dirección del establecimiento:</span> <input :disabled="disableInputs" type="text"
               class="form-control" v-model="barData.address" required /></li>

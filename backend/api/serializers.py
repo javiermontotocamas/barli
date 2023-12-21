@@ -42,17 +42,18 @@ class BarSerializer(serializers.ModelSerializer):
         model = Bar
         fields = ['id', 'user', 'name', 'description', 'phone', 'address', 'latitude', 'longitude']
 
+
     def create(self, validated_data):
         user_auth_data = validated_data.pop('user')
         user = User.objects.create_user(user_auth_data['username'], email=user_auth_data['email'], password=user_auth_data['password'])
         bar_profile = Bar.objects.create(user=user, **validated_data)
         return bar_profile
-    
+
 
 class TableSerializer(serializers.ModelSerializer):
     class Meta:
         model = Table
-        fields = ['id', 'number', 'status', 'seats', 'outdoor']
+        fields = ['id', 'bar', 'number', 'status', 'seats', 'outdoor']
 
 
 class AdvertisementSerializer(serializers.ModelSerializer):

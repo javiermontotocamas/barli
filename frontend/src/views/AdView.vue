@@ -48,7 +48,7 @@ export default {
           console.log(json);
           this.errorMessage = json
         }
-      }else{
+      } else {
         alert("El valor debe estar entre 5 y 95");
       }
     }
@@ -79,7 +79,8 @@ export default {
           <td><input class="w-100" type="number" placeholder="Proporción descuento" min="5" max="95"
               v-model="newAd.reduction" /></td>
           <td>
-            <button @click="addAd()">Nueva promoción</button> <p class="w-50" id="showError">{{ errorMessage }}</p>
+            <button @click="addAd()">Nueva promoción</button>
+            <p class="w-50" id="showError">{{ errorMessage }}</p>
           </td>
         </tr>
       </tbody>
