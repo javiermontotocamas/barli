@@ -91,7 +91,6 @@ export default {
 
       const { entity_id } = getClaimsFromToken(getAuthToken());
       const table = this.tables.find(table => table.number === tableNumber);
-      console.log(table)
       if (table.status === newStatus) {
         // No hace falta cambiar el estado si ya está en el estado deseado
         return;
@@ -101,7 +100,7 @@ export default {
       const respOk = resp.ok;
       if (respOk) {
         // Actualiza el estado en la interfaz
-        this.$set(this.tables, index, { ...table, status: newStatus });
+        location.reload()
       } else {
         console.error('Hubo un error al cambiar el estado de la mesa.');
       }

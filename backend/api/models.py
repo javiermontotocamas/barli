@@ -2,18 +2,27 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator,RegexValidator,MaxLengthValidator
 from django.core.exceptions import ValidationError
+from datetime import date
 
 
 
 class UserProfile(models.Model):
+    def validate_name(value):
+        max_length_validator = MaxLengthValidator(limit_value=20)
+        max_length_validator(value)
     def validate_phone(value):
         phone_regex = r'^\+?1?\d{9,15}$'
         validator = RegexValidator(regex=phone_regex, message="Formato de teléfono no válido,permite números de teléfono con un formato que empiece con un signo más opcional (+), seguido opcionalmente por el código de país 1, y luego de 9 a 15 dígitos adicionales.")
         validator(value)
+    def validate_age(value):
+        today = date.today()
+        age = today.year - value.year - ((today.month, today.day) < (value.month, value.day))
+        if age < 14:
+            raise ValidationError("Debes tener al menos 14 años para registrarte.")
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    fullname = models.CharField(max_length=255)
+    fullname = models.CharField(max_length=255,validators=[validate_name])
     phone = models.CharField(max_length=30,validators=[validate_phone])
-    birthdate = models.DateField()
+    birthdate = models.DateField(validators=[validate_age])
 
     def __str__(self) -> str:
         return f"{self.fullname}"

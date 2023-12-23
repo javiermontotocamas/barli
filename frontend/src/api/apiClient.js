@@ -81,6 +81,24 @@ export const createAdOfBar = async(data) => {
   });
 }
 
+//ZONA CUENTA USUARIO
+export const getDataOfUser = async(userId) => {
+  return fetchWithInterceptor(`/user/${userId}/data`);
+}
+export const modDataOfUser = async(data) => {
+  return fetchWithInterceptor(`/user/${data.userId}/data`,{
+    method: 'PUT',
+    body: JSON.stringify({
+      recordData: data.recordData,
+      username: data.username
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+}
+
+
 //ZONA CUENTA DE BAR
 export const getDataOfBar = async(barId) => {
   return fetchWithInterceptor(`/bar/${barId}/data`);

@@ -143,6 +143,31 @@ def process_data_of_bar(request, id):
     return Response(None, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
+#ZONA INFO CUENTA USUARIO PLANO
+@api_view(['GET','PUT'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated]) # TODO: Ver como hacer una validacion url
+def process_data_of_user(request, id):
+    if request.method == "GET":
+        user_info = UserProfile.objects.get(pk=id)
+        serializer = UserProfileSerializer(user_info)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "PUT":
+        user_info = UserProfile.objects.get(pk=id)
+        serializer = UserProfileSerializer(user_info, data={
+            'id': user_info.id,
+            'fullname': request.data['recordData']['fullname'], 
+            'phone': request.data['recordData']['phone'], 
+            'birthdate': request.data['recordData']['birthdate']
+        }, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(None, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
 
 
 def index(request):

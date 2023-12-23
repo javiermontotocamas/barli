@@ -14,4 +14,6 @@ urlpatterns = [
     path('bar/<int:id>/ads', views.process_ads_of_bar, name='process_ads_of_bar'),
     path('bar/<int:bar_id>/ads/<int:ad_id>', views.delete_ad_of_bar, name='delete_ad_of_bar'),
     path('bar/<int:id>/data', views.process_data_of_bar, name='process_data_of_bar'),
+    path('user/<int:id>/data', views.process_data_of_user, name='process_data_of_user'),
+
 ]
