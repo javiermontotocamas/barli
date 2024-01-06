@@ -63,9 +63,9 @@ export default {
     <h6>Registrado correctamente. Ya puede hacer login</h6>
   </div>
   <form @submit.prevent="submitForm" class="form-container" v-else>
-    <div v-if="errorMessage !== ''" class="d-flex flex-row w-100 text-danger">
+    <!-- <div v-if="errorMessage !== ''" class="d-flex flex-row w-100 text-danger">
       {{ errorMessage }}
-    </div>
+    </div> -->
     <div class="d-flex flex-row w-100">
       <div class="form-check form-check-inline border border-success w-100">
         <input class="form-check-input" type="radio" v-model="type" id="customer" value="customer" />
@@ -83,11 +83,17 @@ export default {
         <div class="col-sm-8">
           <input type="text" id="username" class="form-control" v-model="userData.user.username" required />
         </div>
+        <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.user && errorMessage.user.username">
+          {{ errorMessage.user.username.join(", ") }}
+        </div>
       </div>
       <div class="row mb-2">
         <label for="password" class="col-sm-4 col-form-label">Contraseña:</label>
         <div class="col-sm-8">
           <input type="password" id="password" class="form-control" v-model="userData.user.password" required />
+        </div>
+        <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.user && errorMessage.user.password">
+          {{ errorMessage.user.password.join(", ") }}
         </div>
       </div>
       <div class="row mb-2">
@@ -95,11 +101,17 @@ export default {
         <div class="col-sm-8">
           <input type="text" id="fullname" class="form-control" v-model="userData.fullname" required />
         </div>
+        <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.fullname">
+          {{ errorMessage.fullname.join(", ") }}
+        </div>
       </div>
       <div class="row mb-2">
         <label for="phone" class="col-sm-4 col-form-label">Teléfono:</label>
         <div class="col-sm-8">
           <input type="phone" id="phone" class="form-control" v-model="userData.phone" required />
+        </div>
+        <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.phone">
+          {{ errorMessage.phone.join(", ") }}
         </div>
       </div>
       <div class="row mb-2">
@@ -107,11 +119,17 @@ export default {
         <div class="col-sm-8">
           <input type="email" id="email" class="form-control" v-model="userData.user.email" required />
         </div>
+        <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.email">
+          {{ errorMessage.email.join(", ") }}
+        </div>
       </div>
       <div class="row mb-2">
         <label for="birthdate" class="col-sm-4 col-form-label">Fecha Nacimiento:</label>
         <div class="col-sm-8">
           <input type="date" id="birthdate" class="form-control" v-model="userData.birthdate" required />
+        </div>
+        <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.birthdate">
+          {{ errorMessage.birthdate.join(", ") }}
         </div>
       </div>
     </div>
@@ -132,15 +150,24 @@ export default {
           <input type="password" id="password" class="form-control" v-model="barData.user.password" required />
         </div>
       </div>
+      <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.user.password && errorMessage.user.password">
+        {{ errorMessage.user.password.join(", ") }}
+      </div>
       <div class="row mb-2">
         <label for="name" class="col-sm-5 col-form-label">Bar Name:</label>
         <div class="col-sm-7">
           <input type="text" id="name" class="form-control" v-model="barData.name" required />
         </div>
       </div>
+      <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.name">
+        {{ errorMessage.name.join(", ") }}
+      </div>
       <div class="form-group mb-2">
         <label for="description" class="mr-2">Description:</label>
         <textarea id="description" class="form-control" v-model="barData.description" rows="4" required />
+      </div>
+      <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.description">
+        {{ errorMessage.description.join(", ") }}
       </div>
       <div class="row mb-2">
         <label for="phone" class="col-sm-4 col-form-label">Phone:</label>
@@ -148,17 +175,26 @@ export default {
           <input type="phone" id="phone" class="form-control" v-model="barData.phone" required />
         </div>
       </div>
+      <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.phone">
+        {{ errorMessage.phone.join(", ") }}
+      </div>
       <div class="row mb-2">
         <label for="email" class="col-sm-4 col-form-label">Email:</label>
         <div class="col-sm-8">
           <input type="email" id="email" class="form-control" v-model="barData.user.email" required />
         </div>
       </div>
+      <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.user.email">
+        {{ errorMessage.user.email.join(", ") }}
+      </div>
       <div class="row mb-2">
-        <label for="address" class="col-sm-4 col-form-label">Adress:</label>
+        <label for="address" class="col-sm-4 col-form-label">Address:</label>
         <div class="col-sm-8">
           <input type="text" id="address" class="form-control" v-model="barData.address" required />
         </div>
+      </div>
+      <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.address">
+        {{ errorMessage.address.join(", ") }}
       </div>
       <div class="row mb-2">
         <label for="latitude" class="col-sm-4 col-form-label">Latitude:</label>
@@ -170,10 +206,13 @@ export default {
         {{ errorMessage.latitude.join(", ") }}
       </div>
       <div class="row mb-2">
-        <label for="longitude" class="col-sm-4 col-form-label">Lonitude:</label>
+        <label for="longitude" class="col-sm-4 col-form-label">Longitude:</label>
         <div class="col-sm-8">
           <input type="text" id="longitude" class="form-control" v-model="barData.longitude" required />
         </div>
+      </div>
+      <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.longitude">
+        {{ errorMessage.longitude.join(", ") }}
       </div>
     </div>
 

@@ -241,4 +241,5 @@ export default {
 
 #enlaceAds a {
   font-size: 2rem !important;
-}</style>
+}
+</style>

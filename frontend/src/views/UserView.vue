@@ -17,7 +17,6 @@ export default {
       const { entity_id } = getClaimsFromToken(getAuthToken())
       const response = await getDataOfUser(entity_id)
       this.userData = await response.json()
-      console.log(this.userData)
     },
     toggleDisableInputs() {
       this.disableInputs = !this.disableInputs;

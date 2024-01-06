@@ -299,5 +299,4 @@ export default {
   margin: 0 0 10px;
 }
 
-/* ZONA ELIMINAR MESA */
 </style>

@@ -6,9 +6,10 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
-
+import math
 from .serializers import TableSerializer, UserProfileSerializer, BarSerializer, AdvertisementSerializer
 from .models import *
+
 
 
 
@@ -205,22 +206,65 @@ def get_user_by_id(request, user_id):
         return JsonResponse({'error': 'Perfil de usuario no encontrado'}, status=404)
     
 
-#Obtener todos los bares
+#ZONA RESERVA ACCION/REACCION
+
+#funcion calcular area donde se encuentran bares disponibles
+def calcular_area(latitud_usuario, longitud_usuario, distancia_km):
+    # Calcula las variaciones en latitud y longitud
+    latitud_variation = distancia_km / 111  # 1 grado de latitud es aproximadamente 111 km
+    longitud_variation = distancia_km / (111 * math.cos(math.radians(latitud_usuario)))
+
+    # Calcula las coordenadas del área de búsqueda
+    latitud_superior = latitud_usuario + latitud_variation
+    latitud_inferior = latitud_usuario - latitud_variation
+    longitud_derecha = longitud_usuario + longitud_variation
+    longitud_izquierda = longitud_usuario - longitud_variation
+
+    return latitud_superior, latitud_inferior, longitud_derecha, longitud_izquierda
+
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def get_bars(request):
-    profiles = Bar.objects.all()
+    if request.method == "GET":
+        if request.GET:
+            map_center = request.GET.get('mapCenter', '').split(',')
+            distancia = float(request.GET.get('distancia', 0))
+            print(map_center)
+            print(distancia)
+            # Verifica que los parámetros necesarios estén presentes
+            if not map_center or not distancia:
+                return JsonResponse({'error': 'Parámetros faltantes'}, status=400)
+            try:
+                # Convierte los elementos de map_center a valores de latitud y longitud
+                latitud_str, longitud_str= map_center
+                latitud = float(latitud_str)
+                longitud = float(longitud_str)
+                # Calcula el área de búsqueda
+                latitud_superior, latitud_inferior, longitud_derecha, longitud_izquierda = \
+                calcular_area(latitud, longitud, distancia)
+                bares_en_area = Bar.objects.filter(
+                latitude__range=(latitud_inferior, latitud_superior),
+                longitude__range=(longitud_izquierda, longitud_derecha))
+                # Crea una lista de diccionarios para los resultados
+                results = [{'id': bar.id,'name': bar.name, 'address': bar.address, 'latitude': bar.latitude, 'longitude': bar.longitude}
+                    for bar in bares_en_area]
+                print(results)
+                return Response(results, status=status.HTTP_200_OK)
+            except Exception as e:
+                return JsonResponse({'error': str(e)}, status=500)
+        else:
+            print('NO HAY DATOS')
+            bars = Bar.objects.all()
+            serializer = BarSerializer(data=bars, many=True)
+            serializer.is_valid()
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
-    profile_data = [{
-                'id': profile.id,
-                'name': profile.name,
-                'description': profile.description,
-                'phone': profile.phone,
-                'email': profile.email,
-                'adress': profile.address,
-                'latitude': profile.latitude,
-                'longitude': profile.longitude
-                } for profile in profiles]
 
-    return JsonResponse({'bar_profiles': profile_data}, safe=False)
+
+
+
 
 #Obtener bar por id
 def get_bar_by_id(request, bar_id):

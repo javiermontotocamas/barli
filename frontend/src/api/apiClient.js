@@ -44,6 +44,11 @@ export async function login(data) {
   })
 }
 
+// Get Bars
+export const getBars = async() => {
+  return fetchWithInterceptor(`/bar`);
+}
+
 // CREAR NUEVO USUARIO
 export async function registerNewCustomerOrBar(data) {
   return fetch(`${apiUrl}/register`, {
@@ -141,6 +146,15 @@ export const updateTableStatus = (data) => {
     body: JSON.stringify({ newStatus: data.newStatus }), // Puedes ajustar los datos según tus necesidades
   });
 }
+
+
+//ZONA PAGINA RESERVA
+export const getAbleBars = async(data) => {
+  const queryParams = new URLSearchParams(data).toString();
+  return fetchWithInterceptor(`/bar?${queryParams}`);
+}
+
+
 
 
 
