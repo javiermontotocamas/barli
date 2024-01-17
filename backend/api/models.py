@@ -89,6 +89,9 @@ class Table(models.Model):
     number = models.SmallIntegerField()
     bar = models.ForeignKey(Bar, on_delete=models.CASCADE)
 
+    def active_bookings(self):
+        return Booking.objects.filter(table=self, completed__isnull=True)
+
     def __str__(self) -> str:
         return f"Num: {self.number} - Bar: {self.bar.name} - Seats: {self.seats}"
 
@@ -98,8 +101,8 @@ class Booking(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     table = models.ForeignKey(Table, on_delete=models.CASCADE)
     initial_datetime = models.DateTimeField()
-    end_datetime = models.DateTimeField()
-    completed = models.BooleanField()
+    end_datetime = models.DateField(null=True, blank=True)
+    completed = models.BooleanField(null=True)
 
     class Meta:
         unique_together = ('table', 'initial_datetime',)

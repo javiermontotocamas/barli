@@ -63,9 +63,6 @@ export default {
     <h6>Registrado correctamente. Ya puede hacer login</h6>
   </div>
   <form @submit.prevent="submitForm" class="form-container" v-else>
-    <!-- <div v-if="errorMessage !== ''" class="d-flex flex-row w-100 text-danger">
-      {{ errorMessage }}
-    </div> -->
     <div class="d-flex flex-row w-100">
       <div class="form-check form-check-inline border border-success w-100">
         <input class="form-check-input" type="radio" v-model="type" id="customer" value="customer" />

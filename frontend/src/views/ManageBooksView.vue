@@ -26,6 +26,10 @@ export default {
       return this.tables.filter(table => !table.outdoor);
     }, freeTables() {
       return this.tables.filter(table => table.status === 'FREE');
+    }, activeBookingTables() {
+      return this.tables.filter(table => {
+        return table.bookings.some(booking => booking.completed === null);
+      });
     },
     totalMesas() {
       // Suma de las mesas interiores y exteriores
@@ -98,6 +102,8 @@ export default {
       // Realiza la actualización del estado en el backend
       const resp = await updateTableStatus({ tableId: table.id, barId: entity_id, newStatus });
       const respOk = resp.ok;
+      const json = await resp.json()
+      alert(JSON.stringify(json));
       if (respOk) {
         // Actualiza el estado en la interfaz
         location.reload()
@@ -299,4 +305,10 @@ export default {
   margin: 0 0 10px;
 }
 
+#activeTables {
+  background-color: #F5F5F5;
+  padding: 20px;
+  margin-top: 20px;
+  border: 3px solid #CCCCCC;
+}
 </style>

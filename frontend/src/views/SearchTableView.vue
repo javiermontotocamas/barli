@@ -1,8 +1,9 @@
 <script>
-import { getAbleBars } from '../api/apiClient'
+import { getAbleBars, getAdsOfBar, getClaimsFromToken, getAuthToken, pendTableBar, getTableforBook, postBook, checkUserBook } from '../api/apiClient'
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { LMarker, LMap, LTooltip, LTileLayer, LIcon, LCircle } from "@vue-leaflet/vue-leaflet";
+import ModalLayer from '../views/ModalLayer.vue';
 
 export default {
   components: {
@@ -12,11 +13,17 @@ export default {
     LTileLayer,
     LMarker,
     LTooltip,
+    ModalLayer
   },
   data() {
     return {
+      respCheckUserBookjson: [],
+      showCurrentBook: false,
+      barSeleccionado: null,
+      showModalWindow: false,
       zoom: 13,
       markerLatLng: null,
+      ads: [],
       barList: [],
       ciudad: 'Sevilla',
       ciudadSeleccionada: {},
@@ -35,7 +42,10 @@ export default {
         mapCenter: [37.3886, -5.9822],
       },
     };
-  }, watch: {
+  }, async mounted() {
+    this.checkbooks()
+  }
+  , watch: {
     ciudad: function (newCiudad) {
       // Actualizar las coordenadas del mapa al cambiar la ciudad seleccionada
       this.ciudadSeleccionada = this.ciudades.find(city => city.nombre === newCiudad);
@@ -47,11 +57,77 @@ export default {
     }
   },
   methods: {
-    prueba() {
-      console.log("prueba");
+    closeModalWindow() {
+      this.showModalWindow = false;
+      this.barSeleccionado = null;
     },
-    prueba2() {
-      console.log("prueba2");
+    async openModalWindow(bar) {
+      this.showModalWindow = true;
+      this.barSeleccionado = bar;
+      const response = await getAdsOfBar(this.barSeleccionado.id)
+      this.ads = await response.json()
+      if (this.ads.length > 2) {
+        const randomIndices = this.getRandomIndices(2, this.ads.length);
+        this.ads = [this.ads[randomIndices[0]], this.ads[randomIndices[1]]];
+      }
+    },
+    async checkbooks() {
+      //COMPROBAMOS SI USUARIO TIENE RESERVA
+      const { entity_id } = getClaimsFromToken(getAuthToken())
+      const respCheckUserBook = await checkUserBook(entity_id)
+      this.respCheckUserBookjson = await respCheckUserBook.json()
+      if (this.respCheckUserBookjson.length>0) {
+        console.log(this.respCheckUserBookjson)
+        this.showCurrentBook = true
+      } else {
+      }
+    }
+    ,
+    async bookTable() {
+      //PRIMERO GET, DESPUES PATCH Y LUEGO PUT
+      const { entity_id } = getClaimsFromToken(getAuthToken())
+      let tableId = null;
+      //GET
+      const respGetTable = await getTableforBook({ barId: this.barSeleccionado.id, datosMesa: this.buscarForm })
+      const respGetTableOk = respGetTable.ok
+      if (respGetTableOk) {
+        const respGetTablejson = await respGetTable.json();
+        tableId = respGetTablejson[0].id
+        //PATCH
+        const responsePatchTable = await pendTableBar({ barId: this.barSeleccionado.id, tableId: tableId })
+        const respPatchTableOk = responsePatchTable.ok
+        if (respPatchTableOk) {
+          //PUT
+          const respPostBook = await postBook({ userId: entity_id, tableId: tableId })
+          const respPostBookOk = respPostBook.ok
+          const jsonPostBook = await respPostBook.json()
+          if (respPostBookOk) {
+            location.reload()
+            console.log(jsonPostBook)
+            this.checkbooks()
+          } else {
+            console.log('Hubo un error')
+            console.log(jsonPostBook)
+          }
+        }
+        else {
+          alert('No se ha podido reservar la mesa')
+        }
+      }
+      else {
+        alert('NO HAY MESAS DISPONIBLES')
+      }
+
+    },
+    getRandomIndices(num, max) {
+      const indices = [];
+      while (indices.length < num) {
+        const randomIndex = Math.floor(Math.random() * max);
+        if (!indices.includes(randomIndex)) {
+          indices.push(randomIndex);
+        }
+      }
+      return indices;
     },
     actualizarZoom() {
       // Ajusta el nivel de zoom en función de la distancia seleccionada
@@ -72,19 +148,79 @@ export default {
       const json = await resp.json()
       if (respOk) {
         this.barList = json;
-        console.log('Disponemos a mostrar los bares en el mapa', json)
       } else {
         console.log('Hubo un error')
         console.log(json);
         this.errorMessage = json
       }
-    }
+    }, formatDateTime(dateTime) {
+      const date = new Date(dateTime);
+
+      // Agrega 20 minutos
+      date.setMinutes(date.getMinutes() + 20);
+
+      // Obtiene los componentes de la hora
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+
+      // Formatea en un string "HH:MM"
+      const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+      return formattedTime;
+    },
   }
 };
 </script>
 <template>
   <main class="container-fluid mt-3">
-    <div class="row justify-content-center mt-5">
+    <ModalLayer v-if="showModalWindow" @close-modal="closeModalWindow">
+      <template v-slot:titulo>
+        <p class="h3">{{ barSeleccionado.name }}</p>
+      </template>
+      <template v-slot:cuerpo>
+        <div class="row">
+          <div v-if="ads.length > 0" class="col-md-3">
+            <div>
+              <p>{{ ads[0].product_name }}</p>
+              <p>Reducción: {{ ads[0].reduction }}%</p>
+            </div>
+          </div>
+          <div class="col-md-6"> {{ barSeleccionado.description }}
+          </div>
+          <div v-if="ads.length >= 1" class="col-md-3">
+            <div v-if="ads.length === 1" class="col-md-3">
+              <div>
+                <p>{{ ads[0].product_name }}</p>
+                <p>Reducción: {{ ads[0].reduction }}%</p>
+              </div>
+            </div>
+            <!-- Si hay más de un anuncio, mostrar solo el segundo -->
+            <div v-if="ads.length === 2">
+              <div v-for="(ad, index) in ads.slice(1)" :key="index">
+                <p>{{ ad.product_name }}</p>
+                <p>Reducción: {{ ad.reduction }}%</p>
+              </div>
+            </div>
+            <!-- Si hay más de dos anuncios, mostrar uno aleatorio diferente al primero -->
+            <div v-else>
+              <div v-for="(ad, index) in ads.slice(1)" :key="index">
+                <p>{{ ad.product_name }}</p>
+                <p>Reducción: {{ ad.reduction }}%</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <h5>{{ barSeleccionado.address }}</h5>
+          <h6>{{ barSeleccionado.phone }}</h6>
+        </div>
+      </template>
+      <template v-slot:pie>
+        <div class="col-md-12"><button v-on:click="bookTable(this.bar)" class="w-100">Hacer reserva</button></div>
+      </template>
+    </ModalLayer>
+
+    <div v-if="!showCurrentBook" class="row justify-content-center mt-5">
       <div class="col-md-5 border border-3">
         <!-- Formulario -->
         <form @submit.prevent="handleSubmit" class="mb-4">
@@ -124,11 +260,11 @@ export default {
                   <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" layer-type="base"
                     name="OpenStreetMap">
                   </l-tile-layer>
-                  <l-circle :lat-lng="buscarForm.mapCenter" :radius="buscarForm.distancia * 1100" :color="red" />
+                  <l-circle :lat-lng="buscarForm.mapCenter" :radius="buscarForm.distancia * 1100" />
                   <l-marker v-for="(bar, index) in barList" :key="index" :lat-lng="[bar.latitude, bar.longitude]">
                     <l-tooltip :options="{ permanent: true, interactive: true }">
                       {{ bar.name }}
-                      <button v-on:click.stop="prueba2">RESERVA!</button>
+                      <button v-on:click.stop="openModalWindow(bar)">RESERVA!</button>
                     </l-tooltip>
                   </l-marker>
                 </l-map>
@@ -138,6 +274,29 @@ export default {
           <button type="submit" class="btn btn-primary w-100">Mostrar Bares Disponibles</button>
         </form>
       </div>
+    </div>
+    <!-- Div para mostrar el contenido del json si showCurrentBook es true -->
+    <div v-else class="row justify-content-center mt-5">
+      <h1>¡Ya tienes una reserva!</h1>
+      <table class="reservation-table">
+        <tr>
+          <td>Bar:</td>
+          <td>{{ respCheckUserBookjson[0]['bar']['name'] }}</td>
+        </tr>
+        <tr>
+          <td>Dirección:</td>
+          <td>{{ respCheckUserBookjson[0]['bar']['address'] }}</td>
+        </tr>
+        <tr>
+          <td>Teléfono:</td>
+          <td>{{ respCheckUserBookjson[0]['bar']['phone'] }}</td>
+        </tr>
+        <tr>
+          <td>Hora a la que el bar es libre de anular la reserva:</td>
+          <td>{{ formatDateTime(respCheckUserBookjson[0]['initial_datetime']) }}</td>
+        </tr>
+      </table>
+      <h2>¡Recuerda que si no llegas en 20 minutos, el bar puede anular la reserva!</h2>
 
     </div>
   </main>
@@ -150,5 +309,24 @@ main {
 #mapContainer {
   width: 100%;
   height: 200px;
+}
+
+.reservation-container {
+  text-align: center;
+  margin: 50px auto;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+}
+
+.reservation-table {
+  margin: 20px auto;
+  border-collapse: collapse;
+}
+
+.reservation-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
 }
 </style>

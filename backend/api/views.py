@@ -1,5 +1,7 @@
 from django.shortcuts import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.http import JsonResponse, Http404
+from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -7,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 import math
-from .serializers import TableSerializer, UserProfileSerializer, BarSerializer, AdvertisementSerializer
+from .serializers import TableSerializer, UserProfileSerializer, BarSerializer, AdvertisementSerializer, BookingSerializer
 from .models import *
 
 
@@ -44,16 +46,26 @@ def get_number_list(request):
     response_data = {'numbers': numbers}
     return Response(response_data, status=status.HTTP_200_OK)
 
-
+#ZONA MESAS
 @api_view(['GET','POST'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated]) # TODO: Ver como hacer una validacion para que sea el bar sea el mismo que me esta pidiendo los datos
 def process_tables_of_bar(request, id):
     if request.method == "GET":
+        numero_personas = request.GET.get('numeroPersonas', None)
+        exterior = request.GET.get('exterior')
         tables = Bar.objects.get(pk=id).table_set.all()
-        serializer = TableSerializer(data=tables, many=True)
-        serializer.is_valid()
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if numero_personas and exterior is not None:
+            numero_personas = int(numero_personas)
+            tables = tables.filter(seats__gte=numero_personas, outdoor=(exterior.lower() == 'true'), status='FREE')
+            tables = tables.order_by('seats')
+            serializer = TableSerializer(data=tables, many=True)
+            serializer.is_valid()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            serializer = TableSerializer(data=tables, many=True)
+            serializer.is_valid()
+            return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == "POST":
         bar = Bar.objects.get(pk=id)
         serializer = TableSerializer(data={'bar': bar.id, 'number': request.data["number"], 'status': 'FREE', 'seats': request.data['seats'], 'outdoor': request.data['outdoor']})
@@ -76,13 +88,46 @@ def delete_or_changue_table_of_bar(request, bar_id,table_id):
     elif request.method == "PATCH":
         table = Table.objects.get(pk=table_id)
         new_status = request.data.get('newStatus') 
-        if new_status not in ['FREE', 'BUSY']:
-            return Response({"error": "Estado no válido"}, status=status.HTTP_400_BAD_REQUEST)
-        table.status = new_status
-        table.save()
-        return Response({"message": "Estado de la mesa actualizado correctamente"}, status=status.HTTP_200_OK)
+        if new_status is None:
+            table.status = 'PENDING_OF_CONFIRMATION'
+            table.save()
+            return Response({"message": "La mesa ha quedado reservada"}, status=status.HTTP_200_OK)
+        else:
+            if table.status == 'PENDING_OF_CONFIRMATION' and new_status == 'FREE':
+                booking_sin_completar = [ x for x in table.booking_set.all() if x.completed is None or not x.completed ]
+                if len(booking_sin_completar) > 0: # en realidad solo puede haber un booking activo
+                    diff = timezone.now() - booking_sin_completar[0].initial_datetime
+                    minutes_diff = diff.total_seconds() / 60
+                    if minutes_diff > 20:
+                        booking_sin_completar[0].delete()
+                        table.status = new_status
+                        table.save()
+                        return Response({"message": "Estado de la mesa actualizado correctamente de PENDING_OF_CONFIRMATION a FREE"}, status=status.HTTP_200_OK)
+                    else:
+                        return Response({"message": "Debes dar de cortesia 20 minutos antes de cancelar la reserva..."}, status=status.HTTP_409_CONFLICT)
+            elif table.status == 'BUSY' and new_status == 'FREE':
+                booking_sin_completar = [ x for x in table.booking_set.all() if x.completed is None or not x.completed ]
+                if len(booking_sin_completar) > 0: # en realidad solo puede haber un booking activo
+                    booking_sin_completar[0].end_datetime = timezone.now()
+                    booking_sin_completar[0].save()
+                table.status = new_status
+                table.save()
+                return Response({"message": "Estado de la mesa actualizado correctamente de BUSY a FREE"}, status=status.HTTP_200_OK)
+            elif table.status == 'PENDING_OF_CONFIRMATION' and new_status == 'BUSY':
+                booking_sin_completar = [ x for x in table.booking_set.all() if x.completed is None or not x.completed ]
+                if len(booking_sin_completar) > 0: 
+                    booking_sin_completar[0].completed = True
+                    booking_sin_completar[0].save()
+                table.status = new_status
+                table.save()
+                return Response({"message": "Estado de la mesa actualizado correctamente de PENDING_OF_CONFIRMATION a BUSY"}, status=status.HTTP_200_OK)
+            elif table.status == 'FREE' and new_status == 'BUSY':
+                table.status = new_status
+                table.save()
+                return Response({"message": "Estado de la mesa actualizado correctamente de FREE a BUSY"}, status=status.HTTP_200_OK)
+            
 
-
+#ZONA ANUNCIOS
 @api_view(['GET', 'POST'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated]) # TODO: Ver como hacer una validacion para que sea el bar sea el mismo que me esta pidiendo los datos
@@ -231,8 +276,8 @@ def get_bars(request):
         if request.GET:
             map_center = request.GET.get('mapCenter', '').split(',')
             distancia = float(request.GET.get('distancia', 0))
-            print(map_center)
-            print(distancia)
+            exterior = request.GET.get('exterior', '').lower() == 'true'
+            numero_personas = int(request.GET.get('numeroPersonas', 0))
             # Verifica que los parámetros necesarios estén presentes
             if not map_center or not distancia:
                 return JsonResponse({'error': 'Parámetros faltantes'}, status=400)
@@ -245,21 +290,78 @@ def get_bars(request):
                 latitud_superior, latitud_inferior, longitud_derecha, longitud_izquierda = \
                 calcular_area(latitud, longitud, distancia)
                 bares_en_area = Bar.objects.filter(
-                latitude__range=(latitud_inferior, latitud_superior),
-                longitude__range=(longitud_izquierda, longitud_derecha))
+                    latitude__range=(latitud_inferior, latitud_superior),
+                    longitude__range=(longitud_izquierda, longitud_derecha),
+                    table__seats__gte=numero_personas,
+                    table__outdoor=exterior,
+                    table__status='FREE'
+                ).distinct()
                 # Crea una lista de diccionarios para los resultados
-                results = [{'id': bar.id,'name': bar.name, 'address': bar.address, 'latitude': bar.latitude, 'longitude': bar.longitude}
+                results = [{'id': bar.id,'name': bar.name,'description': bar.description,'phone': bar.phone, 'address': bar.address, 'latitude': bar.latitude, 'longitude': bar.longitude}
                     for bar in bares_en_area]
                 print(results)
                 return Response(results, status=status.HTTP_200_OK)
             except Exception as e:
                 return JsonResponse({'error': str(e)}, status=500)
         else:
-            print('NO HAY DATOS')
-            bars = Bar.objects.all()
-            serializer = BarSerializer(data=bars, many=True)
-            serializer.is_valid()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return JsonResponse({'error al traer bares'}, status=400)
+
+
+
+#ZONA RESERVAS
+#Crear reserva por ususario
+#ZONA ANUNCIOS
+@api_view(['GET', 'POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated]) # TODO: Ver como hacer una validacion para que sea el bar sea el mismo que me esta pidiendo los datos
+def create_booking_by_user(request, user_id, table_id):
+    if request.method == "POST":
+        booking_data = {
+            "user": user_id,
+            "table": table_id,
+            "initial_datetime": timezone.now(),
+            "end_datetime": None
+        }
+        serializer = BookingSerializer(data=booking_data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(None, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+#COMPROBAR RESERVAS DEL USUARIO
+@api_view(['GET','POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def get_booking_by_user(request,id):
+    user_profile = get_object_or_404(UserProfile, pk=id)
+    user_bookings = user_profile.booking_set.filter(completed__isnull=True)
+    serializer = BookingSerializer(user_bookings, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

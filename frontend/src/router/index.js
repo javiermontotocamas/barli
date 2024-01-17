@@ -6,6 +6,7 @@ import ManageBooksView from '../views/ManageBooksView.vue'
 import BarUserView from '../views/BarUserView.vue'
 import SearchTableView from '../views/SearchTableView.vue'
 import UserView from '../views/UserView.vue'
+import { getAuthToken } from '../api/apiClient'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,7 +29,12 @@ const router = createRouter({
     {
       path: '/manageBooks',
       name: 'manageBooks',
-      component: ManageBooksView
+      component: ManageBooksView,
+      beforeEnter: (to, from) => {
+        const token = getAuthToken();
+        console.log(token);
+        return token != null;
+      },
     },
     {
       path: '/barUser',

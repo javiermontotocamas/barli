@@ -154,6 +154,37 @@ export const getAbleBars = async(data) => {
   return fetchWithInterceptor(`/bar?${queryParams}`);
 }
 
+//PASOS RESERVA DE MESA
+//1.-OBTENEMOS EL ID DE LA MESA DISPONIBLE CON LOS REQUISITOS
+export const getTableforBook = async(data) => {
+  const queryParams = new URLSearchParams(data.datosMesa).toString();
+  return fetchWithInterceptor(`/bar/${data.barId}/tables?${queryParams}`, {
+  });
+}
+//2.-PATCH EN EL QUE PASAMOS LA MESA A 'ESPERA DE CONFIRMACION'
+export const pendTableBar = async(data) => {
+  return fetchWithInterceptor(`/bar/${data.barId}/tables/${data.tableId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+}
+//3.-POST PARA CREAR LA RESERVA
+export const postBook = async(data) => {
+  return fetchWithInterceptor(`/user/${data.userId}/booking/${data.tableId}`,{
+    method: 'POST',
+    body: JSON.stringify({user_id: data.userId, table_id: data.tableId}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+}
+
+//COMPROBAR RESERVAS DEL USUARIO LOGEADO
+export const checkUserBook = async(data) => {
+  return fetchWithInterceptor(`/user/${data}/booking`);
+}
 
 
 

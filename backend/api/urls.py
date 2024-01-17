@@ -16,4 +16,6 @@ urlpatterns = [
     path('bar/<int:bar_id>/ads/<int:ad_id>', views.delete_ad_of_bar, name='delete_ad_of_bar'),
     path('bar/<int:id>/data', views.process_data_of_bar, name='process_data_of_bar'),
     path('user/<int:id>/data', views.process_data_of_user, name='process_data_of_user'),
+    path('user/<int:user_id>/booking/<int:table_id>', views.create_booking_by_user, name='create_booking_by_user'),
+    path('user/<int:id>/booking', views.get_booking_by_user, name='get_booking_by_user'),
 ]
