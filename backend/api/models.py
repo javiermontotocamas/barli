@@ -113,7 +113,8 @@ class Booking(models.Model):
             )
         ]
 
-
+    def __str__(self) -> str:
+        return f"User: {self.user.fullname} - Bar: {self.table.bar.name} - Table: {self.table.number} - Completed: {self.completed} - Date: {self.initial_datetime}"
 
 
 def find_userprofile_by_django_user_id(user_id):

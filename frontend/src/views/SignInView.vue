@@ -1,5 +1,6 @@
 <script>
 import { login, setAuthToken, setRefreshToken, getClaimsFromToken } from '../api/apiClient'
+import router from '../router/index'
 
 export default {
   emits: ['user-logged', 'close-modal'],
@@ -27,6 +28,11 @@ export default {
         setAuthToken(json.access)
         setRefreshToken(json.refresh)
         const claims = getClaimsFromToken(json.access)
+        if (claims.role === 'user') {
+          this.$router.push({ name: 'mainSearch' });
+        } else if (claims.role === 'bar') {
+          this.$router.push({ name: 'manageBooks' });
+        }
         this.$emit('user-logged', { username: claims.username, role: claims.role })
         this.$emit('close-modal', true)
         this.formData.username = ''

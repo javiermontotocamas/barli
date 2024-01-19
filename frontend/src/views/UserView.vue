@@ -22,7 +22,6 @@ export default {
       this.disableInputs = !this.disableInputs;
     },
     async modUser() {
-      alert('HOLAA')
       this.errorMessage = ''
       const { entity_id } = getClaimsFromToken(getAuthToken())
       const username = this.userData.user.username

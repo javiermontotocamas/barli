@@ -140,7 +140,7 @@ import { RouterLink } from 'vue-router'
               ></font-awesome-icon>
               <h2>Promociona Tu Bar</h2>
               <p>
-                Beneficiate de la ventaja del turísmo en nuestro país, saca ventaja de la
+                Beneficiate de la ventaja del turismo en nuestro país, saca ventaja de la
                 accesibilidad de nuestra aplicación.
               </p>
             </div>

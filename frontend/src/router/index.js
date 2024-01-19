@@ -6,7 +6,8 @@ import ManageBooksView from '../views/ManageBooksView.vue'
 import BarUserView from '../views/BarUserView.vue'
 import SearchTableView from '../views/SearchTableView.vue'
 import UserView from '../views/UserView.vue'
-import { getAuthToken } from '../api/apiClient'
+import { getAuthToken,getClaimsFromToken } from '../api/apiClient'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,32 +25,102 @@ const router = createRouter({
     {
       path: '/ads',
       name: 'ads',
-      component: AdView
+      component: AdView,
+      beforeEnter: (to, from, next) => {
+        const token = getAuthToken();
+
+        if (token) {
+          const userRole = getClaimsFromToken(token).role; // Ajusta esto según la estructura real de tus tokens
+
+          if (userRole === 'bar') {
+            next();
+          } else {
+            next({ name: 'home' });
+          }
+        } else {
+          next({ name: 'home' });
+        }
+      },
     },
     {
       path: '/manageBooks',
       name: 'manageBooks',
       component: ManageBooksView,
-      beforeEnter: (to, from) => {
+      beforeEnter: (to, from, next) => {
         const token = getAuthToken();
-        console.log(token);
-        return token != null;
+
+        if (token) {
+          const userRole = getClaimsFromToken(token).role; // Ajusta esto según la estructura real de tus tokens
+
+          if (userRole === 'bar') {
+            next();
+          } else {
+            next({ name: 'home' });
+          }
+        } else {
+          next({ name: 'home' });
+        }
       },
     },
     {
       path: '/barUser',
       name: 'barUser',
-      component: BarUserView
+      component: BarUserView,
+      beforeEnter: (to, from, next) => {
+        const token = getAuthToken();
+
+        if (token) {
+          const userRole = getClaimsFromToken(token).role; // Ajusta esto según la estructura real de tus tokens
+
+          if (userRole === 'bar') {
+            next();
+          } else {
+            next({ name: 'home' });
+          }
+        } else {
+          next({ name: 'home' });
+        }
+      },
     },
     {
       path: '/mainSearch',
       name: 'mainSearch',
-      component: SearchTableView
+      component: SearchTableView,
+      beforeEnter: (to, from, next) => {
+        const token = getAuthToken();
+
+        if (token) {
+          const userRole = getClaimsFromToken(token).role; // Ajusta esto según la estructura real de tus tokens
+
+          if (userRole === 'user') {
+            next();
+          } else {
+            next({ name: 'home' });
+          }
+        } else {
+          next({ name: 'home' });
+        }
+      },
     },
     {
       path: '/user',
       name: 'user',
-      component: UserView
+      component: UserView,
+      beforeEnter: (to, from, next) => {
+        const token = getAuthToken();
+
+        if (token) {
+          const userRole = getClaimsFromToken(token).role; // Ajusta esto según la estructura real de tus tokens
+
+          if (userRole === 'user') {
+            next();
+          } else {
+            next({ name: 'home' });
+          }
+        } else {
+          next({ name: 'home' });
+        }
+      },
     }
   ]
 })

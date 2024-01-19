@@ -1,3 +1,4 @@
+import router from '../router/index'
 const apiUrl = 'http://localhost:8000/api' // Replace with your API base URL
 
 
@@ -32,6 +33,7 @@ export const isTokenExpired = (token) => {
 export function logout() {
   localStorage.removeItem('barli-access-token')
   localStorage.removeItem('barli-refresh-token')
+  router.push({ name: 'home' });
 }
 
 export async function login(data) {

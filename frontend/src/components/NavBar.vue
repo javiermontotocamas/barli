@@ -50,7 +50,6 @@ export default {
             <button class="btn btn-info" @click="showRegisterModal()">Register</button>
           </div>
           <div class="d-flex gap-2" v-else>
-            <!--TODO Poner URL's-->
             <ul v-if="role == 'bar'" class="navbar-nav me-auto mb-2 mb-md-0">
               <li class="nav-item">
                 <router-link :to="{ name: 'ads' }" class="nav-link" router-link-active="active">Gestión
