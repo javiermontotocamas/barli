@@ -18,8 +18,13 @@ export default {
       const response = await getDataOfUser(entity_id)
       this.userData = await response.json()
     },
-    toggleDisableInputs() {
-      this.disableInputs = !this.disableInputs;
+    toggleDisableInputs(source) {
+      console.log('toggleDisableInputs called from:', source);
+      if (source === 'button') {
+        this.disableInputs = !this.disableInputs;
+      } else {
+        this.disableInputs = true
+      }
     },
     async modUser() {
       this.errorMessage = ''
@@ -45,7 +50,7 @@ export default {
   <main class="container-fluid mt-5" v-if="userData">
     <h1 class="text-center mt-2" id="titulo">
       <p>{{ userData.user.username }}</p>
-      <button @click="toggleDisableInputs" class="btn btn-secondary">Habilitar Edición</button>
+      <button @click="toggleDisableInputs('button')" class="btn btn-secondary">Habilitar Edición</button>
     </h1>
     <div class="row">
       <!-- Columna izquierda -->
@@ -79,8 +84,7 @@ export default {
       <!-- Div adicional para el botón -->
       <div class="col-md-12 d-flex flex-column align-items-center justify-content-center">
         <button @click="modUser()" class="btn btn-primary" style="width: 100%; height: 100%;">
-          <span id="botonActUser"
-            style="display:inline-block; font-size: xx-large;white-space: nowrap;">ACTUALIZAR
+          <span id="botonActUser" style="display:inline-block; font-size: xx-large;white-space: nowrap;">ACTUALIZAR
             DATOS USUARIO</span>
         </button>
       </div>
@@ -105,11 +109,11 @@ export default {
   letter-spacing: 1dvi;
   background-color: wheat;
   text-align: center;
-  width: 50%;
-  margin-left: 25%;
+  width: fit-content;
+  margin: 0 auto;
   border: #464646 2px solid;
   border-radius: 10%;
-  font-size: xx-large;
+  font-size: 2vw;
 }
 
 #listadata {

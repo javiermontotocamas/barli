@@ -26,10 +26,6 @@ export default {
       return this.tables.filter(table => !table.outdoor);
     }, freeTables() {
       return this.tables.filter(table => table.status === 'FREE');
-    }, activeBookingTables() {
-      return this.tables.filter(table => {
-        return table.bookings.some(booking => booking.completed === null);
-      });
     },
     totalMesas() {
       // Suma de las mesas interiores y exteriores
@@ -38,7 +34,7 @@ export default {
     busyPercentage() {
       // Calcula el porcentaje de mesas "BUSY" en relación con el total
       const busyTables = this.tables.filter(table => table.status === 'BUSY').length;
-      return (busyTables / this.totalMesas) * 100 || 0; // Evita división por cero
+      return Math.floor((busyTables / this.totalMesas) * 100) || 0; // Evita división por cero y limita a un numero entero
     },
   },
   async mounted() {
@@ -118,49 +114,61 @@ export default {
 <template>
   <main class="container-fluid mt-5">
     <div class="mt-2 p-4" id="contenedorTitulo">
-      <h1 id="titulo" class="text-center p-2">{{ barData.name }} - MIS MESAS</h1>
-    </div>
-    <div class="row text-center vh-100">
+      <h1>{{ barData.name }} - MIS MESAS</h1>
       <h1>Numero de Mesas: {{ totalMesas }}</h1>
-      <h2>Grado de Ocupación</h2>
+      <h3>Grado de Ocupación</h3>
       <div class="progress">
         <div class="progress-bar" :style="{ width: `${busyPercentage}%` }" role="progressbar" aria-valuenow="25"
           aria-valuemin="0" aria-valuemax="100">
           {{ busyPercentage }}%
         </div>
       </div>
-      <div id="inT" class="col-md-6 h-50">
+    </div>
+    <div class="row-container mb-0 text-center">
+      <div class="row text-center d-inline-block mt-5">
+        <h1 class="d-md-block d-none mb-0 border border-dashed border-dark">MAPA DE MESAS</h1>
+      </div>
+    </div>
+    <div class="row text-center">
+      <div id="inT" class="col-md-6">
         <h2 class="mt-1">MESAS INTERIOR</h2>
-        <ul>
+        <ul style="list-style-type: none;">
           <li v-for="(table, index) in indoorTables" :key="index">
-            Mesa número: {{ table.number }}- Plazas: {{ table.seats }} - Estado: {{ table.status }} - Exterior: {{
-              table.outdoor }}
-            <button @click="changeTableStatus(table.number, 'BUSY')" v-if="table.status !== 'BUSY'">OCUPAR MESA</button>
-            <button @click="changeTableStatus(table.number, 'FREE')" v-if="table.status !== 'FREE'">LIBERAR MESA</button>
+            Mesa número: {{ table.number }}- Plazas: {{ table.seats }} - Estado: {{ table.status }}
+            <button @click="changeTableStatus(table.number, 'BUSY')" v-if="table.status !== 'BUSY'"
+              style="background-color: red;">OCUPAR MESA</button>
+            <button @click="changeTableStatus(table.number, 'FREE')" v-if="table.status !== 'FREE'"
+              style="background-color: greenyellow;">LIBERAR MESA</button>
+            <hr>
           </li>
         </ul>
       </div>
-      <div id="outT" class="col-md-6 h-50">
+      <div id="outT" class="col-md-6">
         <h2 class="mt-1">MESAS EXTERIOR</h2>
-        <ul>
+        <ul style="list-style-type: none;">
           <li v-for="(table, index) in outdoorTables" :key="index">
             Mesa número: {{ table.number }}- Plazas: {{ table.seats }} - Estado: {{ table.status }} - Exterior: {{
               table.outdoor }}
-            <button @click="changeTableStatus(table.number, 'BUSY')" v-if="table.status !== 'BUSY'">OCUPAR MESA</button>
-            <button @click="changeTableStatus(table.number, 'FREE')" v-if="table.status !== 'FREE'">LIBERAR MESA</button>
+            <button @click="changeTableStatus(table.number, 'BUSY')" v-if="table.status !== 'BUSY'"
+              style="background-color: red;">OCUPAR MESA</button>
+            <button @click="changeTableStatus(table.number, 'FREE')" v-if="table.status !== 'FREE'"
+              style="background-color: greenyellow;">LIBERAR MESA</button>
+            <hr>
           </li>
         </ul>
       </div>
     </div>
+    <div class="row text-center mb-0">
+      <h1 class="d-md-block d-none mb-0 ">CRUD MESAS</h1>
+    </div>
     <div class="row text-center">
-      <h1>CRUD MESAS</h1>
       <div id="plusblock" class="col-md-6">
         <h2>AÑADIR MESA</h2>
         <table class="table table-hover border-dark">
           <thead class="table-dark">
             <tr>
               <th>Numero de asientos</th>
-              <th>REDUCCIÓN DE PRECIO</th>
+              <th>Ubicación mesa</th>
               <th>ACCIONES</th>
             </tr>
           </thead>
@@ -183,7 +191,7 @@ export default {
       </div>
       <div id="minusblock" class="col-md-6">
         <h2>ELIMINAR MESA</h2>
-        <table class="table table-hover border-dark">
+        <table class="table table-hover border-darks">
           <thead class="table-dark">
             <tr>
               <th>Numero de mesa</th>
@@ -227,23 +235,58 @@ export default {
   font-weight: bolder;
   background-color: wheat;
   text-align: center;
-  width: 50%;
-  margin-left: 25%;
+  width: 35%;
+  margin-left: 33%;
   border: #464646 2px solid;
   border-radius: 10%;
-  font-size: xx-large;
+  font-size: 3vw;
+}
+
+#contenedorTitulo h3 {
+  text-transform: capitalize;
+  text-align: center;
+  font-weight: bold;
+  background-color: antiquewhite;
+  border: #464646 2px solid;
+  border-radius: 10%;
+  width: 20%;
+  margin-left: 40%;
+  font-size: 2vw;
 }
 
 #inT {
   background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.3)), url(../assets/indoorTable.jpg);
   background-repeat: no-repeat;
   background-size: cover;
+  border: solid 2px;
+  max-height: 50vh;
+  overflow-y: auto;
+  font-style: italic;
 }
 
 #outT {
   background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.3)), url(../assets/outdoorTable.jpg);
   background-repeat: no-repeat;
   background-size: cover;
+  border: solid 2px;
+  max-height: 50vh;
+  overflow-y: auto;
+  font-style: italic;
+}
+
+#inT h2,
+#outT h2 {
+  border: 1px solid black;
+  width: 50%;
+  margin-left: 25%;
+  background-color: rgba(164, 203, 54, 0.7);
+}
+
+#inT li,
+#outT li {
+  width: 100%;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* BOTON DE AÑADIR MESA */
@@ -272,7 +315,7 @@ export default {
 #plusblock {
   background: #D5E4E8 none repeat scroll 0 0;
   border: 3px solid #B5CAD0;
-  margin: 20px 0px;
+  margin: 15px 0px;
   padding: 20px;
 }
 
@@ -290,7 +333,7 @@ export default {
 #minusblock {
   background: #D5E4E8 none repeat scroll 0 0;
   border: 3px solid #B5CAD0;
-  margin: 20px 0px;
+  margin: 15px 0px;
   padding: 20px;
 }
 
@@ -303,12 +346,4 @@ export default {
   padding: 2px 0 0;
   line-height: 1.2em;
   margin: 0 0 10px;
-}
-
-#activeTables {
-  background-color: #F5F5F5;
-  padding: 20px;
-  margin-top: 20px;
-  border: 3px solid #CCCCCC;
-}
-</style>
+}</style>

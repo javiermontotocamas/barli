@@ -1,40 +1,77 @@
 <script></script>
 
 <template>
-  <main class="d-flex justify-content-between flex-column flex-md-row p-4 gap-2">
-    <div class="col">
-      <div class="column" id="empresa">
+  <main class="d-flex flex-column p-4 gap-2">
+    <div class="col mt-4">
+      <div class="column">
         <div class="content">
-          <p class="titulo">Sobre Barli</p>
-          <p>
-            Bienvenido a Barli, tu compañero perfecto para encontrar el bar ideal. En Barli,
-            entendemos que la experiencia de salir a disfrutar de un buen momento con amigos o seres
-            queridos debe ser sencilla y agradable. Es por eso que hemos creado esta aplicación
-            única, diseñada para hacer que la búsqueda de bares sea más fácil y eficiente que nunca.
-          </p>
+          <p class="titulo">Funciones de la Aplicación</p>
+          <div class="row">
+            <div class="col-md-6">
+              <p class="subtitulo">Ultima versión</p>
+              <ul>
+                <li>Gestionar usuarios de tipo "Customer" junto sus acciones:
+                  <ul>
+                    <li>Edición de información propia.</li>
+                    <li>Capacidad para reservar una mesa en una cantidad determinada de kilometros (de 1 a 5), con un
+                      numero concreto de acompañantes y seleccionando si quiere que la mesa este fuera o dentro del bar.
+                      EL PROGRAMA ESTA DISEÑADO PARA SOLO PERMITIR BUSCAR BARES EN LA PENÍNSULA IBÉRICA.
+                    </li>
+                  </ul>
+                </li>
+                <hr>
+                <li>Gestionar usuarios de tipo "Bar" junto a sus acciones:
+                  <ul>
+                    <li>Edición de información propia, entre la que esta la ubicación del bar mediante el ingreso de la
+                      latitud y longitud determinada.</li>
+                    <li>Creación de anuncios, dependiendo del numero de estos se mostraran de diferente manera a la hora
+                      de que el usuario customer vea la carta que se muestra cuando tiene la opcion de reservar o no,
+                      junto a la descripcion. Estas dos cosas están pensadas como parte de los argumentos que tiene un bar
+                      para atraer la reserva.</li>
+                    <li>
+                      Incluye una pagina de gestion de las mesas, desde aqui podemos ver que grado de ocupacion en
+                      porcentaje de nuestro bar esta siendo usado, junto a un mapa de nuestras mesas, diferenciando entre
+                      las exteriores e interiores y viendo las que tienen petición de reserva. También podemos añadir
+                      mesas nuevas o eliminar mesas dentro de unas condiciones lógicas.
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <p class="subtitulo">Ideas para próximas versiones</p>
+              <ul>
+                <li>
+                  En la ventana modal de registro de bar, este no tiene que ingresar su latitud y longitud concreta sino
+                  tan solo pinchar en un punto del mapa.
+                </li>
+                <li>
+                  Inclusion de una carta para el bar compuesta por productos y precios promoviendo asi el afán de
+                  transparencia de la aplicación.
+                </li>
+                <li>
+                  Sistema de votación propio de los usuarios hacia los bares y lo que es novedoso, votación de los platos
+                  de la carta para que tanto los otros usuarios como el dueño del bar pueda ver que platos estan gustando.
+                </li>
+                <li>Todo esto conllevaría a una ventana para usuarios publicos con un buscador de bares pero sin la
+                  limitación de las mesas, para así entrar y ver la carta, pero no sus promociones. Así se seguiría
+                  fomentando el registro de clientes.</li>
+                <li>Más...</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <div class="col">
-      <div class="column" id="autor">
+      <div class="column">
         <div class="content">
-          <p class="titulo">Sobre Javier Montoto</p>
-          <p>
-            Hola, soy Javier Montoto, un apasionado programador de 28 años con un toque de
-            creatividad. Vivo en la hermosa ciudad de Sevilla, donde encuentro inspiración en cada
-            rincón de esta tierra rica en cultura y tradición. Desde joven, me he sentido atraído
-            por el mundo de la programación, y he invertido tiempo y energía en cultivar mis
-            habilidades en este campo en constante evolución.
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="column" id="contacto">
-        <div class="content">
-          <p class="titulo">Contacto</p>
-          <p>Teléfono: +34 123 456 789 (Número de teléfono ficticio)</p>
-          <p>Email: javier.montoto@example.com (Dirección de correo electrónico ficticia)</p>
+          <p class="titulo">Sobre el Creador</p>
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <img src="../assets/Javier montoto_page-0001.jpg" alt="Curriculum Vitae" width="50%" height="100%">
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -44,13 +81,14 @@
 <style scoped>
 main {
   justify-content: space-between;
-  height: 25rem;
+  height: auto;
+  /* Cambiado a auto para adaptarse al contenido */
 }
 
 .column {
   /* Ajusta el ancho de cada columna según tu preferencia */
-  height: 100%;
-  /* Establece una altura fija para todas las columnas */
+  width: 100%;
+  /* 100% para ocupar todo el ancho */
 }
 
 .content {
@@ -60,29 +98,14 @@ main {
   /* Cambia el color de fondo según tu preferencia */
   padding: 20px;
   border-radius: 10px;
-  height: 100%;
-}
-
-/* Define colores de fondo diferentes para cada columna */
-#empresa .content {
-  background-color: rgba(255, 215, 0, 0.3);
-  /* Ejemplo de color de fondo dorado */
-}
-
-#autor .content {
-  background-color: rgba(0, 122, 204, 0.3);
-  /* Ejemplo de color de fondo azul */
-}
-
-#contacto .content {
-  background-color: rgba(255, 87, 51, 0.3);
-  /* Ejemplo de color de fondo naranja */
+  margin-bottom: 20px;
+  /* Añadido para separar las columnas */
 }
 
 .titulo {
   color: black;
   text-align: center;
-  font-size: 24px;
+  font-size: 3em;
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   transition: all 0.3s;
   /* Agrega una transición suave a todos los cambios */
@@ -92,7 +115,7 @@ main {
 }
 
 .titulo:hover {
-  font-size: 28px;
+  font-size: 2.5em;
   /* Cambia el tamaño de fuente al pasar el cursor por encima */
 }
 
@@ -112,5 +135,23 @@ main {
 
 .content .titulo:hover::before {
   transform: scaleX(1);
+}
+
+
+.subtitulo {
+  color: slategray;
+  text-align: center;
+  font-size: 2em;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  transition: all 0.3s;
+  /* Agrega una transición suave a todos los cambios */
+  position: relative;
+  display: block;
+  padding: 5px;
+}
+
+.subtitulo:hover {
+  font-size: 1.5em;
+  /* Cambia el tamaño de fuente al pasar el cursor por encima */
 }
 </style>

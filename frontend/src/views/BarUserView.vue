@@ -23,8 +23,13 @@ export default {
       const response = await getDataOfBar(entity_id)
       this.barData = await response.json()
     },
-    toggleDisableInputs() {
-      this.disableInputs = !this.disableInputs;
+    toggleDisableInputs(source) {
+      console.log('toggleDisableInputs called from:', source);
+      if (source === 'button') {
+        this.disableInputs = !this.disableInputs;
+      } else {
+        this.disableInputs = true
+      }
     },
     async modBar() {
       this.errorMessage = ''
@@ -56,9 +61,9 @@ export default {
   <main class="container-fluid mt-5" v-if="barData">
     <h1 class="text-center mt-2" id="titulo">
       <p>{{ barData.user.username }}</p>
-      <button @click="toggleDisableInputs" class="btn btn-secondary">Habilitar Edición</button>
+      <button @click="toggleDisableInputs('button')" class="btn btn-secondary">Habilitar Edición</button>
     </h1>
-    <div class="row" style="height: 100vh; margin-bottom: 13%;">
+    <div class="row">
       <!-- Columna izquierda -->
       <div class="col-md-6">
         <ol id="listadata">
@@ -106,8 +111,12 @@ export default {
       <!-- Div adicional para el botón -->
       <div class="col-md-1 d-flex flex-column align-items-center justify-content-center">
         <button @click="modBar()" class="btn btn-primary" style="width: 100%; height: 100%;">
-          <span id="botonActBar"
-            style="display:inline-block; font-size: xx-large; writing-mode: vertical-rl;white-space: nowrap;">ACTUALIZAR
+          <!-- Texto horizontal en vista pequeña -->
+          <span class="d-sm-inline d-md-none" style="display:inline-block; font-size: xx-large;">ACTUALIZAR DATOS
+            BAR</span>
+          <!-- Texto vertical en vistas más grandes -->
+          <span class="d-none d-sm-none d-md-inline"
+            style="display:inline-block; font-size: xx-large; writing-mode: vertical-rl; white-space: nowrap;">ACTUALIZAR
             DATOS BAR</span>
         </button>
       </div>
@@ -154,7 +163,7 @@ export default {
   margin-left: 25%;
   border: #464646 2px solid;
   border-radius: 10%;
-  font-size: xx-large;
+  font-size: 3vw;
 }
 
 #listadata {

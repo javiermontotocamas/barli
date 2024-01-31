@@ -181,42 +181,51 @@ export default {
         <div class="row">
           <div v-if="ads.length > 0" class="col-md-3">
             <div>
+              <p>PROMOCION</p>
+              <hr>
               <p>{{ ads[0].product_name }}</p>
-              <p>Reducción: {{ ads[0].reduction }}%</p>
+              <p>Rebaja: {{ ads[0].reduction }}%</p>
             </div>
           </div>
-          <div class="col-md-6"> {{ barSeleccionado.description }}
+          <div class="col-md-6 border p-3 mb-4 mt-4"> {{ barSeleccionado.description }}
           </div>
           <div v-if="ads.length >= 1" class="col-md-3">
             <div v-if="ads.length === 1" class="col-md-3">
               <div>
+                <p>PROMOCION</p>
+                <hr>
                 <p>{{ ads[0].product_name }}</p>
-                <p>Reducción: {{ ads[0].reduction }}%</p>
+                <p>Rebaja: {{ ads[0].reduction }}%</p>
               </div>
             </div>
-            <!-- Si hay más de un anuncio, mostrar solo el segundo -->
+            <!-- Si hay dos, mostrar solo el segundo -->
             <div v-if="ads.length === 2">
               <div v-for="(ad, index) in ads.slice(1)" :key="index">
+                <p>PROMOCION</p>
+                <hr>
                 <p>{{ ad.product_name }}</p>
-                <p>Reducción: {{ ad.reduction }}%</p>
+                <p>Rebaja: {{ ad.reduction }}%</p>
               </div>
             </div>
             <!-- Si hay más de dos anuncios, mostrar uno aleatorio diferente al primero -->
             <div v-else>
               <div v-for="(ad, index) in ads.slice(1)" :key="index">
+                <p>PROMOCION</p>
+                <hr>
                 <p>{{ ad.product_name }}</p>
-                <p>Reducción: {{ ad.reduction }}%</p>
+                <p>Rebaja: {{ ad.reduction }}%</p>
               </div>
             </div>
           </div>
         </div>
         <div class="row">
+          <hr>
           <h5>{{ barSeleccionado.address }}</h5>
-          <h6>{{ barSeleccionado.phone }}</h6>
+          <h6>Telefono de contacto: {{ barSeleccionado.phone }}</h6>
         </div>
       </template>
       <template v-slot:pie>
-        <div class="col-md-12"><button v-on:click="bookTable(this.bar)" class="w-100">Hacer reserva</button></div>
+        <div class="col-12"><button v-on:click="bookTable(this.bar)" class="w-100">Hacer reserva</button></div>
       </template>
     </ModalLayer>
 
@@ -260,7 +269,7 @@ export default {
                   <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" layer-type="base"
                     name="OpenStreetMap">
                   </l-tile-layer>
-                  <l-circle :lat-lng="buscarForm.mapCenter" :radius="buscarForm.distancia * 1100" />
+                  <l-circle :lat-lng="buscarForm.mapCenter" :radius="buscarForm.distancia * 1350" />
                   <l-marker v-for="(bar, index) in barList" :key="index" :lat-lng="[bar.latitude, bar.longitude]">
                     <l-tooltip :options="{ permanent: true, interactive: true }">
                       {{ bar.name }}

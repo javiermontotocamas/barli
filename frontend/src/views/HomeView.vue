@@ -7,26 +7,12 @@ import { RouterLink } from 'vue-router'
   <main class="container-fluid">
     <div id="carouselExampleCaptions" data-bs-ride="carousel" class="carousel slide">
       <div class="carousel-indicators">
-        <button
-          type="button"
-          data-bs-target="#carouselExampleCaptions"
-          data-bs-slide-to="0"
-          class="active"
-          aria-current="true"
-          aria-label="Slide 1"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#carouselExampleCaptions"
-          data-bs-slide-to="1"
-          aria-label="Slide 2"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#carouselExampleCaptions"
-          data-bs-slide-to="2"
-          aria-label="Slide 3"
-        ></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+          aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+          aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+          aria-label="Slide 3"></button>
       </div>
       <div class="carousel-inner">
         <div class="carousel-item active">
@@ -72,21 +58,11 @@ import { RouterLink } from 'vue-router'
           </div>
         </div>
       </div>
-      <button
-        class="carousel-control-prev"
-        type="button"
-        data-bs-target="#carouselExampleCaptions"
-        data-bs-slide="prev"
-      >
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
       </button>
-      <button
-        class="carousel-control-next"
-        type="button"
-        data-bs-target="#carouselExampleCaptions"
-        data-bs-slide="next"
-      >
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
@@ -112,9 +88,7 @@ import { RouterLink } from 'vue-router'
                 aumentar tu clientela y ofrecer experiencias memorables. Registra tu bar ahora y sé
                 parte de la revolución digital en la industria de la hostelería.
               </p>
-              <router-link :to="{ name: 'about' }" class="nav-link" router-link-active="active"
-                >Contáctanos</router-link
-              >
+              <router-link :to="{ name: 'about' }" class="nav-link" router-link-active="active">Contáctanos</router-link>
             </div>
           </div>
         </div>
@@ -134,10 +108,7 @@ import { RouterLink } from 'vue-router'
         <div class="row">
           <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="single-services text-center">
-              <font-awesome-icon
-                icon="martini-glass-citrus"
-                class="icon-services"
-              ></font-awesome-icon>
+              <font-awesome-icon icon="martini-glass-citrus" class="icon-services"></font-awesome-icon>
               <h2>Promociona Tu Bar</h2>
               <p>
                 Beneficiate de la ventaja del turismo en nuestro país, saca ventaja de la
@@ -195,30 +166,30 @@ import { RouterLink } from 'vue-router'
               <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <div class="single-box">
-                    <font-awesome-icon icon="automobile" class="icon-why"></font-awesome-icon>
+                    <font-awesome-icon icon="credit-card" class="icon-why"></font-awesome-icon>
                     <h2>Why <span>Choose Us?</span></h2>
-                    <p>Lorem ipsum dolor sit amet</p>
+                    <p>Servicio gratuito</p>
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <div class="single-box">
-                    <font-awesome-icon icon="cogs" class="icon-why"></font-awesome-icon>
+                    <font-awesome-icon icon="hand-holding-hand" class="icon-why"></font-awesome-icon>
                     <h2>Why <span>Choose Us?</span></h2>
-                    <p>Lorem ipsum dolor sit amet</p>
+                    <p>Comprometidos con la asistencia</p>
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <div class="single-box">
-                    <font-awesome-icon icon="adjust" class="icon-why"></font-awesome-icon>
+                    <font-awesome-icon icon="earth" class="icon-why"></font-awesome-icon>
                     <h2>Why <span>Choose Us?</span></h2>
-                    <p>Lorem ipsum dolor sit amet</p>
+                    <p>Posibilidad de ser buscado desde cualquier sitio del mundo</p>
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                   <div class="single-box">
-                    <font-awesome-icon icon="wrench" class="icon-why"></font-awesome-icon>
+                    <font-awesome-icon icon="y" class="icon-why"></font-awesome-icon>
                     <h2>Why <span>Choose Us?</span></h2>
-                    <p>Lorem ipsum dolor sit amet</p>
+                    <p>Why not?</p>
                   </div>
                 </div>
               </div>
@@ -238,8 +209,8 @@ import { RouterLink } from 'vue-router'
         <div class="row">
           <div class="col-lg-12">
             <div class="section-header text-center">
-              <h2>Clients <span>Comments</span></h2>
-              <p>Lorem ipsum dolor sit amet</p>
+              <h2>Comentarios de <span>Usuarios</span></h2>
+              <p>Comentatrios dejados por usuarios que han buscado mesa o dueños de bares en la aplicación</p>
             </div>
           </div>
         </div>
@@ -251,10 +222,8 @@ import { RouterLink } from 'vue-router'
               </div>
               <h2>John Doe</h2>
               <p>
-                <i
-                  >"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id tenetur obcaecati
-                  eius corrupti sit a!"</i
-                >
+                <i>"Aproveche las promociones de las ofertas para empezar a atraer clientes que al conocer el bar por
+                  primera vez, repitieron!"</i>
               </p>
               <h5>GERENTE <br /><span>Bar los álamos</span></h5>
             </div>
@@ -266,10 +235,8 @@ import { RouterLink } from 'vue-router'
               </div>
               <h2>John Doe</h2>
               <p>
-                <i
-                  >"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id tenetur obcaecati
-                  eius corrupti sit a!"</i
-                >
+                <i>"En una ciudad con tanto turismo como sevilla, esta aplicación me hace saber si puedo tomarme algo en
+                  el centro o no"</i>
               </p>
               <h5>CONSUMIDOR <br /><span>Local</span></h5>
             </div>
@@ -281,10 +248,8 @@ import { RouterLink } from 'vue-router'
               </div>
               <h2>John Doe</h2>
               <p>
-                <i
-                  >"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id tenetur obcaecati
-                  eius corrupti sit a!"</i
-                >
+                <i>"Antes de decidir escoger el hotel en el que me estuve hospedando en madrid comprobé si los bares
+                  suelen estar llenos alrededor"</i>
               </p>
               <h5>CONSUMIDOR <br /><span>Extranjero</span></h5>
             </div>
@@ -312,6 +277,10 @@ import { RouterLink } from 'vue-router'
 }
 
 .carousel-caption {
+  display: inline-block;
+  max-width: 60%;
+  border-radius: 20%;
+  background: rgba(255, 255, 255, 0.4);
   bottom: 220px;
   z-index: 2;
   left: 8%;
@@ -331,7 +300,6 @@ import { RouterLink } from 'vue-router'
 }
 
 .carousel-caption p {
-  width: 60%;
   font-size: 18px;
   line-height: 1.8;
   color: #08194a;
