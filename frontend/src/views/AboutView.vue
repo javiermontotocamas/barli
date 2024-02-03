@@ -63,6 +63,7 @@
         </div>
       </div>
     </div>
+    <hr>
     <div class="col">
       <div class="column">
         <div class="content">
@@ -92,12 +93,9 @@ main {
 }
 
 .content {
-  color: darkolivegreen;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  border: 1mm solid rgb(120, 13, 228);
   /* Cambia el color de fondo según tu preferencia */
   padding: 20px;
-  border-radius: 10px;
   margin-bottom: 20px;
   /* Añadido para separar las columnas */
 }
@@ -153,5 +151,12 @@ main {
 .subtitulo:hover {
   font-size: 1.5em;
   /* Cambia el tamaño de fuente al pasar el cursor por encima */
+}
+
+li {
+  color: darkolivegreen;
+  font-family: "Latin Modern Roman";
+  font-style: italic;
+  font-size: 1.1vw;
 }
 </style>
