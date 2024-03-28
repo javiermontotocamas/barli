@@ -146,3 +146,4 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
   "TOKEN_OBTAIN_SERIALIZER": "api.serializers.MyTokenObtainPairSerializer",
 }
+#La lina que configura el refresh del token expired esta en un archivo dentro de .venv\Lib\site-packages\rest_framework_simplejwt\settings.py
