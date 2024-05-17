@@ -20,7 +20,7 @@ import { RouterLink } from 'vue-router'
             <h5 class="animate__animated animate__fadeInDown" style="animation-delay: 1s">
               Encuentra <span>Mesa</span>
             </h5>
-            <p class="animate__animated animate__fadeInUp" style="animation-delay: 2s">
+            <p class="animate__animated animate__fadeInUp parrafo_inicio_portada" style="animation-delay: 2s">
               Nuestra aplicación simplifica este proceso, permitiéndote buscar mesas en bares
               cercanos de manera fácil y rápida.
             </p>
@@ -34,7 +34,7 @@ import { RouterLink } from 'vue-router'
             <h5 class="animate__animated animate__fadeInDown" style="animation-delay: 1s">
               Haz <span>Reserva</span>
             </h5>
-            <p class="animate__animated animate__fadeInUp" style="animation-delay: 2s">
+            <p class="animate__animated animate__fadeInUp parrafo_inicio_portada" style="animation-delay: 2s">
               Podrás reservar mesa y elegir la cantidad de comensales que te acompañaran en tu
               flamante cita.
             </p>
@@ -48,7 +48,7 @@ import { RouterLink } from 'vue-router'
             <h5 class="animate__animated animate__fadeInDown" style="animation-delay: 1s">
               No <span>Esperes</span>
             </h5>
-            <p class="animate__animated animate__fadeInUp" style="animation-delay: 2s">
+            <p class="animate__animated animate__fadeInUp parrafo_inicio_portada" style="animation-delay: 2s">
               Descarga nuestra aplicación y redescubre la forma de disfrutar de tu tiempo en bares y
               restaurantes.
             </p>
@@ -58,11 +58,13 @@ import { RouterLink } from 'vue-router'
           </div>
         </div>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+        data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
       </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+        data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
@@ -88,7 +90,8 @@ import { RouterLink } from 'vue-router'
                 aumentar tu clientela y ofrecer experiencias memorables. Registra tu bar ahora y sé
                 parte de la revolución digital en la industria de la hostelería.
               </p>
-              <router-link :to="{ name: 'about' }" class="nav-link" router-link-active="active">Contáctanos</router-link>
+              <router-link :to="{ name: 'about' }" class="nav-link"
+                router-link-active="active">Contáctanos</router-link>
             </div>
           </div>
         </div>
@@ -210,7 +213,7 @@ import { RouterLink } from 'vue-router'
           <div class="col-lg-12">
             <div class="section-header text-center">
               <h2>Comentarios de <span>Usuarios</span></h2>
-              <p>Comentatrios dejados por usuarios que han buscado mesa o dueños de bares en la aplicación</p>
+              <p>Comentarios dejados por usuarios que han buscado mesa o dueños de bares en la aplicación</p>
             </div>
           </div>
         </div>
@@ -304,6 +307,13 @@ import { RouterLink } from 'vue-router'
   line-height: 1.8;
   color: #08194a;
   text-align: left;
+}
+
+.parrafo_inicio_portada {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.3em;
+  font-weight: 750;
+  color:darkslategray  !important;
 }
 
 .carousel-caption a {

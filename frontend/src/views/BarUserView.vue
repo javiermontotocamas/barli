@@ -61,7 +61,7 @@ export default {
   <main class="container-fluid mt-5" v-if="barData">
     <h1 class="text-center mt-2" id="titulo">
       <p>{{ barData.user.username }}</p>
-      <button @click="toggleDisableInputs('button')" class="btn btn-secondary">Habilitar Edición</button>
+      <button @click="toggleDisableInputs('button')" class="btn btn-secondary btn-lg mb-3">¡Habilitar Edición!</button>
     </h1>
     <div class="row">
       <!-- Columna izquierda -->
@@ -136,7 +136,8 @@ export default {
       </div>
     </div>
     <div class="row">
-      <p id="enlaceMesas"><router-link :to="{ name: 'manageBooks' }" class="nav-link" router-link-active="active">Acceder
+      <p id="enlaceMesas"><router-link :to="{ name: 'manageBooks' }" class="nav-link"
+          router-link-active="active">Acceder
           a MIS MESAS</router-link></p>
     </div>
     <div class="row">

@@ -126,40 +126,35 @@ export default {
     </div>
     <div class="row-container mb-0 text-center">
       <div class="row text-center d-inline-block mt-5">
-        <h1 class="d-md-block d-none mb-0 border border-dashed border-dark">MAPA DE MESAS</h1>
+        <h1 class="titulobord d-md-block d-none mb-0 border border-dashed border-dark">MAPA DE MESAS</h1>
       </div>
     </div>
     <div class="row text-center">
       <div id="inT" class="col-md-6">
-        <h2 class="mt-1">MESAS INTERIOR</h2>
+        <h2 class="mt-1 titulo-mesa">MESAS INTERIOR</h2>
         <ul style="list-style-type: none;">
           <li v-for="(table, index) in indoorTables" :key="index">
             Mesa número: {{ table.number }}- Plazas: {{ table.seats }} - Estado: {{ table.status }}
-            <button @click="changeTableStatus(table.number, 'BUSY')" v-if="table.status !== 'BUSY'"
-              style="background-color: red;">OCUPAR MESA</button>
-            <button @click="changeTableStatus(table.number, 'FREE')" v-if="table.status !== 'FREE'"
-              style="background-color: greenyellow;">LIBERAR MESA</button>
+            <button @click="changeTableStatus(table.number, 'BUSY')" v-if="table.status !== 'BUSY'" class="ocupar-button">OCUPAR MESA</button>
+            <button @click="changeTableStatus(table.number, 'FREE')" v-if="table.status !== 'FREE'" class="liberar-button">LIBERAR MESA</button>
             <hr>
           </li>
         </ul>
       </div>
       <div id="outT" class="col-md-6">
-        <h2 class="mt-1">MESAS EXTERIOR</h2>
+        <h2 class="mt-1 titulo-mesa">MESAS EXTERIOR</h2>
         <ul style="list-style-type: none;">
           <li v-for="(table, index) in outdoorTables" :key="index">
-            Mesa número: {{ table.number }}- Plazas: {{ table.seats }} - Estado: {{ table.status }} - Exterior: {{
-              table.outdoor }}
-            <button @click="changeTableStatus(table.number, 'BUSY')" v-if="table.status !== 'BUSY'"
-              style="background-color: red;">OCUPAR MESA</button>
-            <button @click="changeTableStatus(table.number, 'FREE')" v-if="table.status !== 'FREE'"
-              style="background-color: greenyellow;">LIBERAR MESA</button>
+            Mesa número: {{ table.number }}- Plazas: {{ table.seats }} - Estado: {{ table.status }} - Exterior: {{ table.outdoor }}
+            <button @click="changeTableStatus(table.number, 'BUSY')" v-if="table.status !== 'BUSY'" class="ocupar-button">OCUPAR MESA</button>
+            <button @click="changeTableStatus(table.number, 'FREE')" v-if="table.status !== 'FREE'" class="liberar-button">LIBERAR MESA</button>
             <hr>
           </li>
         </ul>
       </div>
     </div>
     <div class="row text-center mb-0">
-      <h1 class="d-md-block d-none mb-0 ">CRUD MESAS</h1>
+      <h1 class="d-md-block d-none mb-0 mt-3 ">CRUD MESAS</h1>
     </div>
     <div class="row text-center">
       <div id="plusblock" class="col-md-6">
@@ -220,6 +215,10 @@ export default {
 </template>
 
 <style scoped>
+main {
+  background-color: whitesmoke;
+}
+
 #contenedorTitulo {
   height: 100%;
   background-position: center;
@@ -243,15 +242,26 @@ export default {
 }
 
 #contenedorTitulo h3 {
+  margin-top: 1em;
   text-transform: capitalize;
   text-align: center;
   font-weight: bold;
   background-color: antiquewhite;
   border: #464646 2px solid;
   border-radius: 10%;
-  width: 20%;
-  margin-left: 40%;
+  width: 50%;
+  height: 50%;
+  margin-left: 25%;
   font-size: 2vw;
+}
+
+.progress {
+  height: 3em;
+}
+
+.titulobord {
+  border-top-left-radius: 0.5em;
+  border-top-right-radius: 0.5em;
 }
 
 #inT {
@@ -274,19 +284,66 @@ export default {
   font-style: italic;
 }
 
-#inT h2,
-#outT h2 {
-  border: 1px solid black;
-  width: 50%;
-  margin-left: 25%;
-  background-color: rgba(164, 203, 54, 0.7);
+.titulo-mesa {
+  background-color: #3498db; /* Color de fondo azul */
+  color: white; /* Color del texto blanco */
+  padding: 10px 20px; /* Espaciado interno */
+  text-align: center; /* Alinear el texto al centro */
+  border-radius: 12px; /* Bordes redondeados */
+  font-size: 24px; /* Tamaño de fuente más grande */
+  font-weight: bold; /* Texto en negrita */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); /* Sombra */
+  margin: 20px auto; /* Espaciado externo */
+  width: 60%; /* Ancho del elemento */
 }
 
 #inT li,
 #outT li {
   width: 100%;
   font-weight: bold;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.ocupar-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.ocupar-button:hover {
+  background-color: #c0392b;
+  color: white;
+}
+
+.liberar-button {
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.liberar-button:hover {
+  background-color: #27ae60;
+  color: white;
 }
 
 /* BOTON DE AÑADIR MESA */
@@ -346,4 +403,5 @@ export default {
   padding: 2px 0 0;
   line-height: 1.2em;
   margin: 0 0 10px;
-}</style>
+}
+</style>

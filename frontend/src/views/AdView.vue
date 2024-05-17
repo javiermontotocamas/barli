@@ -57,10 +57,10 @@ export default {
 </script>
 <template>
   <main class="container-fluid mt-5">
-    <h1 class="text-center mt-5">GESTION ANUNCIOS SOBRE PRODUCTOS DEL BAR</h1>
-    <table class="table table-hover border-dark">
+    <h1 class="text-center mt-5 custom-heading">GESTION ANUNCIOS SOBRE PRODUCTOS DEL BAR</h1>
+    <table class="table table-hover border-dark" style="opacity: 0.9;">
       <thead class="table-dark">
-        <tr>
+        <tr class="text-center">
           <th>PRODUCTO</th>
           <th>REDUCCIÓN DE PRECIO</th>
           <th>ACCIONES</th>
@@ -68,10 +68,10 @@ export default {
       </thead>
       <tbody>
         <tr v-for="(ad, index) in ads" :key="index">
-          <td>{{ ad.product_name }}</td>
-          <td>{{ ad.reduction }}</td>
+          <td class="text-center">{{ ad.product_name }}</td>
+          <td class="text-center">{{ ad.reduction }}</td>
           <td>
-            <button @click="deleteAd(ad.id)">Eliminar</button>
+            <button @click="deleteAd(ad.id)" class="w-100">Eliminar</button>
           </td>
         </tr>
         <tr>
@@ -79,7 +79,7 @@ export default {
           <td><input class="w-100" type="number" placeholder="Proporción descuento" min="5" max="95"
               v-model="newAd.reduction" /></td>
           <td>
-            <button @click="addAd()">Nueva promoción</button>
+            <button @click="addAd()" class="w-100">Nueva promoción</button>
             <p class="w-50" id="showError">{{ errorMessage }}</p>
           </td>
         </tr>
@@ -90,9 +90,18 @@ export default {
 
 <style scoped>
 main {
-  height: 85vh;
-  background-image: url(../assets/adWallpaper.jpg);
-  background-size: cover;
+  height: 100vh;
+  margin-bottom: 0%;
+  background-image: url(../assets/food-prices.jpg);
+  background-size: contain;
   background-position: center;
+}
+
+.custom-heading {
+  padding: 10px 20px;
+  border: 2px solid #4CAF50;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+  color: #333;
 }
 </style>

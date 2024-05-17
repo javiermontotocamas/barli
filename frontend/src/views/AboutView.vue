@@ -26,11 +26,13 @@
                       latitud y longitud determinada.</li>
                     <li>Creación de anuncios, dependiendo del numero de estos se mostraran de diferente manera a la hora
                       de que el usuario customer vea la carta que se muestra cuando tiene la opcion de reservar o no,
-                      junto a la descripcion. Estas dos cosas están pensadas como parte de los argumentos que tiene un bar
+                      junto a la descripcion. Estas dos cosas están pensadas como parte de los argumentos que tiene un
+                      bar
                       para atraer la reserva.</li>
                     <li>
                       Incluye una pagina de gestion de las mesas, desde aqui podemos ver que grado de ocupacion en
-                      porcentaje de nuestro bar esta siendo usado, junto a un mapa de nuestras mesas, diferenciando entre
+                      porcentaje de nuestro bar esta siendo usado, junto a un mapa de nuestras mesas, diferenciando
+                      entre
                       las exteriores e interiores y viendo las que tienen petición de reserva. También podemos añadir
                       mesas nuevas o eliminar mesas dentro de unas condiciones lógicas.
                     </li>
@@ -50,8 +52,10 @@
                   transparencia de la aplicación.
                 </li>
                 <li>
-                  Sistema de votación propio de los usuarios hacia los bares y lo que es novedoso, votación de los platos
-                  de la carta para que tanto los otros usuarios como el dueño del bar pueda ver que platos estan gustando.
+                  Sistema de votación propio de los usuarios hacia los bares y lo que es novedoso, votación de los
+                  platos
+                  de la carta para que tanto los otros usuarios como el dueño del bar pueda ver que platos estan
+                  gustando.
                 </li>
                 <li>Todo esto conllevaría a una ventana para usuarios publicos con un buscador de bares pero sin la
                   limitación de las mesas, para así entrar y ver la carta, pero no sus promociones. Así se seguiría
@@ -70,7 +74,7 @@
           <p class="titulo">Sobre el Creador</p>
           <div class="row">
             <div class="col-md-12 text-center">
-              <img src="../assets/Javier montoto_page-0001.jpg" alt="Curriculum Vitae" width="50%" height="100%">
+              <img src="../assets/Javier montoto_page-0001.jpg" alt="Curriculum Vitae" width="75%" height="100%">
             </div>
           </div>
         </div>
@@ -158,5 +162,34 @@ li {
   font-family: "Latin Modern Roman";
   font-style: italic;
   font-size: 1.1vw;
+  margin-bottom: 15px; /* Espacio inferior */
+}
+
+/*Agregacion final 10-05-2024*/
+.col-md-6 {
+  background-color: #f9f9f9;
+  /* Color de fondo */
+  padding: 20px;
+  /* Espaciado interno */
+  border-radius: 10px;
+  /* Bordes redondeados */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  /* Sombra */
+}
+
+ul {
+  list-style-type: none;
+  /* Quita los puntos de la lista */
+  padding-left: 0;
+  /* Quita el padding izquierdo */
+}
+ul ul li {
+  margin-top: 5px; /* Espacio superior */
+  color: #555; /* Color del texto secundario */
+}
+hr {
+  border: 0; /* Sin borde */
+  border-top: 1px solid #ccc; /* Línea horizontal */
+  margin: 20px 0; /* Espaciado superior e inferior */
 }
 </style>
