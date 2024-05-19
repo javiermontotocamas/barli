@@ -342,10 +342,19 @@ def get_booking_by_user(request,id):
     return Response(serializer.data, status=status.HTTP_200_OK)
     
 
-
-
-
-
+##ZONA USUARIO ADMINISTRADOR
+@api_view(['GET'])
+def get_all_bars(request):
+    if request.method == 'GET':
+        try:
+            # Obtenemos todos los objetos Bar de la base de datos
+            bars = Bar.objects.all()
+            # Serializamos los objetos Bar para enviarlos como respuesta
+            serializer = BarSerializer(bars, many=True)
+            print(serializer.data)
+            return Response(serializer.data, status=200)
+        except Exception as e:
+            return Response({'error': str(e)}, status=500)
 
 
 

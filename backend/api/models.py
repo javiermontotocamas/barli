@@ -4,7 +4,10 @@ from django.core.validators import MinValueValidator, MaxValueValidator,RegexVal
 from django.core.exceptions import ValidationError
 from datetime import date
 
-
+class AdminProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    def __str__(self) -> str:
+        return f"{self.user}"
 
 class UserProfile(models.Model):
     def validate_name(value):
@@ -117,6 +120,14 @@ class Booking(models.Model):
         return f"User: {self.user.fullname} - Bar: {self.table.bar.name} - Table: {self.table.number} - Completed: {self.completed} - Date: {self.initial_datetime}"
 
 
+def find_admin_by_django_user_id(user_id):
+    try:
+        profile = AdminProfile.objects.get(user__id=user_id)
+    except AdminProfile.DoesNotExist:
+        profile = None
+
+    return profile
+
 def find_userprofile_by_django_user_id(user_id):
     try:
         profile = UserProfile.objects.get(user__id=user_id)
@@ -144,4 +155,7 @@ def find_user_or_bar_and_role_by_django_user_id(user_id):
     if result:
         return (result, "bar")
     
+    result = find_admin_by_django_user_id(user_id)
+    if result:
+        return (result, "admin")
     return None

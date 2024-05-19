@@ -18,4 +18,5 @@ urlpatterns = [
     path('user/<int:id>/data', views.process_data_of_user, name='process_data_of_user'),
     path('user/<int:user_id>/booking/<int:table_id>', views.create_booking_by_user, name='create_booking_by_user'),
     path('user/<int:id>/booking', views.get_booking_by_user, name='get_booking_by_user'),
+    path('bars', views.get_all_bars, name='get_all_bars'),
 ]

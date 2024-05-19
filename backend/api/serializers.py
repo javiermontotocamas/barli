@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import UserProfile, Bar, Table, find_user_or_bar_and_role_by_django_user_id , Advertisement, Booking
+from .models import AdminProfile, UserProfile, Bar, Table, find_user_or_bar_and_role_by_django_user_id , Advertisement, Booking
 
 # Clase para meter claims personalizados en el token jwt, agregamos username y rol
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -19,6 +19,12 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'password', 'email']
+
+class AdminSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    class Meta:
+        model = AdminProfile
+        fields = ['id', 'user']
 
 
 class UserProfileSerializer(serializers.ModelSerializer):

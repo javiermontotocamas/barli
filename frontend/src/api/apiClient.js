@@ -188,10 +188,18 @@ export const checkUserBook = async(data) => {
   return fetchWithInterceptor(`/user/${data}/booking`);
 }
 
-
-
-
-
+//ZONA USUARIO ADMINISTRADOR
+// Get all bars
+export const getAllBars = async () => {
+  try {
+    const response = await fetchWithInterceptor(`/bars`); // Realizar la solicitud HTTP
+    const data = await response.json(); // Extraer el cuerpo de la respuesta como JSON
+    return data; // Devolver los datos obtenidos
+  } catch (error) {
+    console.error('Error al obtener los bares:', error); // Manejar cualquier error que ocurra durante la solicitud
+    throw error; // Relanzar el error para que sea manejado por el código que llama a esta función
+  }
+};
 
 
 

@@ -74,6 +74,16 @@ export default {
                   Cuenta</router-link>
               </li>
             </ul>
+            <ul v-else-if="role == 'admin'" class="navbar-nav me-auto mb-2 mb-md-0">
+              <li class="nav-item">
+                <router-link :to="{ name: 'histbooks' }" class="nav-link"
+                  router-link-active="active">Historico Reservas</router-link>
+              </li>
+              <li class="nav-item">
+                <router-link :to="{ name: 'all_bars' }" class="nav-link"
+                  router-link-active="active">Bares Suscritos</router-link>
+              </li>
+            </ul>
             <button class="btn btn-outline-primary">{{ username }}</button>
             <button class="btn btn-outline-danger" @click="doLogout()">Logout</button>
           </div>

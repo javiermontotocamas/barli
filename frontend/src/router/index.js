@@ -6,6 +6,8 @@ import ManageBooksView from '../views/ManageBooksView.vue'
 import BarUserView from '../views/BarUserView.vue'
 import SearchTableView from '../views/SearchTableView.vue'
 import UserView from '../views/UserView.vue'
+import HistoricalBooks from '../views/HistoricalBooks.vue'
+import adminBares from '../views/adminBares.vue'
 import { getAuthToken,getClaimsFromToken } from '../api/apiClient'
 
 
@@ -121,7 +123,47 @@ const router = createRouter({
           next({ name: 'home' });
         }
       },
-    }
+    },
+    {
+      path: '/histbooks',
+      name: 'histbooks',
+      component: HistoricalBooks,
+      beforeEnter: (to, from, next) => {
+        const token = getAuthToken();
+
+        if (token) {
+          const userRole = getClaimsFromToken(token).role; // Ajusta esto según la estructura real de tus tokens
+
+          if (userRole === 'admin') {
+            next();
+          } else {
+            next({ name: 'home' });
+          }
+        } else {
+          next({ name: 'home' });
+        }
+      },
+    },
+    {
+      path: '/all_bars',
+      name: 'all_bars',
+      component: adminBares,
+      beforeEnter: (to, from, next) => {
+        const token = getAuthToken();
+
+        if (token) {
+          const userRole = getClaimsFromToken(token).role; // Ajusta esto según la estructura real de tus tokens
+
+          if (userRole === 'admin') {
+            next();
+          } else {
+            next({ name: 'home' });
+          }
+        } else {
+          next({ name: 'home' });
+        }
+      },
+    },
   ]
 })
 
