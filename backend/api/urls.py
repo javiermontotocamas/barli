@@ -19,4 +19,5 @@ urlpatterns = [
     path('user/<int:user_id>/booking/<int:table_id>', views.create_booking_by_user, name='create_booking_by_user'),
     path('user/<int:id>/booking', views.get_booking_by_user, name='get_booking_by_user'),
     path('bars', views.get_all_bars, name='get_all_bars'),
+    path('bar/<int:bar_id>/bookings/', views.get_bookings_by_bar, name='get_bookings_by_bar'),
 ]

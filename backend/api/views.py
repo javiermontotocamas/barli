@@ -343,6 +343,7 @@ def get_booking_by_user(request,id):
     
 
 ##ZONA USUARIO ADMINISTRADOR
+#Obtener todos los bares
 @api_view(['GET'])
 def get_all_bars(request):
     if request.method == 'GET':
@@ -356,6 +357,17 @@ def get_all_bars(request):
         except Exception as e:
             return Response({'error': str(e)}, status=500)
 
+#Obtener los bares por id del bar
+@api_view(['GET'])
+def get_bookings_by_bar(request, bar_id):
+    try:
+        bookings = Booking.objects.filter(table__bar_id=bar_id)
+        serializer = BookingSerializer(bookings, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Booking.DoesNotExist:
+        return Response({"error": "No bookings found for this bar"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 

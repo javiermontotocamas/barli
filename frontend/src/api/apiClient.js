@@ -200,6 +200,14 @@ export const getAllBars = async () => {
     throw error; // Relanzar el error para que sea manejado por el código que llama a esta función
   }
 };
+// Get bookings by bar
+export const getBookingsByBar = async (barId) => {
+  const response = await fetchWithInterceptor(`/bar/${barId}/bookings/`);
+  const data = await response.json()
+  console.log(data)
+  return data
+}
+
 
 
 
