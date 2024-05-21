@@ -200,6 +200,7 @@ export const getAllBars = async () => {
     throw error; // Relanzar el error para que sea manejado por el código que llama a esta función
   }
 };
+
 // Get bookings by bar
 export const getBookingsByBar = async (barId) => {
   const response = await fetchWithInterceptor(`/bar/${barId}/bookings/`);
@@ -208,6 +209,16 @@ export const getBookingsByBar = async (barId) => {
   return data
 }
 
+export const getAllUsers = async () => {
+  try {
+    const response = await fetchWithInterceptor(`/get_users`); // Realizar la solicitud HTTP
+    const data = await response.json(); // Extraer el cuerpo de la respuesta como JSON
+    return data; // Devolver los datos obtenidos
+  } catch (error) {
+    console.error('Error al obtener los usuarios:', error); // Manejar cualquier error que ocurra durante la solicitud
+    throw error; // Relanzar el error para que sea manejado por el código que llama a esta función
+  }
+};
 
 
 

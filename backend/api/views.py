@@ -220,20 +220,17 @@ def index(request):
     return HttpResponse('Bienvenido a la api')   
 
 #Obtener todos los usuarios
+@api_view(['GET'])
 def get_users(request):
-    # Recupera todos los perfiles de usuario
-    profiles = UserProfile.objects.all()
-
-    # Convierte los datos en una lista de diccionarios
-    profile_data = [{
-                'id': profile.id,
-                'fullname': profile.fullname,
-                'phone': profile.phone,
-                'email': profile.email,
-                'birthdate': profile.birthdate,
-                } for profile in profiles]
-
-    return JsonResponse({'user_profiles': profile_data}, safe=False)
+    if request.method == 'GET':
+        try:
+            # Obtenemos todos los objetos Bar de la base de datos
+            users = UserProfile.objects.all()
+            # Serializamos los objetos Bar para enviarlos como respuesta
+            serializer = UserProfileSerializer(users, many=True)
+            return Response(serializer.data, status=200)
+        except Exception as e:
+            return Response({'error': str(e)}, status=500)
 
 #Obtener usuario por id
 def get_user_by_id(request, user_id):

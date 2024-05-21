@@ -83,6 +83,10 @@ export default {
                 <router-link :to="{ name: 'all_bars' }" class="nav-link"
                   router-link-active="active">Bares Suscritos</router-link>
               </li>
+              <li class="nav-item">
+                <router-link :to="{ name: 'all_users' }" class="nav-link"
+                  router-link-active="active">Usuarios Suscritos</router-link>
+              </li>
             </ul>
             <button class="btn btn-outline-primary">{{ username }}</button>
             <button class="btn btn-outline-danger" @click="doLogout()">Logout</button>
