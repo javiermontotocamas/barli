@@ -187,7 +187,8 @@ export default {
               <p>Rebaja: {{ ads[0].reduction }}%</p>
             </div>
           </div>
-          <div class="col-md-6 border p-3 mb-4 mt-4"> {{ barSeleccionado.description }}
+          <div :class="ads.length > 0 ? 'col-md-6' : 'col-md-12'">
+            <div class="border p-3 mb-4 mt-4">{{ barSeleccionado.description }}</div>
           </div>
           <div v-if="ads.length >= 1" class="col-md-3">
             <div v-if="ads.length === 1" class="col-md-3">
