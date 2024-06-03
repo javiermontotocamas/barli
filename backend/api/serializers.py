@@ -51,6 +51,7 @@ class BarSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user_auth_data = validated_data.pop('user')
+        print(user_auth_data)
         user = User.objects.create_user(user_auth_data['username'], email=user_auth_data['email'], password=user_auth_data['password'])
         bar_profile = Bar.objects.create(user=user, **validated_data)
         return bar_profile

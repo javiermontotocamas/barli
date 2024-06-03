@@ -129,9 +129,9 @@ export default {
           {{ errorMessage.birthdate.join(", ") }}
         </div>
       </div>
-    </div>
+    </div>  
 
-    <div v-else-if="type === 'bar'">
+    <div v-else-if="type === 'bar'">      
       <div class="row mb-2">
         <label for="username" class="col-sm-4 col-form-label">Username:</label>
         <div class="col-sm-8">
@@ -147,7 +147,7 @@ export default {
           <input type="password" id="password" class="form-control" v-model="barData.user.password" required />
         </div>
       </div>
-      <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.user.password && errorMessage.user.password">
+      <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.user && errorMessage.user.password">
         {{ errorMessage.user.password.join(", ") }}
       </div>
       <div class="row mb-2">
@@ -181,7 +181,7 @@ export default {
           <input type="email" id="email" class="form-control" v-model="barData.user.email" required />
         </div>
       </div>
-      <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.user.email">
+      <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.user && errorMessage.user.email">
         {{ errorMessage.user.email.join(", ") }}
       </div>
       <div class="row mb-2">
@@ -199,9 +199,10 @@ export default {
           <input type="text" id="latitude" class="form-control" v-model="barData.latitude" required />
         </div>
       </div>
-      <div class="row mb-2 text-danger" v-if="errorMessage && errorMessage.latitude">
+      <div class="row mb-2 text-danger" v-if="errorMessage.latitude">
         {{ errorMessage.latitude.join(", ") }}
       </div>
+      
       <div class="row mb-2">
         <label for="longitude" class="col-sm-4 col-form-label">Longitude:</label>
         <div class="col-sm-8">

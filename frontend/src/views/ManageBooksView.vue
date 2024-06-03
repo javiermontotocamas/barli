@@ -114,7 +114,7 @@ export default {
 <template>
   <main class="container-fluid mt-5">
     <div class="mt-2 p-4" id="contenedorTitulo">
-      <h1>{{ barData.name }} - MIS MESAS</h1>
+      <h1>{{ barData.name }}<br> MIS MESAS</h1>
       <h1>Numero de Mesas: {{ totalMesas }}</h1>
       <h3>Grado de Ocupación</h3>
       <div class="progress">
@@ -232,12 +232,11 @@ main {
   color: black;
   text-transform: capitalize;
   font-weight: bolder;
-  background-color: wheat;
+  background-color: rgba(255, 255, 255, 0.8);
   text-align: center;
   width: 35%;
   margin-left: 33%;
-  border: #464646 2px solid;
-  border-radius: 10%;
+  border-radius: 0%;
   font-size: 3vw;
 }
 
@@ -246,12 +245,12 @@ main {
   text-transform: capitalize;
   text-align: center;
   font-weight: bold;
-  background-color: antiquewhite;
+  background-color: rgba(255, 255, 255, 0.8);
   border: #464646 2px solid;
-  border-radius: 10%;
-  width: 50%;
+  border-radius: 0%;
+  width: 30%;
   height: 50%;
-  margin-left: 25%;
+  margin-left: 35%;
   font-size: 2vw;
 }
 
@@ -289,7 +288,7 @@ main {
   color: white; /* Color del texto blanco */
   padding: 10px 20px; /* Espaciado interno */
   text-align: center; /* Alinear el texto al centro */
-  border-radius: 12px; /* Bordes redondeados */
+  border-radius: 0%; /* Bordes redondeados */
   font-size: 24px; /* Tamaño de fuente más grande */
   font-weight: bold; /* Texto en negrita */
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); /* Sombra */

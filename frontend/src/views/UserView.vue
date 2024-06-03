@@ -50,7 +50,7 @@ export default {
   <main class="container-fluid mt-5" v-if="userData">
     <h1 class="text-center mt-2" id="titulo">
       <p>{{ userData.user.username }}</p>
-      <button @click="toggleDisableInputs('button')" class="btn btn-secondary">Habilitar Edición</button>
+      <button @click="toggleDisableInputs('button')" class="btn btn-secondary btn-lg mb-1">¡Habilitar Edición!</button>
     </h1>
     <div class="row">
       <!-- Columna izquierda -->
@@ -107,13 +107,13 @@ export default {
   text-transform: uppercase;
   font-weight: bolder;
   letter-spacing: 1dvi;
-  background-color: wheat;
+  background-color: rgba(255, 255, 255, 0.8);
   text-align: center;
-  width: fit-content;
-  margin: 0 auto;
+  width: 50%;
+  margin-left: 25%;
   border: #464646 2px solid;
-  border-radius: 10%;
-  font-size: 2vw;
+  border-radius: 0%;
+  font-size: 3vw;
 }
 
 #listadata {

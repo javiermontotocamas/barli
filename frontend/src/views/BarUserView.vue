@@ -158,13 +158,16 @@ export default {
   text-transform: uppercase;
   font-weight: bolder;
   letter-spacing: 1dvi;
-  background-color: wheat;
+  background-color: rgba(255, 255, 255, 0.8);
   text-align: center;
   width: 50%;
   margin-left: 25%;
   border: #464646 2px solid;
-  border-radius: 10%;
+  border-radius: 0%;
   font-size: 3vw;
+  overflow: hidden; /* Añade esta línea */
+  white-space: nowrap; /* Añade esta línea para evitar el salto de línea */
+  text-overflow: ellipsis; /* Opcional: para mostrar puntos suspensivos al final si el texto se recorta */
 }
 
 #listadata {

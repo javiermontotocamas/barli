@@ -25,12 +25,12 @@ class RegisterView(APIView):
             serializer = UserProfileSerializer(data=record_data)
         elif user_type == "bar":
             serializer = BarSerializer(data=record_data)
-
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            print(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
