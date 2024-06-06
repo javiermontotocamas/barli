@@ -220,6 +220,21 @@ export const getAllUsers = async () => {
   }
 };
 
+//Crear imagenes graficos
+// Función para generar los gráficos en el servidor y obtener las rutas de las imágenes
+export const generateCharts = async (barId) => {
+  try {
+     // Realiza una solicitud para generar los gráficos en el servidor
+     const response = await fetchWithInterceptor(`/generate_charts/${barId}/`);
+     const data = await response.json(); // Convierte la respuesta en formato JSON
+     return data; // Devuelve las rutas de las imágenes de los gráficos
+  } catch (error) {
+     console.error('Error al generar los gráficos:', error);
+     throw error;
+  }
+}
+
+
 
 
 const fetchWithInterceptor = async (url, options) => {

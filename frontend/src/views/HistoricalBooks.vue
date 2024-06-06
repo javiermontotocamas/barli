@@ -1,5 +1,5 @@
 <script>
-import { getAllBars, getBookingsByBar } from '../api/apiClient';
+import { getAllBars, getBookingsByBar, generateCharts } from '../api/apiClient';
 
 export default {
    data() {
@@ -7,7 +7,9 @@ export default {
          bars: [],
          selectedBar: null,
          bookings: [],
-         showNoBookingsMessage: false
+         showNoBookingsMessage: false,
+         lineChartPath: '',
+         pieChartPath: ''
       };
    },
    async mounted() {
@@ -29,6 +31,13 @@ export default {
                } else {
                   this.showNoBookingsMessage = false;
                }
+               // Generar los gráficos
+               const response = await generateCharts(this.selectedBar);
+               console.log(response)
+               console.log(this.lineChartPath)
+               this.lineChartPath = '..' + response.line_chart;
+               console.log(this.lineChartPath)
+               this.pieChartPath = response.pie_chart;
             } catch (error) {
                console.error('Error al obtener las reservas:', error);
             }
@@ -74,6 +83,13 @@ export default {
                </tr>
             </tbody>
          </table>
+      </template>
+      <template v-if="lineChartPath"> 
+         <img :src="lineChartPath" alt="Gráfico de Línea" class="chart-img mt-3">
+      </template>
+
+      <template v-if="pieChartPath">
+         <img :src="pieChartPath" alt="Gráfico de Tarta" class="chart-img mt-3">
       </template>
    </main>
 </template>
@@ -122,5 +138,10 @@ export default {
 .text-center {
    vertical-align: middle;
    /* Alinear verticalmente el texto en el centro */
+}
+img {
+   max-width: 100%; /* Ajustar imagen al contenedor */
+   display: block; /* Asegurar que la imagen esté centrada */
+   margin: 0 auto; /* Alinear imagen al centro */
 }
 </style>

@@ -11,9 +11,11 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 import math
 from .serializers import TableSerializer, UserProfileSerializer, BarSerializer, AdvertisementSerializer, BookingSerializer
 from .models import *
-
-
-
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import os
+import glob
 
 #ZONA REGISTRO
 class RegisterView(APIView):
@@ -354,7 +356,7 @@ def get_all_bars(request):
         except Exception as e:
             return Response({'error': str(e)}, status=500)
 
-#Obtener los bares por id del bar
+#Obtener las reservas por id del bar
 @api_view(['GET'])
 def get_bookings_by_bar(request, bar_id):
     try:
@@ -366,8 +368,74 @@ def get_bookings_by_bar(request, bar_id):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+#Creacion de imagenes para ciencia de datos en reserva
+def generate_charts(request, bar_id):
+    try:
+        # Obtener el bar y las reservas asociadas
+        bar = Bar.objects.get(id=bar_id)
+        bookings = Booking.objects.filter(table__bar=bar)
 
+        # Ruta del directorio de las imágenes
+        assets_dir = os.path.join('..' ,'frontend', 'src', 'assets', 'charts')
 
+        # Eliminar todos los archivos de la carpeta de imágenes
+        files = glob.glob(os.path.join(assets_dir, '*'))
+        for f in files:
+            os.remove(f)
+
+        # Crear el directorio si no existe
+        if not os.path.exists(assets_dir):
+            os.makedirs(assets_dir)
+
+        # Obtener fechas únicas y ordenarlas
+        dates = sorted(set(booking.initial_datetime.date() for booking in bookings))
+        
+        # Contar reservas por día
+        reservations_per_date = [sum(1 for booking in bookings if booking.initial_datetime.date() == date) for date in dates]
+
+        # Calcular acumulado de reservas por día
+        cumulative_reservations = [sum(reservations_per_date[:i+1]) for i in range(len(reservations_per_date))]
+
+        # Crear gráfico de línea (histórico de reservas)
+        plt.figure(figsize=(10, 5))
+        plt.plot(dates, cumulative_reservations, marker='o')
+        plt.title(f'Histórico de Reservas - {bar.name}')
+        plt.xlabel('Fecha')
+        plt.ylabel('Número Acumulado de Reservas')
+        plt.xticks(rotation=10)  # Rotar etiquetas del eje x para mejor legibilidad
+        plt.yticks(range(max(cumulative_reservations) + 1))  # Establecer ticks del eje y como enteros
+        line_chart_path = os.path.join(assets_dir, f'line_chart_{bar_id}.png')
+        plt.savefig(line_chart_path)
+        plt.close()
+
+        # Crear gráfico de tarta (peso de cada usuario)
+        user_counts = {}
+        for booking in bookings:
+            user = booking.user.user.username
+            if user in user_counts:
+                user_counts[user] += 1
+            else:
+                user_counts[user] = 1
+
+        labels = list(user_counts.keys())
+        sizes = list(user_counts.values())
+
+        plt.figure(figsize=(8, 8))
+        plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
+        plt.title(f'Peso de cada usuario - {bar.name}')
+        pie_chart_path = os.path.join(assets_dir, f'pie_chart_{bar_id}.png')
+        plt.savefig(pie_chart_path)
+        plt.close()
+
+        return JsonResponse({
+            'line_chart': f'../../src/assets/charts/line_chart_{bar_id}.png',
+            'pie_chart': f'../../src/assets/charts/pie_chart_{bar_id}.png'
+        })
+
+    except Bar.DoesNotExist:
+        return JsonResponse({'error': 'Bar no encontrado'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 
 
