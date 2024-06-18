@@ -14,7 +14,7 @@ export default {
    },
    async mounted() {
       try {
-         this.bars = await getAllBars(); // Obtener todos los bares al montar el componente
+         this.bars = await getAllBars();
       } catch (error) {
          console.error('Error al obtener los bares:', error);
       }
@@ -23,21 +23,21 @@ export default {
       async fetchBookings() {
          if (this.selectedBar) {
             try {
-               this.bookings = await getBookingsByBar(this.selectedBar); // Obtener las reservas del bar seleccionado
+               this.bookings = await getBookingsByBar(this.selectedBar);
 
-               // Verificar si el array de reservas está vacío después de obtenerlo
                if (this.bookings.length === 0) {
                   this.showNoBookingsMessage = true;
+                  this.lineChartPath = '';
+                  this.pieChartPath = '';
                } else {
                   this.showNoBookingsMessage = false;
+                  const response = await generateCharts(this.selectedBar);
+                  console.log(response)
+                  console.log(this.lineChartPath)
+                  this.lineChartPath = '..' + response.line_chart;
+                  console.log(this.lineChartPath)
+                  this.pieChartPath = response.pie_chart;
                }
-               // Generar los gráficos
-               const response = await generateCharts(this.selectedBar);
-               console.log(response)
-               console.log(this.lineChartPath)
-               this.lineChartPath = '..' + response.line_chart;
-               console.log(this.lineChartPath)
-               this.pieChartPath = response.pie_chart;
             } catch (error) {
                console.error('Error al obtener las reservas:', error);
             }
@@ -46,7 +46,7 @@ export default {
       formatDateTime(dateTimeString) {
          const dateTime = new Date(dateTimeString);
          const formattedDate = dateTime.toLocaleDateString();
-         const formattedTime = dateTime.toLocaleTimeString();
+         const formattedTime = dateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Cambiado para no mostrar los segundos
          return `${formattedDate} ${formattedTime}`;
       }
    }
@@ -67,24 +67,26 @@ export default {
          No hay reservas para este bar.
       </div>
       <template v-if="bookings.length">
-         <table class="table table-striped table-bordered table-hover mt-3">
-            <thead class="table-dark">
-               <tr class="text-center">
-                  <th>ID de la Reserva</th>
-                  <th>Id del Usuario</th>
-                  <th>Fecha/Hora de la Reserva</th>
-               </tr>
-            </thead>
-            <tbody>
-               <tr v-for="booking in bookings" :key="booking.id" class="text-center">
-                  <td>{{ booking.id }}</td>
-                  <td>{{ booking.user }}</td>
-                  <td>{{ formatDateTime(booking.initial_datetime) }}</td>
-               </tr>
-            </tbody>
-         </table>
+         <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover mt-3">
+               <thead class="table-dark">
+                  <tr class="text-center">
+                     <th>ID de la Reserva</th>
+                     <th>Id del Usuario</th>
+                     <th>Fecha/Hora de la Reserva</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr v-for="booking in bookings" :key="booking.id" class="text-center">
+                     <td>{{ booking.id }}</td>
+                     <td>{{ booking.user }}</td>
+                     <td>{{ formatDateTime(booking.initial_datetime) }}</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
       </template>
-      <template v-if="lineChartPath"> 
+      <template v-if="lineChartPath">
          <img :src="lineChartPath" alt="Gráfico de Línea" class="chart-img mt-3">
       </template>
 
@@ -97,51 +99,48 @@ export default {
 <style scoped>
 .custom-heading {
    color: #ff6600;
-   /* Color naranja */
    font-size: 4em;
-   /* Tamaño de fuente grande */
    font-weight: bold;
    text-shadow: 2px 5px #000;
-   /* Sombra de texto */
    margin-bottom: 20px;
-   /* Espacio inferior */
 }
 
+.table-responsive {
+   max-height: 400px;
+   overflow-y: auto;
+}
 
 .table {
    background-color: #fff;
-   /* Fondo blanco para la tabla */
 }
 
 .table-hover tbody tr:hover {
    background-color: #f1f1f1;
-   /* Fondo al pasar el mouse por una fila */
 }
 
 .table thead th {
    background-color: #343a40;
-   /* Fondo oscuro para el encabezado */
    color: #fff;
-   /* Texto blanco para el encabezado */
+   position: sticky;
+   top: 0;
+   z-index: 1;
 }
 
 .table-bordered {
    border: 2px solid #343a40;
-   /* Borde para la tabla */
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
    background-color: rgba(0, 0, 0, 0.05);
-   /* Rayas alternas en la tabla */
 }
 
 .text-center {
    vertical-align: middle;
-   /* Alinear verticalmente el texto en el centro */
 }
+
 img {
-   max-width: 100%; /* Ajustar imagen al contenedor */
-   display: block; /* Asegurar que la imagen esté centrada */
-   margin: 0 auto; /* Alinear imagen al centro */
+   max-width: 100%;
+   display: block;
+   margin: 0 auto;
 }
 </style>

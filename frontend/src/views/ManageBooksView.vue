@@ -99,7 +99,6 @@ export default {
       const resp = await updateTableStatus({ tableId: table.id, barId: entity_id, newStatus });
       const respOk = resp.ok;
       const json = await resp.json()
-      alert(JSON.stringify(json));
       if (respOk) {
         // Actualiza el estado en la interfaz
         location.reload()
@@ -125,8 +124,8 @@ export default {
       </div>
     </div>
     <div class="row-container mb-0 text-center">
-      <div class="row text-center d-inline-block mt-5">
-        <h1 class="titulobord d-md-block d-none mb-0 border border-dashed border-dark">MAPA DE MESAS</h1>
+      <div class="row text-center d-inline-block mt-3">
+        <h1 class="custom-heading">MAPA DE MESAS</h1>
       </div>
     </div>
     <div class="row text-center">
@@ -135,8 +134,10 @@ export default {
         <ul style="list-style-type: none;">
           <li v-for="(table, index) in indoorTables" :key="index">
             Mesa número: {{ table.number }}- Plazas: {{ table.seats }} - Estado: {{ table.status }}
-            <button @click="changeTableStatus(table.number, 'BUSY')" v-if="table.status !== 'BUSY'" class="ocupar-button">OCUPAR MESA</button>
-            <button @click="changeTableStatus(table.number, 'FREE')" v-if="table.status !== 'FREE'" class="liberar-button">LIBERAR MESA</button>
+            <button @click="changeTableStatus(table.number, 'BUSY')" v-if="table.status !== 'BUSY'"
+              class="ocupar-button">OCUPAR MESA</button>
+            <button @click="changeTableStatus(table.number, 'FREE')" v-if="table.status !== 'FREE'"
+              class="liberar-button">LIBERAR MESA</button>
             <hr>
           </li>
         </ul>
@@ -145,16 +146,21 @@ export default {
         <h2 class="mt-1 titulo-mesa">MESAS EXTERIOR</h2>
         <ul style="list-style-type: none;">
           <li v-for="(table, index) in outdoorTables" :key="index">
-            Mesa número: {{ table.number }}- Plazas: {{ table.seats }} - Estado: {{ table.status }} - Exterior: {{ table.outdoor }}
-            <button @click="changeTableStatus(table.number, 'BUSY')" v-if="table.status !== 'BUSY'" class="ocupar-button">OCUPAR MESA</button>
-            <button @click="changeTableStatus(table.number, 'FREE')" v-if="table.status !== 'FREE'" class="liberar-button">LIBERAR MESA</button>
+            Mesa número: {{ table.number }}- Plazas: {{ table.seats }} - Estado: {{ table.status }} - Exterior: {{
+              table.outdoor }}
+            <button @click="changeTableStatus(table.number, 'BUSY')" v-if="table.status !== 'BUSY'"
+              class="ocupar-button">OCUPAR MESA</button>
+            <button @click="changeTableStatus(table.number, 'FREE')" v-if="table.status !== 'FREE'"
+              class="liberar-button">LIBERAR MESA</button>
             <hr>
           </li>
         </ul>
       </div>
     </div>
-    <div class="row text-center mb-0">
-      <h1 class="d-md-block d-none mb-0 mt-3 ">CRUD MESAS</h1>
+    <div class="row-container mb-0 text-center">
+      <div class="row text-center d-inline-block mt-3">
+        <h1 class="custom-heading">CRUD MESAS</h1>
+      </div>
     </div>
     <div class="row text-center">
       <div id="plusblock" class="col-md-6">
@@ -216,7 +222,7 @@ export default {
 
 <style scoped>
 main {
-  background-color: whitesmoke;
+  background-color:#B5CAD0;
 }
 
 #contenedorTitulo {
@@ -284,16 +290,16 @@ main {
 }
 
 .titulo-mesa {
-  background-color: #3498db; /* Color de fondo azul */
-  color: white; /* Color del texto blanco */
-  padding: 10px 20px; /* Espaciado interno */
-  text-align: center; /* Alinear el texto al centro */
-  border-radius: 0%; /* Bordes redondeados */
-  font-size: 24px; /* Tamaño de fuente más grande */
-  font-weight: bold; /* Texto en negrita */
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); /* Sombra */
-  margin: 20px auto; /* Espaciado externo */
-  width: 60%; /* Ancho del elemento */
+  background-color: #3498db;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  border-radius: 0%;
+  font-size: 24px;
+  font-weight: bold;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: 20px auto;
+  width: 60%;
 }
 
 #inT li,
@@ -402,5 +408,18 @@ main {
   padding: 2px 0 0;
   line-height: 1.2em;
   margin: 0 0 10px;
+}
+
+.custom-heading {
+  color: white;
+  font-size: 3em;
+  font-weight: bold;
+  text-shadow: 2px 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
+  background-color: #444444;
+  border-radius: 50%;
+  padding: 10px;
+  text-align: center;
+  display: inline-block;
 }
 </style>

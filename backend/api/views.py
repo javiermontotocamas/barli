@@ -308,7 +308,7 @@ def get_bars(request):
 
 
 #ZONA RESERVAS
-#Crear reserva por ususario
+#Crear reserva por usuario
 #ZONA ANUNCIOS
 @api_view(['GET', 'POST'])
 @authentication_classes([JWTAuthentication])

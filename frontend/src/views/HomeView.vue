@@ -16,7 +16,7 @@ import { RouterLink } from 'vue-router'
       </div>
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <div class="carousel-caption">
+          <div class="carousel-caption d-flex flex-column align-items-start">
             <h5 class="animate__animated animate__fadeInDown" style="animation-delay: 1s">
               Encuentra <span>Mesa</span>
             </h5>
@@ -25,12 +25,12 @@ import { RouterLink } from 'vue-router'
               cercanos de manera fácil y rápida.
             </p>
             <p class="animate__animated animate__fadeInUp" style="animation-delay: 3s">
-              <a href="#">Saber más</a>
+              <a href="#" class="btn btn-primary">Saber más</a>
             </p>
           </div>
         </div>
         <div class="carousel-item">
-          <div class="carousel-caption">
+          <div class="carousel-caption d-flex flex-column align-items-start">
             <h5 class="animate__animated animate__fadeInDown" style="animation-delay: 1s">
               Haz <span>Reserva</span>
             </h5>
@@ -39,12 +39,12 @@ import { RouterLink } from 'vue-router'
               flamante cita.
             </p>
             <p class="animate__animated animate__fadeInUp" style="animation-delay: 3s">
-              <a href="#">Saber más</a>
+              <a href="#" class="btn btn-primary">Saber más</a>
             </p>
           </div>
         </div>
         <div class="carousel-item">
-          <div class="carousel-caption">
+          <div class="carousel-caption d-flex flex-column align-items-start">
             <h5 class="animate__animated animate__fadeInDown" style="animation-delay: 1s">
               No <span>Esperes</span>
             </h5>
@@ -53,7 +53,7 @@ import { RouterLink } from 'vue-router'
               restaurantes.
             </p>
             <p class="animate__animated animate__fadeInUp" style="animation-delay: 3s">
-              <a href="#">Learn More</a>
+              <a href="#" class="btn btn-primary">Learn More</a>
             </p>
           </div>
         </div>
@@ -267,7 +267,7 @@ import { RouterLink } from 'vue-router'
   font-family: montserrat;
 }
 
-/* carousel*/
+/* carousel */
 .carousel {
   background-image: url(../assets/home.jpg);
   background-size: cover;
@@ -280,18 +280,21 @@ import { RouterLink } from 'vue-router'
 }
 
 .carousel-caption {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
   max-width: 60%;
-  border-radius: 20%;
-  background: rgba(255, 255, 255, 0.4);
-  bottom: 220px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.6);
+  bottom: 20%;
   z-index: 2;
-  left: 8%;
+  left: 5%;
+  padding: 20px;
 }
 
 .carousel-caption h5 {
-  font-size: 45px;
-  margin-top: 25px;
+  font-size: 2.5rem;
+  margin-top: 0;
   color: #08194a;
   font-weight: 700;
   text-align: left;
@@ -303,17 +306,33 @@ import { RouterLink } from 'vue-router'
 }
 
 .carousel-caption p {
-  font-size: 18px;
+  font-size: 1.25rem;
   line-height: 1.8;
   color: #08194a;
   text-align: left;
+  margin-bottom: 20px;
 }
 
+.carousel-caption a.btn {
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #08194a;
+  padding: 10px 20px;
+  display: inline-block;
+  color: #fff;
+  border-radius: 5px;
+}
+
+
 .parrafo_inicio_portada {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1.3em;
-  font-weight: 750;
-  color:darkslategray  !important;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  color: darkslategray !important;
+  font-size: 1.5em;
+  /* Ajuste del tamaño de la fuente para mayor visibilidad */
+  border-left: 5px solid #08194a;
+  padding-left: 10px;
 }
 
 .carousel-caption a {
@@ -352,6 +371,10 @@ import { RouterLink } from 'vue-router'
   border-radius: 5px;
 }
 
+.about-text p {
+  font-size: large;
+}
+
 /*Services zone */
 .section-header {
   margin-bottom: 40px;
@@ -365,6 +388,10 @@ import { RouterLink } from 'vue-router'
 
 .section-header span {
   color: #e53f29;
+}
+
+.section-header p {
+  font-size: large;
 }
 
 .single-services {
@@ -401,6 +428,16 @@ import { RouterLink } from 'vue-router'
 .single-box h2 {
   font-family: fantasy;
   color: #08194a;
+}
+
+.single-box p {
+  text-decoration: none;
+  background: whitesmoke;
+  padding: 1px 20px;
+  display: inline-block;
+  color: indianred;
+  border-radius: 3px;
+  font-size: 110%;
 }
 
 /* Testimonial Zone */
